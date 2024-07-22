@@ -4,13 +4,41 @@ using UnityEngine;
 
 public class TriggerWall : MonoBehaviour
 {
-    private readonly float speed = 8.0f; // 벽 이동 속도
+    private GameManager gm;
     private GameScene gs;
+    private float speed; // 벽 이동 속도
     private bool fin = false; // 점수 및 생명 업데이트 여부
 
     void Start()
     {
-        gs = GameObject.Find("GameManager").GetComponent<GameScene>(); // GameScene 컴포넌트 가져오기
+        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gs = GameObject.Find("GameManager").GetComponent<GameScene>();
+
+        // 난이도에 따른 벽 속도 설정
+        switch (gm.difficultyLevel)
+        {
+            case 1:
+                speed = 6.0f; // 쉬운 난이도
+                break;
+            case 2:
+                speed = 7.0f; // 보통 난이도
+                break;
+            case 3:
+                speed = 8.0f; // 중간 난이도
+                break;
+            case 4:
+                speed = 9.0f; // 조금 어려운 난이도
+                break;
+            case 5:
+                speed = 11.0f; // 어려운 난이도
+                break;
+            case 6:
+                speed = 15.0f; // 매우 어려운 난이도
+                break;
+            default:
+                speed = 8.0f; // 기본값
+                break;
+        }
     }
 
     void Update()
@@ -28,16 +56,6 @@ public class TriggerWall : MonoBehaviour
                 fin = true;
                 gs.getPoint = false;
             }
-        }
-
-        if (!fin && transform.position.z > 0 && gs.colliders.Count == 0)
-        {
-            if (!gs.getPoint)
-            {
-                gs.CountLife(); // 생명 감소
-            }
-            fin = true;
-            gs.getPoint = false;
         }
 
         if (transform.position.z > 10)

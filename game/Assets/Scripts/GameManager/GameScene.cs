@@ -14,9 +14,6 @@ public class GameScene : MonoBehaviour
     public Text scoreTxt;
     public Text stageTxt;
     private int score = 0;
-    
-    // 생명 오브젝트 배열 참조
-    public GameObject[] lifes;
 
     // 충돌한 오브젝트 리스트와 점수 획득 여부 저장
     public List<GameObject> colliders = new List<GameObject>();
@@ -58,6 +55,15 @@ public class GameScene : MonoBehaviour
     void Update()
     {
         playTime += Time.deltaTime;
+
+        // 일정 시간 이상이 되면 게임 종료 (5분)
+        if (playTime >= 300)
+        {
+            gm.playTime = playTime;
+            gm.playTimeTxt = playTimeTxt.text;
+            udpr.UDPClose();
+            gm.ToScore();
+        }
     }
 
     private void LateUpdate()
@@ -70,18 +76,5 @@ public class GameScene : MonoBehaviour
         int min = (int)((playTime - hour * 3600) / 60);
         int second = (int)(playTime % 60);
         playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
-    }
-
-    // 일정 시간 이상이 되면 게임 종료 (5분)
-    public void CountLife()
-    {
-        // 생명이 0이 되면 UDP 연결을 닫고 점수 화면으로 이동
-        if (playTime >= 300)
-        {
-            gm.playTime = playTime;
-            gm.playTimeTxt = playTimeTxt.text;
-            udpr.UDPClose();
-            gm.ToScore();
-        }
     }
 }

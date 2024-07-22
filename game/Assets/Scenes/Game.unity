@@ -19291,16 +19291,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: 0
   playTime: 0
-  correctScoreTxt: {fileID: 0}
   playTimeTxt: {fileID: 1322519964}
   scoreTxt: {fileID: 1878187976}
   stageTxt: {fileID: 416201474}
-  lifes:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   colliders: []
   getPoint: 0
 --- !u!114 &1259173453
@@ -19317,6 +19310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finalScore: 0
   playTime: 0
+  playTimeTxt: 
+  difficultyLevel: 0
 --- !u!4 &1259173454
 Transform:
   m_ObjectHideFlags: 0
@@ -26963,7 +26958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 337057433a48be64a8b656076cb5f846, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 2.39
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 337057433a48be64a8b656076cb5f846, type: 3}
       propertyPath: m_LocalPosition.y
@@ -32317,13 +32312,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115863834}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 4.28, z: 0}
+  m_LocalRotation: {x: 0.091465935, y: 0.7011662, z: -0.091465965, w: 0.7011662}
+  m_LocalPosition: {x: 0.000000021585176, y: 5.23, z: -7.42898e-15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 14.864, y: 90, z: 0}
 --- !u!1001 &2117859660
 PrefabInstance:
   m_ObjectHideFlags: 0
