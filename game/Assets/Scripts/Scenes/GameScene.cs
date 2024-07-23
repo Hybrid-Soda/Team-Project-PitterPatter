@@ -6,7 +6,6 @@ using TMPro;
 
 public class GameScene : MonoBehaviour
 {
-    private GameManager gm;
     private UDPReceive udpr;
     public int stage;
     public float playTime;
@@ -22,7 +21,6 @@ public class GameScene : MonoBehaviour
     // 초기 설정 수행
     void Start()
     {
-        gm = transform.GetComponent<GameManager>();
         udpr = transform.GetComponent<UDPReceive>();
     }
 
@@ -34,21 +32,21 @@ public class GameScene : MonoBehaviour
         {
             getPoint = true;
             score += 10;
-            gm.finalScore = score;
+            GameManager.Instance.finalScore = score;
         }
         // 충돌한 오브젝트가 6개 이상일 경우 점수 5 증가 (good)
         else if (colliders.Count >= 6)
         {
             getPoint = true;
             score += 5;
-            gm.finalScore = score;
+            GameManager.Instance.finalScore = score;
         }
         // 충돌한 오브젝트가 3개 이상일 경우 점수 3 증가 (soso)
         else if (colliders.Count >= 3)
         {
             getPoint = true;
             score += 3;
-            gm.finalScore = score;
+            GameManager.Instance.finalScore = score;
         }
     }
 
@@ -57,12 +55,12 @@ public class GameScene : MonoBehaviour
         playTime += Time.deltaTime;
 
         // 일정 시간 이상이 되면 게임 종료 (5분)
-        if (playTime >= 300)
+        if (playTime >= 10)
         {
-            gm.playTime = playTime;
-            gm.playTimeTxt = playTimeTxt.text;
+            GameManager.Instance.playTime = playTime;
+            GameManager.Instance.playTimeTxt = playTimeTxt.text;
             udpr.UDPClose();
-            gm.ToScore();
+            GameManager.Instance.ToScore();
         }
     }
 

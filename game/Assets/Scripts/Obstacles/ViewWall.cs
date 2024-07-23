@@ -3,7 +3,6 @@ using TMPro;
 
 public class ViewWall : MonoBehaviour
 {
-    private GameManager gm;
     public GameObject[] wall; // 벽 오브젝트 배열
     private int nowWall; // 현재 벽 인덱스
     private float nextWallTime = 0f; // 다음 벽 생성 시간
@@ -11,10 +10,9 @@ public class ViewWall : MonoBehaviour
 
     void Start()
     {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         preTime = Time.time; // 초기 시간 설정
 
-        switch (gm.difficultyLevel)
+        switch (GameManager.Instance.difficultyLevel)
         {
             case 1:
                 nextWallTime = 9.0f; // 쉬운 난이도

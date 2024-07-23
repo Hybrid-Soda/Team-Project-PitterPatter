@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class TriggerWall : MonoBehaviour
 {
-    private GameManager gm;
     private GameScene gs;
     private float speed; // 벽 이동 속도
     private bool fin = false; // 점수 및 생명 업데이트 여부
 
     void Start()
     {
-        gm = GameObject.Find("GameManager").GetComponent<GameManager>();
         gs = GameObject.Find("GameManager").GetComponent<GameScene>();
 
         // 난이도에 따른 벽 속도 설정
-        switch (gm.difficultyLevel)
+        switch (GameManager.Instance.difficultyLevel)
         {
             case 1:
                 speed = 6.0f; // 쉬운 난이도
