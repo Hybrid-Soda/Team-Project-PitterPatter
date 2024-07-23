@@ -59,7 +59,7 @@ public class GameScene : MonoBehaviour
         {
             GameManager.Instance.playTime = playTime;
             GameManager.Instance.playTimeTxt = playTimeTxt.text;
-            udpr.UDPClose();
+            // udpr.UDPClose();
             GameManager.Instance.ToScore();
         }
     }

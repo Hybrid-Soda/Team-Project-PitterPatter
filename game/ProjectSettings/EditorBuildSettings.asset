@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Score.unity
-    guid: 1f6ad240f28d2134ca6e9e5d657ccc87
-  - enabled: 1
-    path: Assets/Scenes/Game.unity
-    guid: 5ce74c16f44f5b140a088a99d55efbf0
-  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: a3ec8230a89b96844b951742b89228ec
   - enabled: 1
     path: Assets/Scenes/Difficulty.unity
     guid: 88165d50d560fbb4c9ef51b52b1f5c29
+  - enabled: 1
+    path: Assets/Scenes/Game.unity
+    guid: 5ce74c16f44f5b140a088a99d55efbf0
+  - enabled: 1
+    path: Assets/Scenes/Score.unity
+    guid: 1f6ad240f28d2134ca6e9e5d657ccc87
   m_configObjects: {}

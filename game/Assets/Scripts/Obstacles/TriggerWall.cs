@@ -45,14 +45,21 @@ public class TriggerWall : MonoBehaviour
 
         if (!fin && transform.position.z > -15)
         {
-            if (!gs.getPoint)
+            if (gs != null)
             {
-                gs.UpdateScore(); // 점수 업데이트
+                if (!gs.getPoint)
+                {
+                    gs.UpdateScore(); // 점수 업데이트
+                }
+                if (gs.getPoint)
+                {
+                    fin = true;
+                    gs.getPoint = false;
+                }
             }
-            if (gs.getPoint)
+            else
             {
-                fin = true;
-                gs.getPoint = false;
+                Debug.LogWarning("GameScene reference is null.");
             }
         }
 

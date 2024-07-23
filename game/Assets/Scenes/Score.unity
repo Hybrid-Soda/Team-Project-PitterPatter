@@ -8651,9 +8651,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ac40a61b56d1d45a61e958b0d25f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playTime: 0
-  playTimeTxt: {fileID: 0}
-  correctScoreTxt: {fileID: 0}
+  playTimeTxt: {fileID: 1252968492}
+  correctScoreTxt: {fileID: 853885447}
 --- !u!1001 &674763074
 PrefabInstance:
   m_ObjectHideFlags: 0
