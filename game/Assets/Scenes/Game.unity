@@ -10691,7 +10691,6 @@ GameObject:
   - component: {fileID: 708757505}
   - component: {fileID: 708757504}
   - component: {fileID: 708757503}
-  - component: {fileID: 708757502}
   - component: {fileID: 708757501}
   m_Layer: 0
   m_Name: '@Scene'
@@ -10712,7 +10711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889af02e903067b49899ef3b7d9a5fde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  udpReceive: {fileID: 708757502}
   Body:
   - {fileID: 1342094031}
   - {fileID: 355998066}
@@ -10747,21 +10745,6 @@ MonoBehaviour:
   - {fileID: 1601772136}
   - {fileID: 267057628}
   - {fileID: 1933139719}
---- !u!114 &708757502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 708757500}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ff12fb97e68f8c40bff3a11c5ca6f30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startRecieving: 1
-  printToConsole: 0
-  data: 
 --- !u!114 &708757503
 MonoBehaviour:
   m_ObjectHideFlags: 0

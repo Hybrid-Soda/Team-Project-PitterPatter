@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GameScene : MonoBehaviour
+public class GameScene_backup : MonoBehaviour
 {
+    private UDPReceive udpr;
     public int stage;
     public float playTime;
     public Text playTimeTxt;
@@ -16,6 +17,12 @@ public class GameScene : MonoBehaviour
     // 충돌한 오브젝트 리스트와 점수 획득 여부 저장
     public List<GameObject> colliders = new List<GameObject>();
     public bool getPoint = false;
+
+    // 초기 설정 수행
+    void Start()
+    {
+        udpr = transform.GetComponent<UDPReceive>();
+    }
 
     // 점수 업데이트
     public void UpdateScore()

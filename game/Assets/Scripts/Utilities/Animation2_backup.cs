@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animation2 : MonoBehaviour
+public class Animation2_backup : MonoBehaviour
 {
+    public UDPReceive udpReceive; // UDP 데이터 수신 객체
     public GameObject[] Body; // 애니메이션 대상 객체들
     private List<string> animationData; // 애니메이션 데이터 리스트
     private Vector3[] targetPositions; // 목표 위치 배열
@@ -25,7 +26,7 @@ public class Animation2 : MonoBehaviour
 
     void Update()
     {
-        string receivedData = GameManager.Instance.poseData; // 수신된 데이터 가져오기
+        string receivedData = udpReceive.data; // 수신된 데이터 가져오기
         if (receivedData.Length > 1)
         {
             // 데이터의 처음과 끝의 문자 제거

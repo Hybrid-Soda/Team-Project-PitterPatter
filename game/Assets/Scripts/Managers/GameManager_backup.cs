@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager_backup : MonoBehaviour
 {
     public int finalScore;
     public float playTime;
     public string playTimeTxt;
     public int difficultyLevel;
-    public string poseData;
 
     // 싱글톤 인스턴스를 저장할 정적 변수
-    private static GameManager instance = null;
+    private static GameManager_backup instance = null;
 
     // 싱글톤 인스턴스에 접근하기 위한 정적 프로퍼티
-    public static GameManager Instance
+    public static GameManager_backup Instance
     {
         get
         {
@@ -65,10 +64,5 @@ public class GameManager : MonoBehaviour
     public void SetDifficulty(int level)
     {
         difficultyLevel = level;
-    }
-
-    public void ReceiveData(string data)
-    {
-        poseData = data;
     }
 }
