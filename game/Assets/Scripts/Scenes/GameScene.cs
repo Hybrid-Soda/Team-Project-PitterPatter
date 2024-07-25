@@ -6,11 +6,12 @@ using TMPro;
 
 public class GameScene : MonoBehaviour
 {
-    public int stage;
+    public int stage = 1;
     public float playTime;
     public Text playTimeTxt;
     public Text scoreTxt;
     public Text stageTxt;
+    
     private int score = 0;
 
     // 충돌한 오브젝트 리스트와 점수 획득 여부 저장

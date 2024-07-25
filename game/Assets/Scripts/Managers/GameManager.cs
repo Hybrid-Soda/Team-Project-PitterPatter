@@ -27,6 +27,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // 프레임 속도를 기본값인 -1로 설정하여 브라우저 렌더 루프에 맞추도록 함
+        Application.targetFrameRate = -1;
+    }
+
     // 싱글톤을 위한 인스턴스 관리
     private void Awake()
     {
