@@ -10,7 +10,7 @@ public class TriggerWall : MonoBehaviour
 
     void Start()
     {
-        gs = GameObject.Find("GameManager").GetComponent<GameScene>();
+        gs = FindObjectOfType<GameScene>();
 
         // 난이도에 따른 벽 속도 설정
         switch (GameManager.Instance.difficultyLevel)
@@ -63,7 +63,7 @@ public class TriggerWall : MonoBehaviour
             }
         }
 
-        if (transform.position.z > 10)
+        if (transform.position.x < 0)
         {
             Destroy(gameObject); // 벽 삭제
         }
