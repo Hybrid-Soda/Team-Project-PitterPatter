@@ -1400,8 +1400,9 @@ GameObject:
   - component: {fileID: 177956786}
   - component: {fileID: 177956785}
   - component: {fileID: 177956784}
+  - component: {fileID: 177956787}
   m_Layer: 5
-  m_Name: Start Button
+  m_Name: toDifficultyBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1471,9 +1472,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 333087909}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: ToDifficulty
+      - m_Target: {fileID: 177956787}
+        m_TargetAssemblyTypeName: SceneManagerEx, Assembly-CSharp
+        m_MethodName: ChangeSceneBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1521,6 +1522,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177956782}
   m_CullTransparentMesh: 1
+--- !u!114 &177956787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 177956782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c693b1bb7f3134f80f372a3283ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &204234673
 PrefabInstance:
   m_ObjectHideFlags: 0

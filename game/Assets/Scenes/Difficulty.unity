@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 177956786}
   - component: {fileID: 177956785}
   - component: {fileID: 177956784}
-  - component: {fileID: 177956787}
   m_Layer: 5
   m_Name: Easy Button
   m_TagString: Untagged
@@ -206,10 +205,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 177956787}
-        m_TargetAssemblyTypeName: ButtonHandler, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetEasy
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -256,18 +255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 177956782}
   m_CullTransparentMesh: 1
---- !u!114 &177956787
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 177956782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &224057252
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,6 +571,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446111556}
   m_CullTransparentMesh: 1
+--- !u!1 &594054138
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 594054140}
+  - component: {fileID: 594054139}
+  m_Layer: 0
+  m_Name: '@Scene'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &594054139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594054138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e39f2fd813370948a52b50fd9ce371d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &594054140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594054138}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 47.67383, y: -3.6658506, z: 1.323431}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &631765487
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +627,6 @@ GameObject:
   - component: {fileID: 631765491}
   - component: {fileID: 631765490}
   - component: {fileID: 631765489}
-  - component: {fileID: 631765492}
   m_Layer: 5
   m_Name: Very Hard Button
   m_TagString: Untagged
@@ -668,10 +698,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 631765492}
-        m_TargetAssemblyTypeName: DifficultySelect, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetVeryHard
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -718,18 +748,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 631765487}
   m_CullTransparentMesh: 1
---- !u!114 &631765492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631765487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &654648809
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,7 +989,6 @@ GameObject:
   - component: {fileID: 1513729322}
   - component: {fileID: 1513729321}
   - component: {fileID: 1513729320}
-  - component: {fileID: 1513729323}
   m_Layer: 5
   m_Name: Hard Button
   m_TagString: Untagged
@@ -1043,10 +1060,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1513729323}
-        m_TargetAssemblyTypeName: DifficultySelect, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetHard
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1093,18 +1110,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513729318}
   m_CullTransparentMesh: 1
---- !u!114 &1513729323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1513729318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1604997467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1117,7 +1122,6 @@ GameObject:
   - component: {fileID: 1604997471}
   - component: {fileID: 1604997470}
   - component: {fileID: 1604997469}
-  - component: {fileID: 1604997472}
   m_Layer: 5
   m_Name: Normal Button
   m_TagString: Untagged
@@ -1189,10 +1193,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604997472}
-        m_TargetAssemblyTypeName: DifficultySelect, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetNormal
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1239,18 +1243,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604997467}
   m_CullTransparentMesh: 1
---- !u!114 &1604997472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604997467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1644434042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,7 +1255,6 @@ GameObject:
   - component: {fileID: 1644434046}
   - component: {fileID: 1644434045}
   - component: {fileID: 1644434044}
-  - component: {fileID: 1644434047}
   m_Layer: 5
   m_Name: Medium Button
   m_TagString: Untagged
@@ -1335,10 +1326,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1644434047}
-        m_TargetAssemblyTypeName: DifficultySelect, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetMedium
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1385,18 +1376,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644434042}
   m_CullTransparentMesh: 1
---- !u!114 &1644434047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1644434042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1764111934
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,7 +1491,6 @@ GameObject:
   - component: {fileID: 1781817469}
   - component: {fileID: 1781817468}
   - component: {fileID: 1781817467}
-  - component: {fileID: 1781817470}
   m_Layer: 5
   m_Name: Extreme Button
   m_TagString: Untagged
@@ -1584,10 +1562,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1781817470}
-        m_TargetAssemblyTypeName: DifficultySelect, Assembly-CSharp
-        m_MethodName: SetDifficultyLevel
-        m_Mode: 3
+      - m_Target: {fileID: 594054139}
+        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_MethodName: SetExtreme
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1634,18 +1612,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781817465}
   m_CullTransparentMesh: 1
---- !u!114 &1781817470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781817465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b804a76f850c68349b4dc2ffd980c908, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1878142922
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,4 +1867,5 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1878142925}
+  - {fileID: 594054140}
   - {fileID: 1764111938}
