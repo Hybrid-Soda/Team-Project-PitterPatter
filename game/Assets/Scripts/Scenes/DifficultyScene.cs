@@ -3,39 +3,43 @@ using UnityEngine.SceneManagement;
 
 public class DifficultyScene : MonoBehaviour
 {
+    private void ToGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
     public void SetEasy()
     {
         GameManager.Instance.SetDifficulty(1);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 
     public void SetNormal()
     {
         GameManager.Instance.SetDifficulty(2);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 
     public void SetMedium()
     {
         GameManager.Instance.SetDifficulty(3);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 
     public void SetHard()
     {
         GameManager.Instance.SetDifficulty(4);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 
     public void SetVeryHard()
     {
         GameManager.Instance.SetDifficulty(5);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 
     public void SetExtreme()
     {
         GameManager.Instance.SetDifficulty(6);
-        GameManager.Instance.ToGame();
+        ToGame();
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animation2 : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public GameObject[] Body; // 애니메이션 대상 객체들
     private List<string> animationData; // 애니메이션 데이터 리스트
@@ -25,7 +25,9 @@ public class Animation2 : MonoBehaviour
 
     void Update()
     {
-        string receivedData = GameManager.Instance.poseData; // 수신된 데이터 가져오기
+        string receivedData = GameManager.Instance?.poseData; // 수신된 데이터 가져오기
+        if (receivedData == null) { return; }
+
         if (receivedData.Length > 1)
         {
             // 데이터의 처음과 끝의 문자 제거

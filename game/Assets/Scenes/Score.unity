@@ -799,8 +799,9 @@ GameObject:
   - component: {fileID: 1341564595}
   - component: {fileID: 1341564594}
   - component: {fileID: 1341564593}
+  - component: {fileID: 1341564597}
   m_Layer: 5
-  m_Name: Go to Main Button
+  m_Name: toMainBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -850,9 +851,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 674640704}
-        m_TargetAssemblyTypeName: ScoreScene, Assembly-CSharp
-        m_MethodName: GoToMain
+      - m_Target: {fileID: 1341564597}
+        m_TargetAssemblyTypeName: SceneManagerEx, Assembly-CSharp
+        m_MethodName: ChangeSceneBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -920,6 +921,18 @@ RectTransform:
   m_AnchoredPosition: {x: -185, y: -150}
   m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &1341564597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1341564592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c693b1bb7f3134f80f372a3283ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1703261300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,8 +1348,9 @@ GameObject:
   - component: {fileID: 1912221549}
   - component: {fileID: 1912221548}
   - component: {fileID: 1912221547}
+  - component: {fileID: 1912221550}
   m_Layer: 5
-  m_Name: Retry Button
+  m_Name: toDifficultyBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1406,9 +1420,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 674640704}
-        m_TargetAssemblyTypeName: ScoreScene, Assembly-CSharp
-        m_MethodName: Retry
+      - m_Target: {fileID: 1912221550}
+        m_TargetAssemblyTypeName: SceneManagerEx, Assembly-CSharp
+        m_MethodName: ChangeSceneBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1456,6 +1470,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1912221545}
   m_CullTransparentMesh: 1
+--- !u!114 &1912221550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912221545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29c693b1bb7f3134f80f372a3283ab41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1960104492
 GameObject:
   m_ObjectHideFlags: 0
