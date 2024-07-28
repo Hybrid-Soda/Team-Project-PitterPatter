@@ -6,6 +6,8 @@ public class DifficultyScene : MonoBehaviour
     private void ToGame()
     {
         SceneManager.LoadScene("Game");
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ChangeScene);
+        AudioManager.instance.PlayBgm(AudioManager.Bgm.GameBgm);
     }
     public void SetEasy()
     {
