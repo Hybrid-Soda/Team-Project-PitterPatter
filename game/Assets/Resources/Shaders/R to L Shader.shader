@@ -1,4 +1,4 @@
-Shader "Custom/RightToLeftShader"
+Shader "Custom/RtoLShader"
 {
     Properties
     {
