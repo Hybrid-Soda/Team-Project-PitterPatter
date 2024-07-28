@@ -1,4 +1,4 @@
-Shader "Custom/LtoRShader"
+Shader "Custom/DtoUShader"
 {
     Properties
     {
@@ -44,7 +44,7 @@ Shader "Custom/LtoRShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 // 왼쪽에서 오른쪽으로 점차 투명
-                float alpha = 0.95 - pow(i.uv.x, 4.0) * 0.95; // i.uv.x가 0에서 1로 이동함에 따라 알파값이 0.6에서 0으로 변화
+                float alpha = 0.95 - pow(i.uv.y, 4.0) * 0.95; // i.uv.x가 0에서 1로 이동함에 따라 알파값이 0.6에서 0으로 변화
                 return fixed4(_Color.rgb, alpha); // 사용자가 지정한 색상에 알파값을 적용
             }
             ENDCG
