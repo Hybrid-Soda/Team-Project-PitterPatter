@@ -12,8 +12,11 @@ public class GameScene : MonoBehaviour
     public Text playTimeTxt;
     public Text scoreTxt;
     public Text roundTxt;
+    public Image clearImage;
     public bool getPoint;
     private int score;
+    private float roundDuration;
+    private float nextRoundTime;
 
     // 충돌한 오브젝트 리스트와 점수 획득 여부 저장
     public List<GameObject> colliders = new List<GameObject>();
@@ -25,6 +28,9 @@ public class GameScene : MonoBehaviour
         score = 0;
         colliders.Clear();
         getPoint = false;
+        roundDuration = 10f;
+        nextRoundTime = roundDuration;
+        clearImage.gameObject.SetActive(false);
     }
 
     // 점수 업데이트
@@ -57,12 +63,25 @@ public class GameScene : MonoBehaviour
     {
         playTime += Time.deltaTime;
 
-        // 일정 시간 이상이 되면 게임 종료 (5분)
-        if (playTime >= 300)
+        // 라운드 변경 처리
+        if (playTime >= nextRoundTime)
         {
-            GameManager.Instance.playTime = playTime;
-            GameManager.Instance.playTimeTxt = playTimeTxt.text;
-            SceneManager.LoadScene("Score");
+            if (round == 3)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
+                EndGame();
+            }
+            else
+            {
+                round++;
+                if (round == 3)
+                {
+                    // AudioManager.instance.PlayBgm(AudioManager.Bgm.);
+                    roundDuration = 5f; // 3라운드는 1분
+                }
+                nextRoundTime = playTime + roundDuration; // 다음 라운드 시간 설정
+                StartNewRound(round);
+            }
         }
     }
 
@@ -76,5 +95,32 @@ public class GameScene : MonoBehaviour
         int min = (int)((playTime - hour * 3600) / 60);
         int second = (int)(playTime % 60);
         playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
+    }
+
+    private void StartNewRound(int round)
+    {
+        // 새로운 라운드 시작 시 실행할 로직
+        // 예를 들어, 게임 오브젝트 초기화, 스폰 등
+        colliders.Clear();
+        getPoint = false;
+
+        // 여기에 새로운 라운드에 필요한 게임 프로세스를 추가하세요.
+    }
+
+    private void EndGame()
+    {
+        // "Clear" 문구를 보여주고 5초 후에 다음 씬으로 이동
+        clearImage.gameObject.SetActive(true);
+        StartCoroutine(LoadNextSceneAfterDelay(5f));
+    }
+
+    private IEnumerator LoadNextSceneAfterDelay(float delay)
+    {
+        GameManager.Instance.playTime = playTime;
+        GameManager.Instance.playTimeTxt = playTimeTxt.text;
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("Score");
+        clearImage.gameObject.SetActive(false);
+        AudioManager.instance.StopBgm();
     }
 }

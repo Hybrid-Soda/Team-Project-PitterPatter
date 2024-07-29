@@ -208,7 +208,6 @@ GameObject:
   - component: {fileID: 224057253}
   - component: {fileID: 224057255}
   - component: {fileID: 224057254}
-  - component: {fileID: 224057256}
   m_Layer: 5
   m_Name: Start Text
   m_TagString: Untagged
@@ -277,19 +276,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224057252}
   m_CullTransparentMesh: 1
---- !u!114 &224057256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 224057252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2b7d73c8bbb2a74fa108873236fc90e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textToBlink: {fileID: 224057254}
 --- !u!1 &333087908
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,15 +432,15 @@ RectTransform:
   m_GameObject: {fileID: 666842823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 0.9, z: 0.9}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 654648810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 52}
-  m_SizeDelta: {x: 478, y: 130.5}
+  m_SizeDelta: {x: 1152, y: 320}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &666842825
 MonoBehaviour:
@@ -476,7 +462,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ad2f4722d62359e4c996152abe604816, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 55836c05593d89e42b9db02721367a68, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -755,6 +741,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1487961872}
   - component: {fileID: 1487961871}
+  - component: {fileID: 1487961873}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -789,6 +776,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1487961873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487961870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b7d73c8bbb2a74fa108873236fc90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textToBlink: {fileID: 224057254}
 --- !u!1 &1541023331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,10 +1017,12 @@ MonoBehaviour:
   bgmVolume: 0.4
   sfxClips:
   - {fileID: 8300000, guid: 6fd7733582e2b5046b9e8a5b35d45c0e, type: 3}
-  - {fileID: 8300000, guid: ab767bf880b9bf44e9cc840ec2371007, type: 3}
+  - {fileID: 8300000, guid: 29bde6326b4c34ad8a12da475f79b50a, type: 3}
   - {fileID: 8300000, guid: e38f70376fa679b4b9898ccf2f90171a, type: 3}
+  - {fileID: 8300000, guid: ab767bf880b9bf44e9cc840ec2371007, type: 3}
+  - {fileID: 8300000, guid: 67cca941ff8b3cd48bd39ccbd7540c08, type: 3}
   sfxVolume: 0.5
-  channels: 3
+  channels: 6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

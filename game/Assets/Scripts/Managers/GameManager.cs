@@ -17,26 +17,24 @@ public class GameManager : MonoBehaviour
     // 싱글톤 인스턴스에 접근하기 위한 정적 프로퍼티
     public static GameManager Instance { get { Init(); return instance; } }
 
-    private void Start()
+    static void Awake()
     {
         Init();
+    }
+
+    private void Start()
+    {
         Application.targetFrameRate = -1; // 프레임 속도를 기본값인 -1로 설정하여 브라우저 렌더 루프에 맞추도록 함
     }
 
-    // 싱글톤을 위한 인스턴스 관리
-    static void Init()
+
+    private static void Init()
     {
         if (instance == null)
         {
-            GameObject go = GameObject.Find("@GameManager");
-            if (go == null)
-            {
-                go = new GameObject { name = "@GameManager" };
-                go.AddComponent<GameManager>();
-            }
-
-            DontDestroyOnLoad(go);
-            instance = go.GetComponent<GameManager>();
+            GameObject gameObject = new GameObject("GameManager");
+            instance = gameObject.AddComponent<GameManager>();
+            DontDestroyOnLoad(gameObject);
         }
     }
 

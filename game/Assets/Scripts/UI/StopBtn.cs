@@ -9,12 +9,14 @@ public class StopBtn : MonoBehaviour
     public void OnClickStopBtn()
     {
         Time.timeScale = 0;
+        AudioManager.instance.PauseBgm();
         stopWindow.SetActive(true);
     }
 
     public void OnClickContinueBtn()
     {
         Time.timeScale = 1;
+        AudioManager.instance.ResumeBgm();
         stopWindow.SetActive(false);
         
     }

@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
-    public enum Sfx { ChangeScene, GetScore, NoGetScore }
+    public enum Sfx { ChangeScene, ToggleBtn, NoGetScore, GetScore, Success }
     public enum Bgm { MainBgm, GameBgm }
 
     void Awake()
@@ -63,11 +63,6 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.Play();
     }
 
-    public void StopBgm()
-    {
-        bgmPlayer.Stop();
-    }
-
     public void PlaySfx(Sfx sfx)
     {
         for (int index=0; index < sfxPlayers.Length; index++)
@@ -82,5 +77,20 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[loopIndex].Play();
             break;
         }    
+    }
+
+    public void StopBgm()
+    {
+        bgmPlayer.Stop();
+    }
+
+    public void PauseBgm()
+    {
+        bgmPlayer.Pause();
+    }
+
+    public void ResumeBgm()
+    {
+        bgmPlayer.UnPause();
     }
 }
