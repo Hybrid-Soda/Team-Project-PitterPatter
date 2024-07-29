@@ -25,6 +25,7 @@ public class HoverBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = originalScale * hoverScaleFactor;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.ToggleBtn);
         if (buttonText != null)
         {
             buttonText.color = hoverColor;

@@ -3,14 +3,17 @@ using TMPro;
 
 public class ViewWall : MonoBehaviour
 {
+    public int round;
     public GameObject[] wall; // 벽 오브젝트 배열
     private int nowWall; // 현재 벽 인덱스
     private float nextWallTime = 0f; // 다음 벽 생성 시간
     private float preTime; // 이전 시간
+    private GameScene gameScene;
 
     void Start()
     {
         preTime = Time.time; // 초기 시간 설정
+        gameScene = FindObjectOfType<GameScene>();
 
         switch (GameManager.Instance.difficultyLevel)
         {
@@ -40,8 +43,11 @@ public class ViewWall : MonoBehaviour
 
     void Update()
     {
+        if (gameScene != null)
+            round = gameScene.round;
+
         // 일정 시간이 지나면 벽 생성
-        if (Time.time - preTime > nextWallTime)
+        if (round != 3 && Time.time - preTime > nextWallTime)
         {
             nowWall = Random.Range(0, wall.Length); // 랜덤 벽 선택
             // nextWallTime = Random.Range(5, 8); // 다음 벽 생성 시간 설정
