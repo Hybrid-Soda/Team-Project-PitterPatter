@@ -284,7 +284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &199599201
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +448,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &224057252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,7 +1124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &915017563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,7 +1288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1011686671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1294503193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1944,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1878142922
+--- !u!1 &1798843059
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1947,35 +1952,35 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1878142925}
-  - component: {fileID: 1878142924}
-  - component: {fileID: 1878142923}
+  - component: {fileID: 1798843062}
+  - component: {fileID: 1798843061}
+  - component: {fileID: 1798843060}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1878142923
+--- !u!81 &1798843060
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1878142922}
+  m_GameObject: {fileID: 1798843059}
   m_Enabled: 1
---- !u!20 &1878142924
+--- !u!20 &1798843061
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1878142922}
+  m_GameObject: {fileID: 1798843059}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.8820755, g: 0.927935, b: 1, a: 0}
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1996,12 +2001,12 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
+  near clip plane: 0.1
+  far clip plane: 1
+  field of view: 1
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2016,21 +2021,21 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1878142925
+--- !u!4 &1798843062
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1878142922}
+  m_GameObject: {fileID: 1798843059}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09146593, y: 0.70116615, z: -0.09146596, w: 0.70116615}
-  m_LocalPosition: {x: 0, y: 5.23, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 14.864, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2146137475
 GameObject:
   m_ObjectHideFlags: 0
@@ -2193,11 +2198,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScale: {x: 0.6, y: 0.6, z: 0.6}
+  hoverScaleFactor: 1.2
+  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1878142925}
   - {fileID: 594054140}
   - {fileID: 1764111938}
+  - {fileID: 1798843062}

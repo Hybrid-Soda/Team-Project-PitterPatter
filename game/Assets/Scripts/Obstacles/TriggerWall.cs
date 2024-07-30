@@ -43,7 +43,7 @@ public class TriggerWall : MonoBehaviour
     {
         gameObject.transform.Translate(Vector3.up * speed * Time.deltaTime); // 벽 이동
 
-        if (!fin && transform.position.z > -15)
+        if (!fin && transform.position.z > - 5)
         {
             if (gs != null)
             {
@@ -63,7 +63,7 @@ public class TriggerWall : MonoBehaviour
             }
         }
 
-        if (transform.position.x < 0)
+        if (transform.position.z < -3)
         {
             Destroy(gameObject); // 벽 삭제
         }
