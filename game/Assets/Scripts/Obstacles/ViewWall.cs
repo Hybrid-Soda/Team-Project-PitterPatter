@@ -52,7 +52,7 @@ public class ViewWall : MonoBehaviour
             nowWall = Random.Range(0, wall.Length); // 랜덤 벽 선택
             // nextWallTime = Random.Range(5, 8); // 다음 벽 생성 시간 설정
             // 벽 생성 (x, y, z)
-            Instantiate(wall[nowWall], new Vector3(35, 4.3f, 0), Quaternion.Euler(0, -90, 0) * wall[nowWall].transform.rotation);
+            Instantiate(wall[nowWall], new Vector3(0, 1, 35), Quaternion.Euler(0, 180, 0) * wall[nowWall].transform.rotation);
             preTime = Time.time; // 현재 시간 갱신
         }
     }

@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour
         animationData = new List<string>(); // 애니메이션 데이터 초기화
         targetPositions = new Vector3[Body.Length]; // 목표 위치 배열 초기화
 
-        // 첫 번째 Body 객체의 초기 목표 위치를 (2, 3.264482, 0)로 설정
+        // 첫 번째 Body 객체의 초기 목표 위치를 (0, 0, 0)로 설정
         if (Body.Length > 0)
         {
-            targetPositions[0] = new Vector3(2f, 3.264482f, 0f);
+            targetPositions[0] = new Vector3(0f, 0f, 0f);
             Body[0].transform.localPosition = targetPositions[0]; // 처음 시작 시 위치 설정
         }
     }
