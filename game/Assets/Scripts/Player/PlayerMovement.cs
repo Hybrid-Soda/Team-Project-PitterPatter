@@ -31,9 +31,11 @@ public class PlayerMovement : MonoBehaviour
         landmark[5].Rotate(0, 180, 0);
 
         // 제한 각도 설정
-        float maxNeckAngle = 45.0f;
+        float maxNeckAngle = 15.0f;
         Vector3 euler = landmark[5].localEulerAngles;
-        euler.x = Mathf.Clamp(euler.x, -maxNeckAngle, maxNeckAngle);
+        euler.x = Mathf.Clamp(euler.x, -maxNeckAngle, 1);
+        euler.y = Mathf.Clamp(euler.y, -maxNeckAngle, maxNeckAngle);
+        euler.z = Mathf.Clamp(euler.z, -maxNeckAngle, maxNeckAngle);
         landmark[5].localEulerAngles = euler;
     }
 
