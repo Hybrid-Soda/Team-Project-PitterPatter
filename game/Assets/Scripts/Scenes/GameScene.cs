@@ -36,27 +36,26 @@ public class GameScene : MonoBehaviour
     // 점수 업데이트
     public void UpdateScore()
     {
-        // 충돌한 오브젝트가 9개 이상일 경우 점수 10 증가 (perfect)
-        if (colliders.Count >= 9)
-        {
-            getPoint = true;
-            score += 10;
-            GameManager.Instance.finalScore = score;
-        }
-        // 충돌한 오브젝트가 6개 이상일 경우 점수 5 증가 (good)
-        else if (colliders.Count >= 6)
-        {
-            getPoint = true;
-            score += 5;
-            GameManager.Instance.finalScore = score;
-        }
-        // 충돌한 오브젝트가 3개 이상일 경우 점수 3 증가 (soso)
-        else if (colliders.Count >= 3)
-        {
-            getPoint = true;
-            score += 3;
-            GameManager.Instance.finalScore = score;
-        }
+        getPoint = true;
+        // 충돌한 오브젝트가 9개 이상 -> 10점 (perfect)
+        if (colliders.Count >= 9) { score += 10; }
+        // 충돌한 오브젝트가 6개 이상 -> 5점 (good)
+        else if (colliders.Count >= 6) { score += 5; }
+        // 충돌한 오브젝트가 3개 이상 -> 3점 (soso)
+        else if (colliders.Count >= 3) { score += 3; }
+        GameManager.Instance.finalScore = score;
+    }
+
+    public void UpdateScore2()
+    {
+        getPoint = true;
+        // 충돌한 오브젝트가 3개 미만 -> 10점 (perfect)
+        if (colliders.Count < 3) { score += 10; }
+        // 충돌한 오브젝트가 6개 미만 -> 5점 (good)
+        else if (colliders.Count < 6) { score += 5; }
+        // 충돌한 오브젝트가 9개 미만 -> 3점 (soso)
+        else if (colliders.Count < 9) { score += 3; }
+        GameManager.Instance.finalScore = score;
     }
 
     void Update()
@@ -80,7 +79,8 @@ public class GameScene : MonoBehaviour
                     roundDuration = 5f; // 3라운드는 1분
                 }
                 nextRoundTime = playTime + roundDuration; // 다음 라운드 시간 설정
-                StartNewRound(round);
+                colliders.Clear();
+                getPoint = false;
             }
         }
     }
@@ -97,24 +97,15 @@ public class GameScene : MonoBehaviour
         playTimeTxt.text = string.Format("{0:00}", hour) + ":" + string.Format("{0:00}", min) + ":" + string.Format("{0:00}", second);
     }
 
-    private void StartNewRound(int round)
-    {
-        // 새로운 라운드 시작 시 실행할 로직
-        // 예를 들어, 게임 오브젝트 초기화, 스폰 등
-        colliders.Clear();
-        getPoint = false;
-
-        // 여기에 새로운 라운드에 필요한 게임 프로세스를 추가하세요.
-    }
 
     private void EndGame()
     {
         // "Clear" 문구를 보여주고 5초 후에 다음 씬으로 이동
         clearImage.gameObject.SetActive(true);
-        StartCoroutine(LoadNextSceneAfterDelay(5f));
+        StartCoroutine(LoadScoreScene(5f));
     }
 
-    private IEnumerator LoadNextSceneAfterDelay(float delay)
+    private IEnumerator LoadScoreScene(float delay)
     {
         GameManager.Instance.playTime = playTime;
         GameManager.Instance.playTimeTxt = playTimeTxt.text;

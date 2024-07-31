@@ -17,6 +17,7 @@ TagManager:
   - Lfoot
   - Lknee
   - Rpelvis
+  - wall
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - L_pelvis
   - L_knee
   - L_foot
-  - 
+  - wall
   - 
   - 
   - 
@@ -53,4 +54,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: wall
+    uniqueID: 465741675
     locked: 0

@@ -1956,6 +1956,9 @@ MonoBehaviour:
   - {fileID: 2227366456372905316, guid: ade18489aed27aa428cf13813e945944, type: 3}
   - {fileID: 7478257397867295412, guid: e74fecfeac804eb409f32768985c639b, type: 3}
   - {fileID: 398855945262002196, guid: f6dac5589b7e96648a253d9dd4e6535d, type: 3}
+  wall2:
+  - {fileID: 6011392759105727331, guid: 116e81193b11aa54eb381fb4405ff23f, type: 3}
+  - {fileID: 6011392759105727331, guid: 6f4d39e2e80e31b488776e7c58af59de, type: 3}
 --- !u!114 &708757504
 MonoBehaviour:
   m_ObjectHideFlags: 0

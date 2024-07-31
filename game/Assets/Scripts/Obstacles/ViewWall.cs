@@ -4,7 +4,8 @@ using TMPro;
 public class ViewWall : MonoBehaviour
 {
     public int round;
-    public GameObject[] wall; // 벽 오브젝트 배열
+    public GameObject[] wall; // 1 라운드 벽 오브젝트 배열
+    public GameObject[] wall2; // 2 라운드 벽 오브젝트 배열
     private int nowWall; // 현재 벽 인덱스
     private float nextWallTime = 0f; // 다음 벽 생성 시간
     private float preTime; // 이전 시간
@@ -47,13 +48,26 @@ public class ViewWall : MonoBehaviour
             round = gameScene.round;
 
         // 일정 시간이 지나면 벽 생성
-        if (round != 3 && Time.time - preTime > nextWallTime)
+        if (Time.time - preTime > nextWallTime)
         {
-            nowWall = Random.Range(0, wall.Length); // 랜덤 벽 선택
-            // nextWallTime = Random.Range(5, 8); // 다음 벽 생성 시간 설정
-            // 벽 생성 (x, y, z)
-            Instantiate(wall[nowWall], new Vector3(0, 1, 35), Quaternion.Euler(0, 180, 0) * wall[nowWall].transform.rotation);
+            if (round == 1)
+            {
+                CreateWall(wall);
+            }
+            else if (round == 2)
+            {
+                CreateWall(wall2);
+            }
+
             preTime = Time.time; // 현재 시간 갱신
         }
+    }
+
+    public void CreateWall(GameObject[] wallArray)
+    {
+        // 랜덤 벽 선택
+        nowWall = Random.Range(0, wall.Length);
+        // 벽 생성 (x, y, z)
+        Instantiate(wallArray[nowWall], new Vector3(0, 1, 35), Quaternion.Euler(0, 180, 0) * wallArray[nowWall].transform.rotation);
     }
 }
