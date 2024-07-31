@@ -1,46 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public int finalScore;
     public float playTime;
-    public string playTimeTxt;
-    public int difficultyLevel;
     public string poseData;
+    public string playTimeTxt;
+    public int backgroundNum;
+    public int difficultyLevel;
 
     // 싱글톤 인스턴스를 저장할 정적 변수
     private static GameManager instance;
 
     // 싱글톤 인스턴스에 접근하기 위한 정적 프로퍼티
-    public static GameManager Instance { get { Init(); return instance; } }
+    public static GameManager Instance { get { return instance; } }
 
-    private void Start()
+    void Awake()
     {
-        Init();
-        Application.targetFrameRate = -1; // 프레임 속도를 기본값인 -1로 설정하여 브라우저 렌더 루프에 맞추도록 함
-    }
-
-
-
-    static void Init()
-    {
-        if (instance == null)
+        if (instance != null && instance != this)
         {
-            GameObject go = GameObject.Find("GameManager");
-            if (go == null)
-            {
-                go = new GameObject { name = "GameManager" };
-                go.AddComponent<GameManager>();
-            }
-
-            DontDestroyOnLoad(go);
-            instance = go.GetComponent<GameManager>();
+            Destroy(gameObject);
+            return;
         }
-    }
+        
+        instance = this;
+        DontDestroyOnLoad(gameObject);
 
+        // 프레임 속도 -1(기본값)로 설정: 브라우저 렌더 루프에 맞춤
+        Application.targetFrameRate = -1;
+    }
 
     public void SetDifficulty(int level)
     {
@@ -50,5 +40,10 @@ public class GameManager : MonoBehaviour
     public void ReceiveData(string data)
     {
         poseData = data;
+    }
+
+    public void ReceiveStaticData()
+    {
+        backgroundNum = 1;
     }
 }
