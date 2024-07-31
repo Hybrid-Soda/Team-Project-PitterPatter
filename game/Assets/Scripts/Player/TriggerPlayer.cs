@@ -6,9 +6,9 @@ public class PlayerTrigger : MonoBehaviour
 {
     private GameScene gs;
 
-    void Start()
+    void Awake()
     {
-        gs = GameObject.Find("GameManager").GetComponent<GameScene>(); // GameScene 컴포넌트 가져오기
+        gs = FindObjectOfType<GameScene>(); // GameScene 컴포넌트 가져오기
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,7 +17,6 @@ public class PlayerTrigger : MonoBehaviour
         if (!gs.colliders.Contains(other.gameObject) && other.gameObject.tag == gameObject.tag)
         {
             gs.colliders.Add(other.gameObject); // 오브젝트 추가
-            Debug.Log(other.gameObject.tag + "_touch"); // 디버그 로그 출력
         }
     }
 

@@ -7,36 +7,12 @@ public class TriggerWall : MonoBehaviour
     private GameScene gs;
     private float speed; // 벽 이동 속도
     private bool fin = false; // 점수 및 생명 업데이트 여부
+    private float[] speeds = { 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f }; // 속도 저장 배열
 
     void Start()
     {
         gs = FindObjectOfType<GameScene>();
-
-        // 난이도에 따른 벽 속도 설정
-        switch (GameManager.Instance.difficultyLevel)
-        {
-            case 1:
-                speed = 6.0f; // 쉬운 난이도
-                break;
-            case 2:
-                speed = 7.0f; // 보통 난이도
-                break;
-            case 3:
-                speed = 8.0f; // 중간 난이도
-                break;
-            case 4:
-                speed = 9.0f; // 조금 어려운 난이도
-                break;
-            case 5:
-                speed = 11.0f; // 어려운 난이도
-                break;
-            case 6:
-                speed = 15.0f; // 매우 어려운 난이도
-                break;
-            default:
-                speed = 8.0f; // 기본값
-                break;
-        }
+        setSpeed();
     }
 
     void Update()
@@ -45,21 +21,21 @@ public class TriggerWall : MonoBehaviour
 
         if (!fin && transform.position.z > - 5)
         {
-            if (gs != null)
+            if (gs == null) { return; }
+
+            if (!gs.getPoint)
             {
-                if (!gs.getPoint)
-                {
-                    gs.UpdateScore(); // 점수 업데이트
+                if (gs.round == 1) {
+                    gs.UpdateScore();
                 }
-                if (gs.getPoint)
-                {
-                    fin = true;
-                    gs.getPoint = false;
+                else if (gs.round == 2) {
+                    gs.UpdateScore2();
                 }
             }
             else
             {
-                Debug.LogWarning("GameScene reference is null.");
+                fin = true;
+                gs.getPoint = false;
             }
         }
 
@@ -67,5 +43,12 @@ public class TriggerWall : MonoBehaviour
         {
             Destroy(gameObject); // 벽 삭제
         }
+    }
+
+    void setSpeed()
+    {
+        // 난이도에 따른 벽 속도 설정
+        int difficultyLevel = GameManager.Instance.difficultyLevel;
+        speed = (difficultyLevel >= 1 && difficultyLevel <= 6) ? speeds[difficultyLevel - 1] : 8.0f;
     }
 }
