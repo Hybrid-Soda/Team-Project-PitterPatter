@@ -4,54 +4,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject[] Body; // 애니메이션 대상 객체들
-    private List<string> animationData; // 애니메이션 데이터 리스트
-    private Vector3[] targetPositions; // 목표 위치 배열
-    private int counter = 0; // 카운터 변수
-    private float interpolationFactor = 0.2f; // 보간 비율
+    public GameObject[] Body;
+    private List<string> animationData;
+    private Vector3[] targetPositions;
+    private int counter = 0;
+    private readonly float interpolationFactor = 0.2f;
 
     void Start()
     {
-        animationData = new List<string>(); // 애니메이션 데이터 초기화
-        targetPositions = new Vector3[Body.Length]; // 목표 위치 배열 초기화
-
-        // 첫 번째 Body 객체의 초기 목표 위치를 (0, 0, 0)로 설정
-        if (Body.Length > 0)
-        {
-            targetPositions[0] = new Vector3(0f, 0f, 0f);
-            Body[0].transform.localPosition = targetPositions[0]; // 처음 시작 시 위치 설정
-        }
+        Init();
     }
 
     void Update()
     {
-        string receivedData = GameManager.Instance.poseData; // 수신된 데이터 가져오기
-        if (receivedData == null) { return; }
+        string receivedData = GameManager.Instance.poseData;
+        if (receivedData == null) return;
 
-        if (receivedData.Length > 1)
-        {
-            // 데이터의 처음과 끝의 문자 제거
-            receivedData = receivedData.Remove(0, 1);
-            receivedData = receivedData.Remove(receivedData.Length - 1, 1);
-        }
+        // 데이터 전처리
+        string[] points = ProcessData(receivedData);
 
-        string[] points = receivedData.Split(','); // 데이터 포인트 분할
-        if (points.Length >= 99)
-        {
-            // 각 Body 객체에 대해 위치 업데이트
-            for (int i = 0; i < 33 && i < Body.Length; i++)
-            {
-                if (float.TryParse(points[0 + (i * 3)], out float x) && float.TryParse(points[1 + (i * 3)], out float y) && float.TryParse(points[2 + (i * 3)], out float z))
-                {
-                    // 좌표 변환 및 목표 위치 설정
-                    x /= 100f;
-                    y /= 100f;
-                    z /= 300f;
-                    Vector3 targetPosition = new Vector3(x, y, z);
-                    targetPositions[i] = targetPosition;
-                }
-            }
-        }
+        // 각 Body 객체에 대해 위치 업데이트
+        if (points.Length >= 99) UpdatePos(points);
 
         // 각 Body 객체의 현재 위치를 목표 위치로 보간하여 이동
         for (int i = 0; i < Body.Length; i++)
@@ -63,10 +36,44 @@ public class PlayerController : MonoBehaviour
         }
 
         counter++;
-        if (counter == points.Length)
-            counter = 0;
+        if (counter == points.Length) counter = 0;
 
-        StartCoroutine(WaitForNextFrame()); // 다음 프레임 대기
+        StartCoroutine(WaitForNextFrame());
+    }
+
+    private void Init()
+    {
+        animationData = new List<string>();
+        targetPositions = new Vector3[Body.Length];
+
+        if (Body.Length > 0)
+        {
+            targetPositions[0] = new Vector3(0f, 0f, 0f);
+            Body[0].transform.localPosition = targetPositions[0];
+        }
+    }
+
+    private string[] ProcessData(string data)
+    {
+        if (data.Length > 1)
+        {
+            data = data.Substring(1, data.Length - 2);
+        }
+
+        return data.Split(',');
+    }
+
+    private void UpdatePos(string[] points)
+    {
+        for (int i = 0; i < 33 && i < Body.Length; i++)
+        {
+            if (float.TryParse(points[0 + (i * 3)], out float x) && 
+                float.TryParse(points[1 + (i * 3)], out float y) && 
+                float.TryParse(points[2 + (i * 3)], out float z))
+            {
+                targetPositions[i] = new Vector3(x / 100f, y / 100f, z / 300f);
+            }
+        }
     }
 
     // 다음 프레임까지 대기하는 코루틴

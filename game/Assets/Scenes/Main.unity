@@ -307,9 +307,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finalScore: 0
   playTime: 0
-  playTimeTxt: 
-  difficultyLevel: 0
   poseData: 
+  playTimeTxt: 
+  backgroundNum: 0
+  difficultyLevel: 0
 --- !u!4 &333087910
 Transform:
   m_ObjectHideFlags: 0
@@ -575,7 +576,7 @@ GameObject:
   - component: {fileID: 1167502688}
   - component: {fileID: 1167502687}
   m_Layer: 0
-  m_Name: MainCamera
+  m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1029,6 +1030,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 333087910}
   - {fileID: 1952310490}
+  - {fileID: 1487961872}
   - {fileID: 1167502689}
   - {fileID: 1764111938}
-  - {fileID: 1487961872}
