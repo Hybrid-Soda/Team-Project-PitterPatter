@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     // 엉덩이, 목, 몸통 위치 업데이트
     private void UpdatePrimaryLandmarks(GameObject[] body)
     {
-        landmark[0].position = (body[23].transform.position + body[24].transform.position) / 2;
+        // landmark[0].position = (body[23].transform.position + body[24].transform.position) / 2;
         
         landmark[1].rotation = Quaternion.Euler(0, 0, 0);
         landmark[1].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2 - landmark[1].position);

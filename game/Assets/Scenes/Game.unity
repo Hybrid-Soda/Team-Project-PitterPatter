@@ -6296,7 +6296,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 800, y: 500}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -6514,7 +6514,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 36236040202423224, guid: c70fa282b5bbd1f458147d3ee496d23f, type: 3}
       propertyPath: m_Name
-      value: Character
+      value: Character_woman
+      objectReference: {fileID: 0}
+    - target: {fileID: 36236040202423224, guid: c70fa282b5bbd1f458147d3ee496d23f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1877740847499098218, guid: c70fa282b5bbd1f458147d3ee496d23f, type: 3}
       propertyPath: m_LocalPosition.x
