@@ -70,4 +70,3 @@ public class PlayerMovement : MonoBehaviour
         landmark[landmarkIndex].Rotate(0, angle, 0);
     }
 }
-
