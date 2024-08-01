@@ -25,7 +25,7 @@ public class TriggerWall : MonoBehaviour
                 if (gameScene.round == 1) {
                     gameScene.UpdateScore();
                 }
-                else if (gameScene.round == 2) {
+                else if (gameScene.round == 2 && transform.position.z < -0.5) {
                     gameScene.UpdateScore2();
                 }
                 gameScene.colliders.Clear();
@@ -37,7 +37,7 @@ public class TriggerWall : MonoBehaviour
             }
         }
 
-        if (transform.position.z < -3)
+        if (transform.position.z < -5)
         {
             Destroy(gameObject);
         }
