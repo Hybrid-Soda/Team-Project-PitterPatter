@@ -18,14 +18,14 @@ public class TriggerWall : MonoBehaviour
     {
         gameObject.transform.Translate(speed * Time.deltaTime * Vector3.up); // 벽 이동
 
-        if (gameScene != null && !fin && transform.position.z <= 3)
+        if (gameScene != null && !fin && transform.position.z <= -1)
         {
             if (!gameScene.getPoint)
             {
                 if (gameScene.round == 1) {
                     gameScene.UpdateScore();
                 }
-                else if (gameScene.round == 2 && transform.position.z < -0.5) {
+                else if (gameScene.round == 2) {
                     gameScene.UpdateScore2();
                 }
                 gameScene.colliders.Clear();

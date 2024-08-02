@@ -7,6 +7,12 @@ public class PlayerMovement : MonoBehaviour
     public PlayerController pc;
     public Transform[] landmark;
 
+    //
+    void Init()
+    {
+        landmark[0].rotation = Quaternion.Euler(90, 0, 0);
+    }
+
     // 사람의 위치와 회전을 업데이트
     void Update()
     {
@@ -18,12 +24,22 @@ public class PlayerMovement : MonoBehaviour
     // 엉덩이, 목, 몸통 위치 업데이트
     private void UpdatePrimaryLandmarks(GameObject[] body)
     {
-        // landmark[0].position = (body[23].transform.position + body[24].transform.position) / 2;
-        
         landmark[1].rotation = Quaternion.Euler(0, 0, 0);
-        landmark[1].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2 - landmark[1].position);
-        landmark[1].rotation = Quaternion.LookRotation(Vector3.Cross(body[12].transform.position - landmark[1].position, body[11].transform.position - landmark[1].position), landmark[1].up);
- 
+        landmark[1].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2
+                                                                       - (body[23].transform.position + body[24].transform.position) / 2);
+        landmark[2].rotation = Quaternion.Euler(0, 0, 0);
+        landmark[2].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2
+                                                                       - (body[23].transform.position + body[24].transform.position) / 2);
+        landmark[2].Rotate(-10, 0, 0);
+
+        landmark[3].rotation = Quaternion.Euler(0, 0, 0);
+        landmark[3].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2
+                                                                       - (body[23].transform.position + body[24].transform.position) / 2);
+        landmark[4].rotation = Quaternion.Euler(0, 0, 0);
+        landmark[4].rotation = Quaternion.FromToRotation(landmark[1].up, (body[9].transform.position + body[10].transform.position) / 2
+                                                                       - (body[11].transform.position + body[12].transform.position) / 2);
+        landmark[4].Rotate(-45, 0, 0);
+
         landmark[5].rotation = Quaternion.Euler(0, 0, 0);
         Vector3 p5up = (body[2].transform.position + body[5].transform.position) / 2 - (body[9].transform.position + body[10].transform.position) / 2;
         Vector3 p5forward = Vector3.Cross(body[0].transform.position - body[9].transform.position, body[0].transform.position - body[10].transform.position);
@@ -43,30 +59,29 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateOtherLandmarks(GameObject[] body)
     {
         UpdateLimbRotation(7, body[25], body[23]); // LeftUpLeg
-        UpdateLimbRotation(8, body[27], body[25]); // LeftLeg
-        UpdateLimbRotation(9, body[31], body[27]); // LeftFoot
-        UpdateLimbRotation(11, body[26], body[24], body[23]); // RightUpLeg
-        UpdateLimbRotation(12, body[28], body[26]); // RightLeg
-        UpdateLimbRotation(13, body[32], body[28]); // RightFoot
-        UpdateLimbRotation(15, body[13], body[11]); // LeftArm
-        UpdateLimbRotation(16, body[15], body[13]); // LeftForeArm
-        UpdateLimbRotation(18, body[14], body[12]); // RightArm
-        UpdateLimbRotation(19, body[16], body[14]); // RightForeArm
+        landmark[7].Rotate(0, 180, 0);
+        UpdateLimbRotation(8, body[27], body[25], 180); // LeftLeg
+        landmark[8].Rotate(0, 180, 0);
+        UpdateLimbRotation(9, body[31], body[27], 180); // LeftFoot
+        UpdateLimbRotation(11, body[26], body[24]); // RightUpLeg
+        landmark[11].Rotate(0, 180, 0);
+        UpdateLimbRotation(12, body[28], body[26], 180); // RightLeg
+        landmark[12].Rotate(0, 180, 0);
+        UpdateLimbRotation(13, body[32], body[28], 180); // RightFoot
+        UpdateLimbRotation(15, body[13], body[11], 180); // LeftArm
+        UpdateLimbRotation(16, body[15], body[13], 90); // LeftForeArm
+        UpdateLimbRotation(17, body[19], body[15]); // LeftHand
+        UpdateLimbRotation(18, body[14], body[12], 180); // RightArm
+        UpdateLimbRotation(19, body[16], body[14], 90); // RightForeArm
+        UpdateLimbRotation(20, body[20], body[16]); // RightHand
+        landmark[21].rotation = landmark[0].rotation; // Hip.L
+        landmark[22].rotation = landmark[0].rotation; // Hip.R
     }
 
-    private void UpdateLimbRotation(int landmarkIndex, GameObject start, GameObject end)
+    private void UpdateLimbRotation(int landmarkIndex, GameObject start, GameObject end, float rotateY = 0, float rotateX = 0)
     {
         landmark[landmarkIndex].rotation = Quaternion.Euler(0, 0, 0);
         landmark[landmarkIndex].rotation = Quaternion.FromToRotation(landmark[landmarkIndex].up, start.transform.position - end.transform.position);
-    }
-
-    private void UpdateLimbRotation(int landmarkIndex, GameObject start, GameObject middle, GameObject end)
-    {
-        landmark[landmarkIndex].rotation = Quaternion.Euler(0, 0, 0);
-        landmark[landmarkIndex].rotation = Quaternion.FromToRotation(landmark[landmarkIndex].up, start.transform.position - middle.transform.position);
-        float angle = Quaternion.FromToRotation(
-            landmark[landmarkIndex].forward, Vector3.Cross(middle.transform.position - end.transform.position, start.transform.position - middle.transform.position)
-        ).eulerAngles.y;
-        landmark[landmarkIndex].Rotate(0, angle, 0);
+        landmark[landmarkIndex].Rotate(rotateX, rotateY, 0);
     }
 }
