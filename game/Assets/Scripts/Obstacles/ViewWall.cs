@@ -53,7 +53,7 @@ public class ViewWall : MonoBehaviour
             }
             else if (round == 2)
             {
-                Instantiate(wallArray[nowWall], new Vector3(0, 1.52f, 35), Quaternion.Euler(0, 180, 0) * wallArray[nowWall].transform.rotation);
+                Instantiate(wallArray[nowWall], new Vector3(0, 1, 35), Quaternion.Euler(0, 180, 0) * wallArray[nowWall].transform.rotation);
             }
     }
 
