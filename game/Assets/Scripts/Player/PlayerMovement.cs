@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 p5up = (body[2].transform.position + body[5].transform.position) / 2 - (body[9].transform.position + body[10].transform.position) / 2;
         Vector3 p5forward = Vector3.Cross(body[0].transform.position - body[9].transform.position, body[0].transform.position - body[10].transform.position);
         landmark[5].rotation = Quaternion.FromToRotation(landmark[5].right, Vector3.Cross(p5forward, p5up));
-        landmark[5].Rotate(0, 180, 0);
+        landmark[5].Rotate(0, 180, 10);
 
         // 제한 각도 설정
         float maxNeckAngle = 15.0f;

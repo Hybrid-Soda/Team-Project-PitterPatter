@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
         if (Body.Length > 0)
         {
-            targetPositions[0] = new Vector3(0f, 0f, 0f);
+            targetPositions[0] = new Vector3(0f, 0.83f, 0f);
             Body[0].transform.localPosition = targetPositions[0];
         }
     }
