@@ -11739,7 +11739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 0.5568628, b: 0, a: 1}
+  m_EffectColor: {r: 1, g: 0.7568628, b: 0.22352943, a: 1}
   m_EffectDistance: {x: 1, y: -16}
   m_UseGraphicAlpha: 1
 --- !u!114 &666575239
@@ -11811,7 +11811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7787353, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.90196085, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -24141,7 +24141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 1, g: 0.5568628, b: 0, a: 1}
+  m_EffectColor: {r: 1, g: 0.7568628, b: 0.22352943, a: 1}
   m_EffectDistance: {x: 1, y: -16}
   m_UseGraphicAlpha: 1
 --- !u!114 &1346188764
@@ -24213,7 +24213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.7787353, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.90196085, b: 0.36078432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
