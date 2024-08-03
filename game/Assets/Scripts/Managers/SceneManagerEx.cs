@@ -12,6 +12,7 @@ public class SceneManagerEx : MonoBehaviour
         {
             case "toMainBtn":
                 SceneManager.LoadScene("Main");
+                Time.timeScale = 1;
                 break;
 
             case "toDifficultyBtn":

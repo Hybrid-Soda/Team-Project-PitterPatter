@@ -30,7 +30,7 @@ public class GameScene : MonoBehaviour
         isEnded = false;
         getPoint = false;
         colliders.Clear();
-        roundDuration = 10f;
+        roundDuration = 30f;
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
     }
@@ -48,7 +48,7 @@ public class GameScene : MonoBehaviour
         {
             round++;
 
-            if (round == 3) roundDuration = 5f;
+            if (round == 3) roundDuration = 10f;
             
             nextRoundTime = playTime + roundDuration;
             colliders.Clear();
@@ -98,10 +98,10 @@ public class GameScene : MonoBehaviour
     private void EndGame()
     {
         isEnded = true;
-        // "Clear" 문구를 보여주고 5초 후에 다음 씬으로 이동
+        // "Clear" 문구를 보여주고 3초 후에 다음 씬으로 이동
         clearImage.gameObject.SetActive(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
-        StartCoroutine(LoadScoreScene(5f));
+        StartCoroutine(LoadScoreScene(3f));
     }
 
     private IEnumerator LoadScoreScene(float delay)

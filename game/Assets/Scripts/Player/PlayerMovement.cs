@@ -7,23 +7,28 @@ public class PlayerMovement : MonoBehaviour
     public PlayerController pc;
     public Transform[] landmark;
 
-    //
-    void Init()
-    {
-        landmark[0].rotation = Quaternion.Euler(90, 0, 0);
-    }
-
     // 사람의 위치와 회전을 업데이트
     void Update()
     {
-        GameObject[] body = pc.Body;
-        UpdatePrimaryLandmarks(body);
-        UpdateOtherLandmarks(body);
+        if (pc != null)
+        {
+            GameObject[] body = pc.Body;
+
+            if (body != null)
+            {
+                UpdatePrimaryLandmarks(body);
+                UpdateOtherLandmarks(body);
+            }
+        }
     }
 
     // 엉덩이, 목, 몸통 위치 업데이트
     private void UpdatePrimaryLandmarks(GameObject[] body)
     {
+        Vector3 holePosition = (body[23].transform.position + body[24].transform.position) / 2;
+        holePosition.y = 0;
+        landmark[23].position = holePosition;
+
         landmark[1].rotation = Quaternion.Euler(0, 0, 0);
         landmark[1].rotation = Quaternion.FromToRotation(landmark[1].up, (body[11].transform.position + body[12].transform.position) / 2
                                                                        - (body[23].transform.position + body[24].transform.position) / 2);

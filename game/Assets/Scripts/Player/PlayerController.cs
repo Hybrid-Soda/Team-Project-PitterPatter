@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Init();
+        animationData = new List<string>();
+        targetPositions = new Vector3[Body.Length];
     }
 
     void Update()
@@ -39,18 +40,6 @@ public class PlayerController : MonoBehaviour
         if (counter == points.Length) counter = 0;
 
         StartCoroutine(WaitForNextFrame());
-    }
-
-    private void Init()
-    {
-        animationData = new List<string>();
-        targetPositions = new Vector3[Body.Length];
-
-        if (Body.Length > 0)
-        {
-            targetPositions[0] = new Vector3(0f, 0.83f, 0f);
-            Body[0].transform.localPosition = targetPositions[0];
-        }
     }
 
     private string[] ProcessData(string data)
