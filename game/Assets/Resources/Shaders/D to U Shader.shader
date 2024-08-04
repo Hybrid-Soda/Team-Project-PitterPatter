@@ -3,6 +3,7 @@ Shader "Custom/DtoUShader"
     Properties
     {
         _Color ("Color", Color) = (0, 0, 0, 1) // 색상을 입력으로 받도록 속성 추가
+        _MainTex ("Texture", 2D) = "white" {} // 텍스처 속성 추가
     }
     SubShader
     {

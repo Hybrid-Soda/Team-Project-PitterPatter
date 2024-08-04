@@ -11,12 +11,14 @@ public class ViewWall : MonoBehaviour
     private float preTime;
     private float genSpeed;
     private GameScene gameScene;
+    private RoundUp roundUp;
     private readonly float[] genSpeeds = { 9.0f, 8.0f, 7.0f, 6.0f, 5.0f, 4.0f };
 
     void Start()
     {
         preTime = Time.time; // 초기 시간 설정
         gameScene = FindObjectOfType<GameScene>();
+        roundUp = FindObjectOfType<RoundUp>();
         SetGenSpeed();
     }
 
@@ -26,7 +28,7 @@ public class ViewWall : MonoBehaviour
             round = gameScene.round;
 
         // 일정 시간이 지나면 벽 생성
-        if (Time.time - preTime > genSpeed)
+        if (Time.time - preTime > genSpeed && roundUp.isRoundUp == false)
         {
             if (round == 1)
             {

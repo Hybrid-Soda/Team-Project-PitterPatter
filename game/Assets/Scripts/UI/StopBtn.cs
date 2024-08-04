@@ -18,6 +18,5 @@ public class StopBtn : MonoBehaviour
         Time.timeScale = 1;
         AudioManager.instance.ResumeBgm();
         stopWindow.SetActive(false);
-        
     }
 }

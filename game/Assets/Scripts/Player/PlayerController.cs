@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     private List<string> animationData;
     private Vector3[] targetPositions;
     private int counter = 0;
-    private readonly float interpolationFactor = 0.2f;
 
     void Start()
     {
@@ -32,12 +31,13 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 currentPosition = Body[i].transform.localPosition;
             Vector3 targetPosition = targetPositions[i];
-            Vector3 newPosition = Vector3.Lerp(currentPosition, targetPosition, interpolationFactor);
+            Vector3 newPosition = Vector3.Lerp(currentPosition, targetPosition, 0.2f);
             Body[i].transform.localPosition = newPosition;
         }
 
         counter++;
-        if (counter == points.Length) counter = 0;
+        if (counter == points.Length)
+            counter = 0;
 
         StartCoroutine(WaitForNextFrame());
     }
