@@ -32,8 +32,8 @@ public class GameScene : MonoBehaviour
         isEnded = false;
         getPoint = false;
         colliders.Clear();
-        roundDuration = 10f;
-        nextRoundTime = roundDuration + 1f;
+        roundDuration = 60f;
+        nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
     }
 
@@ -48,15 +48,14 @@ public class GameScene : MonoBehaviour
         if (isEnded || playTime < nextRoundTime) return;
 
         if (round == 3) EndGame();
-        
         else
         {
             round++;
             roundUp.IncreaseRound();
 
-            if (round == 3) roundDuration = 5f;
+            if (round == 3) roundDuration = 10f;
             
-            nextRoundTime = playTime + roundDuration + 1f;
+            nextRoundTime = playTime + roundDuration;
             colliders.Clear();
             getPoint = false;
         }
