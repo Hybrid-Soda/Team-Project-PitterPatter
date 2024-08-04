@@ -21,24 +21,29 @@ public class GameScene : MonoBehaviour
 
     // 충돌한 오브젝트 리스트와 점수 획득 여부 저장
     public List<GameObject> colliders = new();
+    private RoundUp roundUp;
 
     void Start()
     {
+        roundUp = FindAnyObjectByType<RoundUp>();
         round = 1;
         playTime = 0;
         score = 0;
         isEnded = false;
         getPoint = false;
         colliders.Clear();
-        roundDuration = 30f;
-        nextRoundTime = roundDuration;
+        roundDuration = 10f;
+        nextRoundTime = roundDuration + 1f;
         clearImage.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        playTime += Time.deltaTime;
-        UpdateUI();
+        if (roundUp.isRoundUp == false)
+        {
+            playTime += Time.deltaTime;
+            UpdateUI();
+        }
 
         if (isEnded || playTime < nextRoundTime) return;
 
@@ -47,10 +52,11 @@ public class GameScene : MonoBehaviour
         else
         {
             round++;
+            roundUp.IncreaseRound();
 
-            if (round == 3) roundDuration = 10f;
+            if (round == 3) roundDuration = 5f;
             
-            nextRoundTime = playTime + roundDuration;
+            nextRoundTime = playTime + roundDuration + 1f;
             colliders.Clear();
             getPoint = false;
         }
@@ -74,6 +80,14 @@ public class GameScene : MonoBehaviour
     public void UpdateScore()
     {
         getPoint = true;
+        if (colliders.Count >= 6)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+        }
+        else
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
+        }
         // 충돌한 오브젝트가 9개 이상 -> 10점 (perfect)
         if (colliders.Count >= 9) score += 10;
         // 충돌한 오브젝트가 6개 이상 -> 5점 (good)
@@ -86,6 +100,14 @@ public class GameScene : MonoBehaviour
     public void UpdateScore2()
     {
         getPoint = true;
+        if (colliders.Count < 6)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+        }
+        else
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
+        }
         // 충돌한 오브젝트가 3개 미만 -> 10점 (perfect)
         if (0 <= colliders.Count && colliders.Count < 3) score += 10;
         // 충돌한 오브젝트가 6개 미만 -> 5점 (good)
