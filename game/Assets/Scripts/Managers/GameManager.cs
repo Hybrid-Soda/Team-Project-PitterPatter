@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public float playTime;
     public string poseData;
     public string playTimeTxt;
-    public int backgroundNum;
+    public int backgroundNum = 1;
     public int difficultyLevel;
 
     // 싱글톤 인스턴스를 저장할 정적 변수
@@ -42,8 +42,8 @@ public class GameManager : MonoBehaviour
         poseData = data;
     }
 
-    public void ReceiveStaticData()
+    public void ReceiveStaticData(int num)
     {
-        backgroundNum = 1;
+        backgroundNum = num;
     }
 }

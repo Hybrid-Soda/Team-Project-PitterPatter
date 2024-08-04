@@ -7,13 +7,14 @@ public class PlayerMovement : MonoBehaviour
     public PlayerController pc;
     public Transform[] landmark;
 
+
     // 사람의 위치와 회전을 업데이트
     void Update()
     {
         if (pc != null)
         {
             GameObject[] body = pc.Body;
-
+            
             if (body != null)
             {
                 UpdatePrimaryLandmarks(body);
