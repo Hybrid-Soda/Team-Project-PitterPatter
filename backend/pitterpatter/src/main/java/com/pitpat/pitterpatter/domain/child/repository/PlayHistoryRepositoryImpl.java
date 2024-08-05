@@ -7,7 +7,7 @@ import jakarta.persistence.Query;
 
 import java.util.List;
 
-public class PlayHistoryRepositoryImpl implements PlayHistoryRepositoryCustom{
+public class PlayHistoryRepositoryImpl implements PlayHistoryRepositoryCustom {
 
     @PersistenceContext
     private EntityManager em;
@@ -19,7 +19,7 @@ public class PlayHistoryRepositoryImpl implements PlayHistoryRepositoryCustom{
                 "FROM play_record pr " +
                 "GROUP BY pr.child_id " +
                 ") " +
-                "SELECT rs.childId, rs.maxScore, rs.ranking, c.nickname " +
+                "SELECT rs.childId, rs.maxScore, rs.ranking, c.nickname, c.profile_image " +
                 "FROM RankedScores rs " +
                 "JOIN child c ON rs.childId = c.child_id " +
                 "WHERE rs.ranking <= 3 " +
