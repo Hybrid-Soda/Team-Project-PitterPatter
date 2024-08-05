@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChildRankDTO {
     private Long childId;
+    private String nickname;
     private int maxScore;
     private int ranking;
 }
