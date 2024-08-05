@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from "styled-components";
-import home from '/src/assets/img/Landing/home.png';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const ModalOverlay = styled.div`
   display: flex;
@@ -15,30 +14,32 @@ const ModalOverlay = styled.div`
 `;
 
 const ModalContent = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .5rem;
   background: white;
   padding: 20px;
   border-radius: 25px;
-  width: 150px; 
-  height: 150px;
+  width: 8vw; 
+  height: 10vh;
   box-shadow: 0px 11px 39.6px 0px rgba(0, 0, 0, 0.25);
   position: absolute;
   right: 30px;
   top: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
 `;
 
 const GridItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 const ProfilePicture = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 8vw;
+  height: 8vh;
+  border-radius: 2rem;
   background-color: #D9D9D9;
 `;
 
@@ -48,33 +49,45 @@ const BackDrop = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
-`
+`;
+
+const ProfileButton = styled.button`
+  width: 8vw;
+  height: 3.5vh;
+  font-weight: bold;
+
+  &:hover {
+    background-color: var(--box-yellow-color);
+    transition: ease-in-out 0.2s;
+    opacity: 0.7;
+  }
+`;
+
+const Divider = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #D9D9D9;
+  margin: 10px 0;
+`;
 
 function ProfileModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
 
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <GridItem>
-          <Link to='/'>
-            <ProfilePicture src='' alt="자녀 1" />
-          </Link>
+          <ProfileButton onClick={() => navigate('/child/mypage')}>
+            마이 페이지
+          </ProfileButton>
         </GridItem>
+        <Divider />
         <GridItem>
-          <Link to='/'>
-            <ProfilePicture src='' alt="자녀 2" />
-          </Link>
-        </GridItem>
-        <GridItem>
-          <Link to='/'>
-            <ProfilePicture src='' alt="자녀 3" />
-          </Link>
-        </GridItem>
-        <GridItem>
-          <Link to='/'>
-            <ProfilePicture src='' alt="자녀 4" />
-          </Link>
+          <ProfileButton onClick={() => navigate('/select-profile')}>
+            프로필 변경
+          </ProfileButton>
         </GridItem>
       </ModalContent>
     </ModalOverlay>
