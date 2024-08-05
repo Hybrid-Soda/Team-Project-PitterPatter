@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   LayoutBase,
   LayoutProfileWrap,
@@ -12,17 +11,19 @@ import {
   UserId,
   LayoutMypage,
   MypageButton,
-  // LayoutSearch,
-  // SearchInput,
-  // SearchButton,
 } from './SelectProfileStyle';
 import PlusSquare from "../../assets/icons/PlusSquare.png";
 
 function SelectProfile() {
   const navigate = useNavigate();
+
   const goMypage = () => {
     navigate('/SFA');
-  }
+  };
+
+  const goToAddProfile = () => {
+    navigate('/child/mypage', { state: { addProfile: true } });
+  };
 
   return (
     <LayoutBase>
@@ -30,7 +31,7 @@ function SelectProfile() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <MainText>플레이어를 선택해주세요.</MainText>
           <ProfileList>
-            <Link to='/' style={{alignItems: 'flex-start'}}>
+            <Link to='/' style={{ alignItems: 'flex-start' }}>
               <Profile>
                 <ProfileImage />
                 <UserId>user01</UserId>
@@ -44,7 +45,7 @@ function SelectProfile() {
               <ProfileImage />
               <UserId>user03</UserId>
             </Profile>
-            <Profile>
+            <Profile onClick={goToAddProfile}>
               <ProfileImage className="profile-add">
                 <IconPlus src={PlusSquare} alt="PlusSquare" />
               </ProfileImage>
@@ -52,7 +53,7 @@ function SelectProfile() {
           </ProfileList>
           <LayoutMypage>
             <MypageButton onClick={goMypage}>
-              마이 페이지로 이동하기
+              회원정보 수정
             </MypageButton>
           </LayoutMypage>
         </div>
