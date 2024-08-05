@@ -23,5 +23,7 @@ WORKDIR /app
 # 빌드 결과물 복사
 COPY --from=build /app/build/libs/*-SNAPSHOT.jar app.jar
 
+ENV JASYPT_ENCRYPTOR_PASSWORD=jenkins_will_set_this
+
 # 실행
 CMD ["java", "-jar", "app.jar"]

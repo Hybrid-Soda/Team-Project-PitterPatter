@@ -1,4 +1,4 @@
-package com.pitterpatter.user.config;
+package com.pitpat.pitterpatter.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

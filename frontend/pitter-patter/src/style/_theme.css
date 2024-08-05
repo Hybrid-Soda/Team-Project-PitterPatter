@@ -1,0 +1,23 @@
+:root {
+    --background: #F6F6F6;
+
+    --logo-pink-color: #FA6DA1;
+    --logo-yellow-color: #FFC139;
+    --logo-blue-color: #759FD1;
+    --logo-green-color: #A6D869;
+
+    --box-pink-color: #E37FA4;
+    --box-yellow-color: #FFE65C;
+    --box-green-color: #B6EB75;
+
+    --text-orange-color: #F9810A;
+    --text-blue-color: #17B1F3;
+
+    --button-blue-color: #A4E6F3;
+
+    --font-color: #616161;
+}
+
+* {
+    font-family: 'NEXON Lv1 Gothic OTF';
+}
