@@ -12,145 +12,82 @@ pipeline {
         FTP_SERVER = credentials('ftp-server')
         DEPLOY_SERVER_USER = credentials('deploy-server-user')
         DEPLOY_SERVER_HOST = credentials('deploy-server-host')
+        JASYPT_ENCRYPTOR_PASSWORD = credentials('jasypt-encrypt-password')
     }
 
     stages {
-      stage('Build Frontend') {
-        steps {
-          script {
-            dir('frontend') {
-              sh 'npm install'
-              sh 'npm run build-vite'
-            }
-          }
-        }
-        post {
-          success {
-            archiveArtifacts artifacts: 'frontend/dist/**', allowEmptyArchive: true
-          }
-        }
-      }
+    //   stage('Build Frontend') {
+    //     steps {
+    //       script {
+    //         dir('frontend/pitter-patter') {
+    //           sh 'npm install'
+    //           sh 'npm run build'
+    //         }
+    //       }
+    //     }
+    //     post {
+    //       success {
+    //         archiveArtifacts artifacts: 'frontend/dist/**', allowEmptyArchive: true
+    //       }
+    //     }
+    //   }
 
-    stage('Deploy Frontend') {
-        steps {
-          script {
-            withCredentials([usernamePassword(credentialsId: 'ftp-server-credentials-id', passwordVariable: 'FTP_PASSWORD', usernameVariable: 'FTP_USERNAME')]) {
-              sh """
-                        lftp -c "set ftp:ssl-allow no; set ftp:passive-mode yes; open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER}; mirror -R frontend/dist/ ./; bye"
-                      """
-            }
-          }
-        }
-    }
+    // stage('Deploy Frontend') {
+    //     steps {
+    //       script {
+    //         withCredentials([usernamePassword(credentialsId: 'ftp-server-credentials-id', passwordVariable: 'FTP_PASSWORD', usernameVariable: 'FTP_USERNAME')]) {
+    //           sh """
+    //                     lftp -c "set ftp:ssl-allow no; set ftp:passive-mode yes; open -u ${FTP_USERNAME},${FTP_PASSWORD} ${FTP_SERVER}; mirror -R frontend/dist/ ./; bye"
+    //                   """
+    //         }
+    //       }
+    //     }
+    // }
 
-      stage('Build and Push Backend Images') {
-        steps {
-          script {
-            def backendDirs = sh(
-                script: 'ls -d backend/*/',
-                returnStdout: true
-            ).trim().split('\n')
-
-            for (backendDir in backendDirs) {
-              if (backendDir.contains('@tmp')) {
-                continue
-              }
-
-              def project_name = backendDir.split('/').last()
-
-              dir(backendDir) {
-                sh """
-                  docker build -t ssafy-common-${project_name} .
-                  docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}
-                  docker tag ssafy-common-${project_name} ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-${project_name}:latest
-                  docker push ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-${project_name}:latest
-                """
-              }
-            }
-          }
-        }
-      }
-
-      stage('Deploy Backend') {
-        steps {
-          script {
-            withCredentials([sshUserPrivateKey(credentialsId: 'deploy-server-credentials-id', keyFileVariable: 'DEPLOY_KEY')]) {
-              def backendDirs = sh(
-                  script: 'ls -d backend/*/',
-                  returnStdout: true
-              ).trim().split('\n')
-
-              def ingress_script = '''
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: pitter-patter-ingress
-  namespace: pitter-patter
-  annotations:
-    kubernetes.io/ingress.class: "traefik"
-    cert-manager.io/cluster-issuer: "letsencrypt"
-    acme.cert-manager.io/http01-ingress-class: "traefik"
-spec:
-  rules:
-  - host: pitter-patter.picel.net
-    http:
-      paths:
-'''
-
-              for (backendDir in backendDirs) {
-                if (backendDir.contains('@tmp')) {
-                  continue
-                }
-
-                def project_name = backendDir.split('/').last()
-
-                def deploy_script = sh(
-                  script: "cat ${backendDir}k8s/deployment.yaml",
-                  returnStdout: true
-                ).trim()
-
-                def path = """
-      - path: /api/${project_name}
-        pathType: Prefix
-        backend:
-          service:
-            name: ${project_name}
-            port:
-              number: 8080
-                """
-
-                ingress_script = ingress_script + path
-
-                sh """
-                  ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}"
-                  ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "docker pull ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-${project_name}:latest"
-                  ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "
-                  if kubectl get deployment ${project_name} -n pitter-patter; then
-                      kubectl rollout restart deployment ${project_name} -n pitter-patter;
-                  else
-                      echo 'deployment not found';
-                      echo '${deploy_script}' > /tmp/deployment-${project_name}.yaml;
-                      kubectl apply -f /tmp/deployment-${project_name}.yaml -n pitter-patter;
-                  fi;"
-                """
-              }
-
-              def tls = '''
-  tls:
-    - hosts:
-      - pitter-patter.picel.net
-      secretName: pitter-patter-tls
-'''
-
-              ingress_script = ingress_script + tls
-
-              sh """
-                ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "echo '${ingress_script}' > /tmp/ingress-pitter-patter.yaml"
-                ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "kubectl apply -f /tmp/ingress-pitter-patter.yaml -n pitter-patter"
-              """
-            }
+    stage('Build Backend') {
+      steps {
+        script {
+          dir('backend/pitterpatter') {
+            sh 'sed -i "s/ENV JASYPT_ENCRYPTOR_PASSWORD=.*/ENV JASYPT_ENCRYPTOR_PASSWORD=${JASYPT_ENCRYPTOR_PASSWORD}/" Dockerfile'
+            sh """
+              docker build -t ssafy-common-backend .
+              docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}
+              docker tag ssafy-common-backend ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-backend:latest
+              docker push ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-backend:latest
+            """
           }
         }
       }
     }
+
+    stage('Deploy Backend') {
+      steps {
+        script {
+          withCredentials([sshUserPrivateKey(credentialsId: 'deploy-server-credentials-id', keyFileVariable: 'DEPLOY_KEY')]) {
+            def deploy_script = sh(
+              script: 'cat backend/pitterpatter/k8s/deployment.yaml',
+              returnStdout: true
+            ).trim()
+
+            sh """
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "docker login -u ${DOCKER_HUB_CREDENTIALS_USR} -p ${DOCKER_HUB_CREDENTIALS_PSW}"
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "docker pull ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-backend:latest"
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "docker tag ${DOCKER_HUB_CREDENTIALS_USR}/ssafy-common-backend:latest ssafy-common-backend"
+
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "
+              echo ${deploy_script} > /tmp/deployment-backend.yaml;
+              kubectl apply -f /tmp/deployment-backend.yaml -n pitter-patter;
+              if kubectl get deployment backend -n pitter-patter; then
+                  echo "deployment exists"
+                  kubectl rollout restart deployment backend -n pitter-patter;
+              fi;"
+
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "kubectl apply -f /tmp/cors-middleware.yaml -n pitter-patter"
+              ssh -i ${DEPLOY_KEY} ${DEPLOY_SERVER_USER}@${DEPLOY_SERVER_HOST} "kubectl apply -f /tmp/ingress-pitter-patter.yaml -n pitter-patter"
+            """
+          }
+        }
+      }
+    }
+  }
 }

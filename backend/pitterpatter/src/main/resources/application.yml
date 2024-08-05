@@ -1,0 +1,84 @@
+spring:
+    application:
+        name: pitterpatter
+    servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 10MB
+
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: ENC(bKKcdM3Or5IpryokPv37DcQzAxASSU3cpUEKE1RRD+dR+vYFqaMNYfC255+EMsxS+QjSAkizMbyQGF3SWuXYyHF9UwDcD4bhak6Ujq/t6xjcsHZSt6rpyArIfEw9El6wzxXzzV/Oc8mKFrf3baaHpxoh3xmXMI6MlMwrj0BjXOw=)
+        username: ENC(3XtvHw7cXKFpmhruB7FskQ==)
+        password: ENC(pyXyGObZhyQDwyuq0URkKTdeN8x4DxNy)
+
+    redis:
+        host: redis
+        port: 6379
+
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+        properties:
+            hibernate:
+                format_sql: true
+
+    security:
+        oauth2:
+            client:
+                registration:
+                    kakao:
+                        client-id: ENC(rElGPU14K+QjqMxusHsabVRDuS+UWRy1FcJxljwKHYqq7Pe31yMhQmw9qMOIBAXU) # 앱키 -> REST API 키를 jasypt로 암호화한 값
+                        client-secret: ENC(7oiM5KCxcFBSylt0IeBBTtYOJaozWk+jSx2I7KGR0r9gZ6pOB3BVJpMPO4mmg90E) # 카카오 로그인 -> 보안 -> Client Secret 코드를 jasypt로 암호화한 값
+                        authorization-grant-type: authorization_code
+                        redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+                        client-authentication-method: client_secret_post
+                        client-name: kakao
+                provider:
+                    kakao:
+                        authorization-uri: https://kauth.kakao.com/oauth/authorize # "인가 코드 받기" 항목
+                        token-uri: https://kauth.kakao.com/oauth/token # "토큰 받기" 항목
+                        user-info-uri: https://kapi.kakao.com/v2/user/me # "사용자 정보 가져오기" 항목
+                        user-name-attribute: id # 식별자 . 카카오의 경우 "id" 사용
+
+    devtools:
+        livereload:
+            enabled: true
+        remote:
+            restart:
+                enabled: true
+
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        # 발신자 메일
+        username: wlgjs8474@gmail.com
+        # 앱 비밀번호(jasypt로 암호화)
+        password: ENC(avgF1efHFqRGPStWwWQrXqI/VCSyYY0Exa6MHnBcaXs=)
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
+                        required: true
+
+jasypt:
+    encryptor:
+        bean: stringEncryptor
+
+logging:
+    level:
+        com.pitpat: DEBUG
+
+jwt:
+    header: Authorization
+    # 1. jwt secret key를 base64로 인코딩
+    # 2. 1번을 jasypt secret key로 암호화
+    # HS512 암호화 알고리즘을 사용할 것이므로 키 값은 최소 64 bytes이며, 128 bytes가 권장
+    secret: ENC(tczXeMu5KriFyTL5fcvIMH/DcjKadE9YENqm40lXahPXhcm+zrhE1kjq1cNMtZpNboqUOfcHphbrQLkIQq0JJcLnKOh7Ufu5Ogph9OtQ90jomHimQ2mLnEP9/V+blRKPTUZhWi88t9u7tuwQ1DFMFxR1ARFY6eBE)
+
+custom:
+    # 2차 비밀번호 임시값 (DB에서 2fa값이 null을 허용하지 않으므로 소셜 가입 시 임의로 2fa를 주기 위함)
+    random-2fa: ENC(oLhulB/xNM7Aoed0W6R3mQ==)
