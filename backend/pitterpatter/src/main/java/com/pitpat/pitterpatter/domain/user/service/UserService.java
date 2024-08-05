@@ -3,7 +3,6 @@ package com.pitpat.pitterpatter.domain.user.service;
 import com.pitpat.pitterpatter.domain.user.model.dto.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.Email;
 
 public interface UserService {
 
