@@ -8,9 +8,9 @@ spring:
 
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: ENC(bKKcdM3Or5IpryokPv37DcQzAxASSU3cpUEKE1RRD+dR+vYFqaMNYfC255+EMsxS+QjSAkizMbyQGF3SWuXYyHF9UwDcD4bhak6Ujq/t6xjcsHZSt6rpyArIfEw9El6wzxXzzV/Oc8mKFrf3baaHpxoh3xmXMI6MlMwrj0BjXOw=)
-        username: ENC(3XtvHw7cXKFpmhruB7FskQ==)
-        password: ENC(pyXyGObZhyQDwyuq0URkKTdeN8x4DxNy)
+        url: jdbc:mysql://mysql:3306/pitterpatter?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+        username: ssafy
+        password: asdzxcfv10
 
     redis:
         host: redis
@@ -80,5 +80,5 @@ jwt:
     secret: ENC(tczXeMu5KriFyTL5fcvIMH/DcjKadE9YENqm40lXahPXhcm+zrhE1kjq1cNMtZpNboqUOfcHphbrQLkIQq0JJcLnKOh7Ufu5Ogph9OtQ90jomHimQ2mLnEP9/V+blRKPTUZhWi88t9u7tuwQ1DFMFxR1ARFY6eBE)
 
 custom:
-    # 2차 비밀번호 임시값 (DB에서 2fa값이 null을 허용하지 않으므로 소셜 가입 시 임의로 2fa를 주기 위함)
-    random-2fa: ENC(oLhulB/xNM7Aoed0W6R3mQ==)
+    # 2차 비밀번호 랜덤값(DB에서 2fa값이 null을 허용하지 않으므로 소셜 가입 시 임의로 2fa를 주기 위함)
+    random-2fa: ENC(SYTwce/5dVh/OknuSb34hrijmFuoyjgqPp9pwXInBm/0d4YMlHh/upN4EcaGQtKoQ4N3cnbyJNwbtKkQn778KLLVGC3iGmt4)

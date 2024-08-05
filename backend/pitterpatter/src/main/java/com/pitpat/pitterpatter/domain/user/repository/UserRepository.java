@@ -18,5 +18,4 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // ====================== 조회, 변경, 탈퇴 ==========================
     Optional<UserEntity> findByUserId(int userId);
-//    Optional<UserEntity> findByEmail(String email);
 }

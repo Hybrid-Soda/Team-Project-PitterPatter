@@ -1,5 +1,6 @@
 package com.pitpat.pitterpatter.global.config.user;
 
+import com.pitpat.pitterpatter.domain.user.jwt.EmailTokenAuthenticationFilter;
 import com.pitpat.pitterpatter.domain.user.jwt.JwtAuthenticationFilter;
 import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
 import com.pitpat.pitterpatter.domain.user.oauth2.CustomSuccessHandler;
@@ -7,13 +8,17 @@ import com.pitpat.pitterpatter.domain.user.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -38,9 +43,6 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/",
-                                        "/api/user/password/reset/token",
-                                        "/api/user/verify/password/reset_token",
-                                        "/api/user/password/reset_token",
                                         "/oauth2/**",
                                         "/api/user/email",
                                         "/api/user/login/email",
@@ -52,7 +54,8 @@ public class SecurityConfig {
                 // JWT를 사용하기 때문에 세션을 사용하지 않음
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 필터 추가 및 순서 설정
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
+                .addFilterAfter(new EmailTokenAuthenticationFilter(jwtTokenProvider), JwtAuthenticationFilter.class) // 이메일 토큰 필터 추가
                 // oauth2
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig

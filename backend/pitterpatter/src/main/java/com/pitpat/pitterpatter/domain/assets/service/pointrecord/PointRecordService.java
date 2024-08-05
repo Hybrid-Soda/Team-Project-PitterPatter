@@ -5,7 +5,7 @@ import com.pitpat.pitterpatter.domain.assets.model.dto.pointrecord.FindPointReco
 import com.pitpat.pitterpatter.domain.assets.model.dto.pointrecord.PointRecordSearchCondition;
 import com.pitpat.pitterpatter.domain.assets.repository.pointrecord.PointRecordRepository;
 import com.pitpat.pitterpatter.entity.PointRecord;
-import com.pitpat.pitterpatter.global.exception.exceptions.EntityNotFoundException;
+import com.pitpat.pitterpatter.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
