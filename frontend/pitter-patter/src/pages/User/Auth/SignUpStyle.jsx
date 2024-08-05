@@ -69,3 +69,11 @@ export const LoginText = styled.span`
     color: inherit;
   }
 `;
+
+export const ValidationText = styled.div`
+  font-size: 1vw;
+  font-weight: bold;
+  height: 1vw;
+  color: ${props => props.isvalid ? '#5a5a5a' : '#ff0000'};
+  margin: 0.5vw 0;
+`;
