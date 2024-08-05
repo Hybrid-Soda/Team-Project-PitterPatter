@@ -1,10 +1,17 @@
-import { MainWrap, Game } from "./GamePageStyle";
+import React, { useState, useEffect } from "react";
+import { MainWrap } from "./GamePageStyle";
 import Header from "../LandingPage/Header";
 import IsReady from "../Game/IsReady";
-import { useState, useEffect } from "react";
+import WebcamTestPage from "../Game/WebcamTestPage";
+import Unity from "./Unity";
 
 function GamePage() {
   const [modalOpen, setModalOpen] = useState(true);
+  const [testCompleted, setTestCompleted] = useState(false)
+  const handleTestComplete = () => {
+    setTestCompleted(true)
+    console.log("Test complete")
+  }
 
   const closeModal = () => {
     setModalOpen(false);
@@ -17,7 +24,7 @@ function GamePage() {
   return (
     <MainWrap>
       <Header />
-      <Game />
+      {testCompleted ? <Unity /> : <WebcamTestPage onTestComplete={handleTestComplete} />}
       {modalOpen && <IsReady onClose={closeModal} />}
     </MainWrap>
   );
