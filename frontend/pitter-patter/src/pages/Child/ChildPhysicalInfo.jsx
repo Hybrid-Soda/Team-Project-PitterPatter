@@ -22,7 +22,7 @@ function ChildPhysicalInfo() {
     const [editWeight, setEditWeight] = useState('');
 
     const childId = 1; // 테스트용 childId 변수 선언
-    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MjQ5MjYsImlhdCI6MTcyMjgyNDkyNiwiZXhwIjoxNzIyODI3OTI2LCJqdGkiOiIxYjVmNjJhNy0yYTVjLTQ2ODYtOGJhNi05ZmI2Yjc0MDhmNjEifQ.Sbm6h7f-2D5PK_f9ql6ZA58AfVIcDjQ_bhiNdYUvfTGUAtXwJds-P-IZ-JN_ClOZqkoyrgQXebyqUDKOMRAvFA";
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MzQ1MjksImlhdCI6MTcyMjgzNDUyOSwiZXhwIjoxNzIyODM3NTI5LCJqdGkiOiIxMzdlYzdkMi05Y2QyLTRhNDQtYmEzYi1hMTk5NzU0Yzg2NmIifQ.E04Rm7Vg416iyUNQt57PfBbvkdmHTBa8vqmI9mgERsZqX9w8XCzKbM2kSim9pACo68DgieGatXcAyouS0Ey57g";
 
     // 페이지 로딩 시 데이터 가져오기
     useEffect(() => {
@@ -197,7 +197,7 @@ function ChildPhysicalInfo() {
                         ) : (
                             <div>
                                 <span>키: {info.height} 몸무게: {info.weight}</span>
-                                <span>{formatDateToYYYYMMDD(info.updatedAt)}</span>
+                                <span>{formatDateToYYYYMMDD(info.createdAt)}</span>
                                 <button onClick={() => handleEdit(index)}>수정하기</button>
                             </div>
                         )}

@@ -15,7 +15,7 @@ function ChildActivityTable() {
   const childId = 1; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MjQ5MjYsImlhdCI6MTcyMjgyNDkyNiwiZXhwIjoxNzIyODI3OTI2LCJqdGkiOiIxYjVmNjJhNy0yYTVjLTQ2ODYtOGJhNi05ZmI2Yjc0MDhmNjEifQ.Sbm6h7f-2D5PK_f9ql6ZA58AfVIcDjQ_bhiNdYUvfTGUAtXwJds-P-IZ-JN_ClOZqkoyrgQXebyqUDKOMRAvFA";
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MzQ1MjksImlhdCI6MTcyMjgzNDUyOSwiZXhwIjoxNzIyODM3NTI5LCJqdGkiOiIxMzdlYzdkMi05Y2QyLTRhNDQtYmEzYi1hMTk5NzU0Yzg2NmIifQ.E04Rm7Vg416iyUNQt57PfBbvkdmHTBa8vqmI9mgERsZqX9w8XCzKbM2kSim9pACo68DgieGatXcAyouS0Ey57g";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +38,10 @@ function ChildActivityTable() {
     };
     fetchData();
   }, [childId, startDate, endDate, token]);
+
+  const getTotalPlaytime = (data) => {
+    return data.reduce((total, item) => total + item.playtime, 0);
+  };
 
   return (
     <ContentBody>
@@ -70,7 +74,7 @@ function ChildActivityTable() {
         </LayoutGraphList>
       </LayoutActivityPage>
       <GraphFooter>
-        <p>현재 BMI는 ### 입니다. </p>
+        <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)}분 입니다.</p>
         <p>### 님의 나이에서 해당 BMI는 ### 입니다. </p>
       </GraphFooter>
     </ContentBody>
