@@ -1,8 +1,26 @@
-import { ToolBar, Wallpaper, GuideText, CarouselWrap, Preview, TransparentButton, ButtonIcon, RowWrap, ActionButton, PreviewFilter, ActionRow } from "./WallpaperShopStyle";
+import { 
+  ToolBar,
+  Wallpaper, 
+  GuideText, 
+  CarouselWrap, 
+  Preview, 
+  TransparentButton, 
+  ButtonIcon, 
+  RowWrap, 
+  ActionButton, 
+  PreviewFilter, 
+  ActionRow,
+  LayoutCoin,
+  CoinImg,
+  CoinNumber,
+ } from "./WallpaperShopStyle";
 
 import { useState, useRef } from "react";
 
 import { useNavigate } from "react-router-dom";
+
+import Coin from "/src/assets/icons/Coin.png";
+import CoinModal from './CoinModal'; // 추가
 
 function WallpaperShop() {
   const Navigator = useNavigate();
@@ -29,6 +47,7 @@ function WallpaperShop() {
 
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedWallpaper, setSelectedWallpaper] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 추가
 
   const handleLeft = () => {
     carouselRef.current.scroll({
@@ -52,8 +71,20 @@ function WallpaperShop() {
     Navigator(-1);
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Wallpaper style={{ backgroundImage: `url(${wallpapers[currentIdx]})` }}>
+      <LayoutCoin onClick={openModal}>
+        <CoinImg src={Coin} alt="" />
+        <CoinNumber>50 코인</CoinNumber>
+      </LayoutCoin>
       <ActionRow>
         <ActionButton style={{marginRight: "15px"}} onClick={cancel}>
           취소
@@ -88,6 +119,7 @@ function WallpaperShop() {
           </TransparentButton>
         </RowWrap>
       </ToolBar>
+      {isModalOpen && <CoinModal onClose={closeModal} />}
     </Wallpaper>
   );
 }
