@@ -30,7 +30,7 @@ public class ChildItemService {
         }
         return childItems.stream()
                 .map(childItem -> new FindChildItemDto(
-                        childItem.getId(),
+                        childItem.getItem().getId(),
                         childItem.getItem().getItemName(),
                         childItem.getItem().getPhoto(),
                         childItem.getItem().getItemType(),
