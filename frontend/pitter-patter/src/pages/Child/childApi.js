@@ -6,7 +6,7 @@ export const childPhysicalInfoListGet = async (childId, token) => {
             'Authorization': `Bearer ${token}`
         }
     });
-    return response.data;
+    return response;
 };
 
 export const childPhysicalInfoRegist = async (childId, token, data) => {
@@ -16,7 +16,7 @@ export const childPhysicalInfoRegist = async (childId, token, data) => {
             'Content-Type': 'application/json'
         }
     });
-    return response.data;
+    return response;
 };
 
 export const childPhysicalInfoUpdate = async (childId, token, data) => {
@@ -26,7 +26,7 @@ export const childPhysicalInfoUpdate = async (childId, token, data) => {
             'Content-Type': 'application/json'
         }
     });
-    return response.data;
+    return response;
 };
 
 export const childPlaytimeGet = async (childId, startDate, endDate, token) => {
@@ -35,7 +35,7 @@ export const childPlaytimeGet = async (childId, startDate, endDate, token) => {
             'Authorization': `Bearer ${token}`
         }
     });
-    return response.data;
+    return response;
 };
 
 export const childBMIHistory = async (childId, startDate, endDate, token) => {
@@ -44,5 +44,5 @@ export const childBMIHistory = async (childId, startDate, endDate, token) => {
             'Authorization': `Bearer ${token}`
         }
     });
-    return response.data;
+    return response;
 };

@@ -6,8 +6,7 @@ import { ContentBody, PhysicalInfoInput, PhysicalInfoHistory, PhysicalInfoHistor
 const fetchData = async (childId, token, setPhysicalInfoData) => {
     try {
         const data = await childPhysicalInfoListGet(childId, token);
-        console.log('Fetched data:', data); // 데이터 확인용 콘솔 로그
-        setPhysicalInfoData(data);
+        setPhysicalInfoData(data.data);
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -22,44 +21,10 @@ function ChildPhysicalInfo() {
     const [editWeight, setEditWeight] = useState('');
 
     const childId = 1; // 테스트용 childId 변수 선언
-    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MzQ1MjksImlhdCI6MTcyMjgzNDUyOSwiZXhwIjoxNzIyODM3NTI5LCJqdGkiOiIxMzdlYzdkMi05Y2QyLTRhNDQtYmEzYi1hMTk5NzU0Yzg2NmIifQ.E04Rm7Vg416iyUNQt57PfBbvkdmHTBa8vqmI9mgERsZqX9w8XCzKbM2kSim9pACo68DgieGatXcAyouS0Ey57g";
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDQwNjcsImlhdCI6MTcyMjg0NDA2NywiZXhwIjoxNzIyODQ3MDY3LCJqdGkiOiIyOTVlNGQ0My1jNTdiLTQzOGYtYmZhMi1iYTgxY2ZjODhiZjkifQ.26imCUiKUgvhsMFLfMWALQ2BWiDnNz3nZidUCLW4waEbI5WbSVNFoePMoz0p7KGX4I8V9buste_pbowZnrpbQg";
 
     // 페이지 로딩 시 데이터 가져오기
     useEffect(() => {
-        const dummyData = [
-            {
-                id: 1,
-                height: "120.8",
-                weight: "23.4",
-                updatedAt: "2024-07-01T00:00:00Z"
-            },
-            {
-                id: 2,
-                height: "122.5",
-                weight: "24.1",
-                updatedAt: "2024-07-05T00:00:00Z"
-            },
-            {
-                id: 3,
-                height: "123.3",
-                weight: "24.8",
-                updatedAt: "2024-07-10T00:00:00Z"
-            },
-            {
-                id: 4,
-                height: "124.1",
-                weight: "25.2",
-                updatedAt: "2024-07-15T00:00:00Z"
-            },
-            {
-                id: 5,
-                height: "125.0",
-                weight: "25.7",
-                updatedAt: "2024-07-20T00:00:00Z"
-            }
-        ];
-        
-        setPhysicalInfoData(dummyData);
         fetchData(childId, token, setPhysicalInfoData);
     }, [childId, token]);
 
