@@ -16,7 +16,7 @@ function BMIGraph() {
   const childId = 1; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MjYyNTksImlhdCI6MTcyMjgyNjI1OSwiZXhwIjoxNzIyODI5MjU5LCJqdGkiOiJkNmQyZmUzNC05ZjI2LTRiNmYtYTVkNC0wM2U5YTM0ZDIzNTQifQ.U-4c1wQs0M5MnPcC3LvqYfJRbqQ9BUWMrAdS1RzPuwuAoFaYQiOLxamU6a51QNP_vgRmlCgCkxAGSiPmDWvgwg";
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MzU1ODUsImlhdCI6MTcyMjgzNTU4NSwiZXhwIjoxNzIyODM4NTg1LCJqdGkiOiI3MzkxOWQzMy05NTBmLTQzMGQtOGM1Zi1iZDY0ZDAwMmZlNjgifQ.68py1vVGTr_Z4ETfp5r4HMBG8uP8fJyXiRPhL7LUj_Almaoe_GDLXHMgemGVqH0RNZ22WQ3P33945FxOErKyEw";
   const age = 10; // 테스트용 나이
   const gender = 'male'; // 테스트용 성별
   const childName = "배준짱"; // 테스트용 이름
@@ -51,9 +51,24 @@ function BMIGraph() {
   const getBmiLevel = (age, gender, bmi) => {
     const criteria = bmiCriteria[age][gender];
     if (bmi < criteria.underweight) return "저체중";
-    if (bmi < criteria.normal) return "정상";
-    if (bmi < criteria.overweight) return "과체중";
+    if (bmi >= criteria.normal && bmi <= criteria.overweight) return "정상";
+    if (bmi >= criteria.overweight && bmi <= criteria.obese)  return "과체중";
     return "비만";
+  };
+
+  const getColor = (bmiLevel) => {
+    switch (bmiLevel) {
+      case "저체중":
+        return "red";
+      case "정상":
+        return "green";
+      case "과체중":
+        return "blue";
+      case "비만":
+        return "purple";
+      default:
+        return "black";
+    }
   };
 
   return (
@@ -88,7 +103,7 @@ function BMIGraph() {
       </LayoutActivityPage>
       <GraphFooter>
         <p>현재 BMI는 {data.length !== 0 ? data[data.length - 1].bmi : '###'} 입니다. </p>
-        <p>{childName} 님의 나이에서 해당 BMI는 {data.length !== 0 ? data[data.length - 1].bmiLevel : '###'} 입니다. </p>
+        <p>{childName} 님의 나이에서 해당 BMI는 {data.length !== 0 ? <span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span> : '###'} 입니다. </p>
       </GraphFooter>
     </ContentBody>
   );
