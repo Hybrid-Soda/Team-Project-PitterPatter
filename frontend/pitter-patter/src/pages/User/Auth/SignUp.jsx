@@ -103,13 +103,36 @@ function SignUp() {
       password,
     };
 
-    const response = await signUp(data);
-    if (response.data) {
-      alert('회원가입이 완료되었습니다.');
-      navigator('/login');
-    } else {
-      alert('회원가입에 실패했습니다.');
+    try {
+      const response = await signUp(data);
+      alert(response.data);
     }
+    catch(error) {
+      if (error.response) {
+        // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
+        if (error.response.status == 400 || error.response.status == 409) {
+          alert(error.response.data.msg);
+        }
+        else {
+          alert("회원가입에 실패했습니다.");
+        }
+      }
+      else {
+        alert("회원가입에 실패했습니다.");
+      }
+    }
+
+    // if (response.status == 200) {
+    //   alert('회원가입이 완료되었습니다.');
+    //   navigator('/login');
+    // } else if (response.status == 400) {
+    //   alert(response.msg);
+    // } else if (response.status == 409) {
+    //   setIsValidated(false);
+    //   alert('이미 사용중인 이메일입니다.');
+    // } else {
+    //   alert(response.status + '회원가입에 실패했습니다.');
+    // }
   }
 
   return (
