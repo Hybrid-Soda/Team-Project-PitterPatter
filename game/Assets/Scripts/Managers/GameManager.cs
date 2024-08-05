@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviour
 {
+    [DllImport("__Internal")]
+    private static extern void UnityToReact(int score);
     public int finalScore;
     public float playTime;
     public string poseData;
@@ -16,6 +19,14 @@ public class GameManager : MonoBehaviour
 
     // 싱글톤 인스턴스에 접근하기 위한 정적 프로퍼티
     public static GameManager Instance { get { return instance; } }
+
+    public void UnityCall()
+    {
+// 해당 코드가 WebGL 빌드에서만 실행되도록 보장
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    UnityToReact(finalScore);
+#endif
+    }
 
     void Awake()
     {
