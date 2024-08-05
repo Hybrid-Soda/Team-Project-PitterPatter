@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService{
 
         if (updatedTwoFa != null) {
             // 4. 2차 비밀번호 유효성 검사
-            if (isValid2Fa(updatedTwoFa)) {
+            if (isValid2fa(updatedTwoFa)) {
                 // 5. 2차 비밀번호가 유효할 경우 UsetEntity 업데이트
                 existingUser.setTwoFa(this.encode(updatedTwoFa));
             }
@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService{
         return UserDto.toDto(userRepository.save(existingUser));
     }
 
-    // jwt 토큰에서 userId 값을 꺼내와 비밀번호 재설정
+    // jwt 토큰의 userId값을 이용하거나 email로 비밀번호 재설정
     @Override
     @Transactional
     public void resetPassword(String id, PasswordDto passwordDto, String type) throws NoSuchElementException {
@@ -248,6 +248,30 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    // email로 2차 비밀번호 재설정
+    @Override
+    public void reset2fa(String email, TwoFaDto twoFaDto) throws NoSuchElementException {
+        String twoFa = twoFaDto.getTwoFa();
+
+        // 2. email에 해당하는 유저를 DB에서 가져옴
+        // email에 해당하는 유저가 없을 경우 NoSuchElementException 발생
+        UserEntity existingUser = this.getUserByEmail(email).toEntity();
+
+        // 3. 2차 비밀번호가 유효한 지 확인
+        if (isValid2fa(twoFa)) {
+            // 4. 2차 비밀번호가 유효한 경우 UserEntity에 2차 비밀번호 업데이트
+            existingUser.setTwoFa(this.encode(twoFa));
+
+            // 5. DB에 저장
+            userRepository.save(existingUser);
+        }
+        // 5. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        else {
+            log.error("IllegalArgumentException: [2차 비밀번호 재설정] 2차 비밀번호 형식이 잘못되었습니다: {}", twoFa);
+            throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");
+        }
+    }
+
     // 이메일 토큰이 맞는지 검증
     @Override
     public void verifyEmailToken(String email, String emailToken) {
@@ -271,7 +295,7 @@ public class UserServiceImpl implements UserService{
     // 비밀번호 재설정 메일 발송을 위한 토큰 생성
     @Override
     @Transactional
-    public String createEmailToken(EmailDto emailDto) {
+    public String createEmailToken(EmailDto emailDto, String type) {
         String email = emailDto.getEmail();
 
         // UUID를 사용하여 이메일 토큰 생성
@@ -279,7 +303,7 @@ public class UserServiceImpl implements UserService{
 
         // Redis에 저장
         EmailTokenEntity emailToken = EmailTokenEntity.builder()
-                .email(email)
+                .email(type + email)
                 .emailToken(token)
                 .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
                 .build();
@@ -288,7 +312,7 @@ public class UserServiceImpl implements UserService{
         return token;
     }
 
-    // 비밀번호 재설정 메일 발송
+    // 비밀번호 / 2차 비밀번호 재설정 메일 발송
     @Override
     public void sendEmail(EmailDto emailDto, String subject, String text) throws MessagingException {
 
@@ -405,7 +429,7 @@ public class UserServiceImpl implements UserService{
 
     // 입력으로 들어온 2차 비밀번호 유효성 검사
     @Override
-    public boolean isValid2Fa(String twoFa) {
+    public boolean isValid2fa(String twoFa) {
         if (twoFa == null) {
             return false;
         }
