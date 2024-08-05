@@ -1,5 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 import {
   LayoutMyPage,
@@ -70,6 +72,8 @@ const CancleButton = styled.button`
 `;
 
 function ChildInfo() {
+  const location = useLocation();
+  const isAddProfile = location.state?.addProfile || false;
   const [profileImage, setProfileImage] = useState(SingingBanana);
   const fileInputRef = useRef(null);
 
@@ -85,6 +89,30 @@ function ChildInfo() {
         setProfileImage(reader.result);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = () => {
+    const userProfileData = {
+      // 여기에 전송할 데이터 작성
+    };
+
+    if (isAddProfile) {
+      axios.post('/api/profile', userProfileData)
+        .then(response => {
+          console.log('Profile added successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error adding the profile!', error);
+        });
+    } else {
+      axios.patch('/api/profile', userProfileData)
+        .then(response => {
+          console.log('Profile updated successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('There was an error updating the profile!', error);
+        }); 
     }
   };
 
@@ -128,7 +156,7 @@ function ChildInfo() {
       </InputWrap>
       <Profile style={{ background: 'none', height: '13vh', width: '30vw', gap: '1.5rem' }}>
         <CancleButton>취소</CancleButton>
-        <SubmitButton>저장</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>저장</SubmitButton>
       </Profile>
     </LayoutMyPage>
   );
