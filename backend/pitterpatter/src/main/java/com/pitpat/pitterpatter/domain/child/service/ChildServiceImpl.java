@@ -4,12 +4,14 @@ import com.pitpat.pitterpatter.domain.child.model.dto.ChildRequestDTO;
 import com.pitpat.pitterpatter.domain.child.model.dto.ChildResponseDTO;
 import com.pitpat.pitterpatter.domain.child.model.dto.ChildUpdateDTO;
 import com.pitpat.pitterpatter.domain.child.repository.ChildRepository;
+import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
 import com.pitpat.pitterpatter.domain.user.model.dto.UserDto;
 import com.pitpat.pitterpatter.domain.user.service.UserService;
 import com.pitpat.pitterpatter.entity.Child;
 import com.pitpat.pitterpatter.entity.UserEntity;
 import com.pitpat.pitterpatter.global.exception.exceptions.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +23,10 @@ public class ChildServiceImpl implements ChildService {
 
     private final ChildRepository childRepository;
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public List<ChildResponseDTO> getChildrenByUserId(Integer userId) {
+    public List<ChildResponseDTO> getChildrenByUserId(int userId) {
         List<ChildResponseDTO> childrenByUserId = childRepository.findByUserUserId(userId);
         childExceptionHandling(childrenByUserId);
         return childrenByUserId;
