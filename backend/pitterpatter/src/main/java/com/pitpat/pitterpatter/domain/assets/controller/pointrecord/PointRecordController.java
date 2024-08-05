@@ -3,7 +3,7 @@ package com.pitpat.pitterpatter.domain.assets.controller.pointrecord;
 import com.pitpat.pitterpatter.domain.assets.model.dto.pointrecord.CreatePointRecordDto;
 import com.pitpat.pitterpatter.domain.assets.model.dto.pointrecord.FindPointRecordDto;
 import com.pitpat.pitterpatter.domain.assets.service.pointrecord.PointRecordService;
-import com.pitpat.pitterpatter.global.exception.EntityNotFoundException;
+import com.pitpat.pitterpatter.global.exception.exceptions.EntityNotFoundException;
 import com.pitpat.pitterpatter.global.exception.ErrorResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

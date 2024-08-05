@@ -3,7 +3,7 @@ package com.pitpat.pitterpatter.domain.assets.controller.item;
 import com.pitpat.pitterpatter.domain.assets.model.dto.item.FindItemDto;
 import com.pitpat.pitterpatter.domain.assets.model.dto.item.FindItemListDto;
 import com.pitpat.pitterpatter.domain.assets.service.item.ItemService;
-import com.pitpat.pitterpatter.global.exception.EntityNotFoundException;
+import com.pitpat.pitterpatter.global.exception.exceptions.EntityNotFoundException;
 import com.pitpat.pitterpatter.global.exception.ErrorResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,7 +42,7 @@ public class ItemController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         } catch (Exception e) {
             ErrorResponseDto errorResponse = new ErrorResponseDto("아이템 조회 실패: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 }

@@ -22,10 +22,14 @@ public interface UserService {
     // ====================== 조회, 변경, 탈퇴, 검증 ==========================
     // jwt 토큰에서 userId 값을 꺼내와 회원정보 조회
     public UserDto getUserById(int userId);
+    // email에 해당하는 회원정보 조회
+    public UserDto getUserByEmail(String email);
     // jwt 토큰에서 userId 값을 꺼내와 회원정보 변경
     public UserDto updateUserById(int userId, AdditionalUserInfoDto updatedUser);
-    // jwt 토큰에서 userId 값을 꺼내와 비밀번호 재설정
-    public void resetPassword(int userId, PasswordDto passwordDto);
+    // jwt 토큰의 userId값을 이용하거나 email로 비밀번호 재설정
+    public void resetPassword(String id, PasswordDto passwordDto, String type);
+    // 이메일 토큰이 맞는지 검증
+    public void verifyEmailToken(String email, String emailToken);
     // 비밀번호 재설정 메일 발송을 위한 토큰 생성
     public String createEmailToken(EmailDto emailDto);
     // 비밀번호 재설정 메일 발송
@@ -42,8 +46,10 @@ public interface UserService {
     // ====================== 기타 ============================
     // 팀 이름 생성기를 이용하여 db에 없는 유니크한 팀 이름 반환
     public String getUniqueTeamName();
-    // 입력으로 들어온 password가 유효한 지 한번 더 확인
-    public void isValidPassword(String password);
+    // 입력으로 들어온 password 유효성 검사
+    public boolean isValidPassword(String password);
+    // 입력으로 들어온 2차 비밀번호 유효성 검사
+    public boolean isValid2Fa(String twoFa);
     // Request Header에서 토큰 정보 추출
     public String resolveRefreshToken(HttpServletRequest request);
     // 암호화
