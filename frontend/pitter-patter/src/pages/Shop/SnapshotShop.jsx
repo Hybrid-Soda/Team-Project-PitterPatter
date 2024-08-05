@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { assetsApi } from '../../apiService';
 
 import {
@@ -34,16 +33,14 @@ function SnapshotShop() {
           child_id: childId,
         },
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDcxMzIsImlhdCI6MTcyMjg0NzEzMiwiZXhwIjoxNzIyODUwMTMyLCJqdGkiOiJjZDIxMTA5Yi1kNWUyLTQzNjQtOWM5Ni1hZDE5ZTVlMjljZDYifQ.MeCxBiNfNPS6KXxPF5XruV8U_S-nSXLasOnffeAQ1dio_wKUp_xaTbq9VdUGPU5W6SKCrz78XP2WqgeDp41kCg'
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NjM0NTAsImlhdCI6MTcyMjg2MzQ1MCwiZXhwIjoxNzIyODY2NDUwLCJqdGkiOiI2YzY2N2I3Ni1mYWI2LTQ4NjQtOWNmZC0wNjVjOGY2ZjMzYTIifQ.swAqzv8jMVyynOXG-eurM8TeHePYTc4fkwffgIQJkblnEykDlTJbEzFVhkIQAIsxJYRinBt1YoDYYXNurFv8Ag'
         }
       });
       // console.log(response.data);
       const photoUrls = response.data
-        .filter(item => item.itemType === 'FRAME') // Filter items with itemType 'FRAME'
-        .map(item => item.photo); // Assuming response.data is an array of items with a `photo` property
+        .filter(item => item.itemType === 'FRAME')
+        .map(item => item.photo);
       setFrames(photoUrls);
-      console.log(response.data
-        .filter(item => item.itemType === 'FRAME'))
     } catch (error) {
       console.log("Error fetching frames:", error);
     }
