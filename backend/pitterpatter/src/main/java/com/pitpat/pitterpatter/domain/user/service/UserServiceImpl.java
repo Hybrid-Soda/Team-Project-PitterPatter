@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService{
         }
         // 8. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
+            log.error("IllegalArgumentException: [일반 유저 회원가입] 비밀번호 형식이 잘못되었습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
         }
     }
 
@@ -114,8 +114,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isEmailAlreadyInUse(String email) {
         if (userRepository.existsByEmail(email)) {
-            log.error("DuplicateResourceException: Duplicate email sign-up attempt with email: {}", email);
-            throw new DuplicateResourceException("This email address is already registered.");
+            log.error("DuplicateResourceException: [이메일 중복 체크] 이메일이 중복되었습니다: {}", email);
+            throw new DuplicateResourceException("이미 가입된 계정이 있습니다.");
         }
         return false;
     }
@@ -125,8 +125,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isTeamNameAlreadyInUse(String teamName) {
         if (userRepository.existsByTeamName(teamName)) {
-            log.error("DuplicateResourceException: Duplicate team name sign-up attempt with team name: {}", teamName);
-            throw new DuplicateResourceException("This team name is already in use.");
+            log.error("DuplicateResourceException: [팀 이름 중복 체크] 이미 사용 중인 팀 이름이 있습니다: {}", teamName);
+            throw new DuplicateResourceException("이미 사용 중인 이름 입니다.");
         }
         return false;
     }
@@ -146,8 +146,8 @@ public class UserServiceImpl implements UserService{
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
         else {
-            log.error("NoSuchElementException: User not found with id: {}", userId);
-            throw new NoSuchElementException("User not found");
+            log.error("NoSuchElementException: [userId값으로 회원정보 조회] 해당 userId를 가진 사용자가 존재하지 않습니다: {}", userId);
+            throw new NoSuchElementException("해당 사용자가 존재하지 않습니다.");
         }
     }
 
@@ -164,8 +164,8 @@ public class UserServiceImpl implements UserService{
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
         else {
-            log.error("NoSuchElementException: User not found with email: {}", email);
-            throw new NoSuchElementException("User not found");
+            log.error("NoSuchElementException: [email값으로 회원정보 조회] 해당 email을 가진 사용자가 존재하지 않습니다: {}", email);
+            throw new NoSuchElementException("해당 사용자가 존재하지 않습니다.");
         }
     }
 
@@ -197,8 +197,8 @@ public class UserServiceImpl implements UserService{
             }
             // 6. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
             else {
-                log.error("IllegalArgumentException: 2FA has not been verified: {}", updatedTwoFa);
-                throw new IllegalArgumentException("This 2FA has not been verified.");
+                log.error("IllegalArgumentException: [회원정보 변경] 2차 비밀번호 형식이 잘못되었습니다: {}", updatedTwoFa);
+                throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");
             }
         }
 
@@ -243,8 +243,8 @@ public class UserServiceImpl implements UserService{
         }
         // 5. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
+            log.error("IllegalArgumentException: [비밀번호 재설정] 비밀번호 형식이 잘못되었습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
         }
     }
 
@@ -264,7 +264,8 @@ public class UserServiceImpl implements UserService{
         }
 
         // 3. redis에 토큰이 존재하지 않거나 redis에 있는 토큰과 들어온 토큰이 같지 않은 경우 IllegalArgumentException 예외 발생
-        throw new IllegalArgumentException("Token is not valid.");
+        log.error("IllegalArgumentException: [이메일 토큰 검증] DB에 해당 이메일 토큰이 존재하지 않거나 일치하지 않습니다: {}", emailToken);
+        throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
     }
 
     // 비밀번호 재설정 메일 발송을 위한 토큰 생성
@@ -278,10 +279,10 @@ public class UserServiceImpl implements UserService{
 
         // Redis에 저장
         EmailTokenEntity emailToken = EmailTokenEntity.builder()
-                                                        .email(email)
-                                                        .emailToken(token)
-                                                        .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
-                                                        .build();
+                .email(email)
+                .emailToken(token)
+                .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
+                .build();
         emailTokenRepository.save(emailToken);
 
         return token;
@@ -316,8 +317,8 @@ public class UserServiceImpl implements UserService{
 
         // 3. 입력한 2차 비밀번호와 저장되어있는 해시된 2차 비밀번호가 다르다면 IllegalArgumentException 발생
         if (!isValid) {
-            log.error("IllegalArgumentException: 2FA has not been verified: {}", twoFa);
-            throw new IllegalArgumentException("This 2FA has not been verified.");
+            log.error("IllegalArgumentException: [2차 비밀번호 검증] 2차 비밀번호가 일치하지 않습니다: {}", twoFa);
+            throw new IllegalArgumentException("2차 비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -376,7 +377,8 @@ public class UserServiceImpl implements UserService{
         }
 
         // redis에 토큰이 존재하지 않거나 redis에 있는 토큰과 들어온 토큰이 같지 않은 경우 예외 발생
-        throw new IllegalArgumentException("JWT Token is not same");
+        log.error("IllegalArgumentException: [리프레시 토큰 검증] DB에 refresh 토큰이 존재하지 않거나 일치하지 않습니다: {}", refreshToken);
+        throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
     }
 
 

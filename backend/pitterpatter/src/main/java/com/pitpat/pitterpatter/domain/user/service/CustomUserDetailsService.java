@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,8 +23,14 @@ public class CustomUserDetailsService implements UserDetailsService {
     // email로 사용자 엔티티 조회
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        Optional<UserEntity> existingUserOptional = userRepository.findByEmail(username);
+
+        if (existingUserOptional.isEmpty()) {
+            log.error("UsernameNotFoundException: [loadUserByUserName] 해당 email을 가진 사용자가 존재하지 않습니다: {}", username);
+            throw new UsernameNotFoundException("해당 사용자가 존재하지 않습니다.");
+        }
+
+        UserEntity user = existingUserOptional.get();
         return new CustomUserDetailsDto(UserDto.toDto(user));
     }
 
