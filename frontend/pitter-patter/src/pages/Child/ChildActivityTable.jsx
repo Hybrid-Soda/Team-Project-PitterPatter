@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { childPlaytimeGet } from './../Child/childApi.js';
 import { 
   LayoutActivityPage, 
   LayoutGraphList, 
@@ -9,30 +10,35 @@ import {
   ContentBody 
 } from './ChildActivityTableStyle';
 
-const data = [
-  {
-    name: '2024-07-14',
-    playtime: 120,
-  },
-  {
-    name: '2024-07-15',
-    playtime: 150,
-  }, {
-    name: '2024-07-16',
-    playtime: 160,
-  }, {
-    name: '2024-07-17',
-    playtime: 20,
-  }, {
-    name: '2024-07-18',
-    playtime: 80,
-  }, {
-    name: '2024-07-19',
-    playtime: 60,
-  },
-];
-
 function ChildActivityTable() {
+  const [data, setData] = useState([]);
+  const childId = 1; // 테스트용 childId 변수 선언
+  const startDate = '2024-07-24';
+  const endDate = '2024-08-05';
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MjQ5MjYsImlhdCI6MTcyMjgyNDkyNiwiZXhwIjoxNzIyODI3OTI2LCJqdGkiOiIxYjVmNjJhNy0yYTVjLTQ2ODYtOGJhNi05ZmI2Yjc0MDhmNjEifQ.Sbm6h7f-2D5PK_f9ql6ZA58AfVIcDjQ_bhiNdYUvfTGUAtXwJds-P-IZ-JN_ClOZqkoyrgQXebyqUDKOMRAvFA";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const playtimeData = await childPlaytimeGet(childId, startDate, endDate, token);
+        const formattedData = playtimeData.map(item => ({
+          createdAt: item.createdAt,
+          playtime: item.playtime
+        }));
+        // 더미 데이터 추가
+        formattedData.push(
+          { createdAt: '2024-07-25', playtime: 120 },
+        );
+        // 날짜 순으로 정렬
+        formattedData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setData(formattedData);
+      } catch (error) {
+        console.error('Error fetching playtime data:', error);
+      }
+    };
+    fetchData();
+  }, [childId, startDate, endDate, token]);
+
   return (
     <ContentBody>
       <GraphHeader>
@@ -53,7 +59,7 @@ function ChildActivityTable() {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="createdAt" />
                 <YAxis />
                 <Tooltip />
                 <Legend />

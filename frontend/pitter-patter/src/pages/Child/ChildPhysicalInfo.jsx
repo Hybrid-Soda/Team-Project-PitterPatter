@@ -1,22 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { childPhysicalInfoListGet, childPhysicalInfoRegist, childPhysicalInfoUpdate } from './../Child/childApi.js';  // API 함수 임포트
 import { ContentBody, PhysicalInfoInput, PhysicalInfoHistory, PhysicalInfoHistoryInnerDiv, ImgDiv, InputDiv, InputInnerDiv, AddBtnDiv } from './ChildPhysicalInfoStyle';
 
-// 초기 더미 데이터 배열
-const initialPhysicalInfoData = [
-    { height: '170cm', weight: '60kg', date: '2024-07-08' },
-    { height: '165cm', weight: '55kg', date: '2024-07-09' },
-    { height: '172cm', weight: '68kg', date: '2024-07-10' },
-];
+// 데이터 가져오기 메소드
+const fetchData = async (childId, token, setPhysicalInfoData) => {
+    try {
+        const data = await childPhysicalInfoListGet(childId, token);
+        console.log('Fetched data:', data); // 데이터 확인용 콘솔 로그
+        setPhysicalInfoData(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+};
 
 function ChildPhysicalInfo() {
-    const [physicalInfoData, setPhysicalInfoData] = useState(initialPhysicalInfoData);
+    const [physicalInfoData, setPhysicalInfoData] = useState([]);
     const [height, setHeight] = useState('');
     const [weight, setWeight] = useState('');
     const [editIndex, setEditIndex] = useState(null);
     const [editHeight, setEditHeight] = useState('');
     const [editWeight, setEditWeight] = useState('');
 
-    const handleAdd = () => {
+    const childId = 1; // 테스트용 childId 변수 선언
+    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MjQ5MjYsImlhdCI6MTcyMjgyNDkyNiwiZXhwIjoxNzIyODI3OTI2LCJqdGkiOiIxYjVmNjJhNy0yYTVjLTQ2ODYtOGJhNi05ZmI2Yjc0MDhmNjEifQ.Sbm6h7f-2D5PK_f9ql6ZA58AfVIcDjQ_bhiNdYUvfTGUAtXwJds-P-IZ-JN_ClOZqkoyrgQXebyqUDKOMRAvFA";
+
+    // 페이지 로딩 시 데이터 가져오기
+    useEffect(() => {
+        const dummyData = [
+            {
+                id: 1,
+                height: "120.8",
+                weight: "23.4",
+                updatedAt: "2024-07-01T00:00:00Z"
+            },
+            {
+                id: 2,
+                height: "122.5",
+                weight: "24.1",
+                updatedAt: "2024-07-05T00:00:00Z"
+            },
+            {
+                id: 3,
+                height: "123.3",
+                weight: "24.8",
+                updatedAt: "2024-07-10T00:00:00Z"
+            },
+            {
+                id: 4,
+                height: "124.1",
+                weight: "25.2",
+                updatedAt: "2024-07-15T00:00:00Z"
+            },
+            {
+                id: 5,
+                height: "125.0",
+                weight: "25.7",
+                updatedAt: "2024-07-20T00:00:00Z"
+            }
+        ];
+        
+        setPhysicalInfoData(dummyData);
+        fetchData(childId, token, setPhysicalInfoData);
+    }, [childId, token]);
+
+    const formatDateToYYYYMMDD = (dateString) => {
+        if (!dateString) return ''; // dateString이 undefined인 경우 빈 문자열 반환
+        return dateString.split('T')[0];
+    };
+
+    const handleAdd = async () => {
         if (!height || !weight) {
             alert("키와 몸무게를 입력해주세요.");
             return;
@@ -33,22 +85,27 @@ function ChildPhysicalInfo() {
         }
 
         const newEntry = {
-            height: `${height}cm`,
-            weight: `${weight}kg`,
-            date: new Date().toISOString().split('T')[0]
+            height: `${height}`,
+            weight: `${weight}`,
         };
-        setPhysicalInfoData([...physicalInfoData, newEntry]);
-        setHeight('');
-        setWeight('');
+
+        try {
+            await childPhysicalInfoRegist(childId, token, newEntry);
+            await fetchData(childId, token, setPhysicalInfoData); // 데이터 새로고침
+            setHeight('');
+            setWeight('');
+        } catch (error) {
+            console.error('Error adding physical info:', error);
+        }
     };
 
     const handleEdit = (index) => {
         setEditIndex(index);
-        setEditHeight(physicalInfoData[index].height.replace('cm', ''));
-        setEditWeight(physicalInfoData[index].weight.replace('kg', ''));
+        setEditHeight(physicalInfoData[index].height);
+        setEditWeight(physicalInfoData[index].weight);
     };
 
-    const handleSave = (index) => {
+    const handleSave = async (index) => {
         if (!editHeight || !editWeight) {
             alert("키와 몸무게를 입력해주세요.");
             return;
@@ -64,16 +121,21 @@ function ChildPhysicalInfo() {
             return;
         }
 
-        const updatedData = [...physicalInfoData];
-        updatedData[index] = {
-            ...updatedData[index],
-            height: `${editHeight}cm`,
-            weight: `${editWeight}kg`,
+        const updatedData = {
+            id: physicalInfoData[index].id,  // physical_record_id 설정
+            height: `${editHeight}`,
+            weight: `${editWeight}`,
         };
-        setPhysicalInfoData(updatedData);
-        setEditIndex(null);
-        setEditHeight('');
-        setEditWeight('');
+
+        try {
+            await childPhysicalInfoUpdate(childId, token, updatedData);
+            await fetchData(childId, token, setPhysicalInfoData); // 데이터 새로고침
+            setEditIndex(null);
+            setEditHeight('');
+            setEditWeight('');
+        } catch (error) {
+            console.error('Error updating physical info:', error);
+        }
     };
 
     return (
@@ -135,7 +197,7 @@ function ChildPhysicalInfo() {
                         ) : (
                             <div>
                                 <span>키: {info.height} 몸무게: {info.weight}</span>
-                                <span>{info.date}</span>
+                                <span>{formatDateToYYYYMMDD(info.updatedAt)}</span>
                                 <button onClick={() => handleEdit(index)}>수정하기</button>
                             </div>
                         )}
