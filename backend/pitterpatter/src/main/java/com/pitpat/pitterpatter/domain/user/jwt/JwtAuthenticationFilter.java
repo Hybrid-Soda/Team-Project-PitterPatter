@@ -27,11 +27,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 1. Request Header에서 JWT 토큰 추출
         String token = jwtTokenProvider.resolveTokenFromRequestHeader((HttpServletRequest) request);
 
+        System.out.println("JwtAuthenticationFilter 들어옴: " + token);
         // TODO: 잘못된 JWT 토큰이 들어올 경우 예외를 응답으로 던져주기
 
         // 2. validateToken으로 토큰 유효성 검사
         HttpServletRequest httpReqeust = (HttpServletRequest) request;
         if ((!"/api/user/password/reset".equals(httpReqeust.getRequestURI())) && token != null && jwtTokenProvider.validateToken(token)) {
+            System.out.println("JwtAuthenticationFilter 검증됨");
             // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);

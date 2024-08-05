@@ -2,13 +2,11 @@ package com.pitpat.pitterpatter.domain.user.service;
 
 import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
 import com.pitpat.pitterpatter.domain.user.model.dto.*;
-import com.pitpat.pitterpatter.domain.user.repository.EmailTokenRepository;
 import com.pitpat.pitterpatter.domain.user.repository.RefreshTokenRepository;
 import com.pitpat.pitterpatter.domain.user.repository.UserRepository;
-import com.pitpat.pitterpatter.entity.EmailTokenEntity;
 import com.pitpat.pitterpatter.entity.RefreshTokenEntity;
 import com.pitpat.pitterpatter.entity.UserEntity;
-import com.pitpat.pitterpatter.global.exception.exceptions.DuplicateResourceException;
+import com.pitpat.pitterpatter.global.exception.user.DuplicateResourceException;
 import com.pitpat.pitterpatter.global.util.user.TeamNameGenerator;
 import io.jsonwebtoken.Claims;
 import jakarta.mail.MessagingException;
@@ -28,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -40,13 +37,12 @@ public class UserServiceImpl implements UserService{
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
-    private final EmailTokenRepository emailTokenRepository;
 
     @Value("${custom.random-2fa}")
     private String random2Fa;
 
-    // 1800(초) == 30분
-    private static final long EMAIL_TOKEN_EXPIRATION_TIME = 1800;
+    // 1800000 == 30분
+    private static final long EMAIL_TOKEN_EXPIRATION_TIME = 1800000;
 
     // ============================= 로그인 관련 ================================
     // TODO: 로그인은 추후 Spring Security Filter로 구현하기
@@ -70,12 +66,11 @@ public class UserServiceImpl implements UserService{
         return jwtToken;
     }
 
-
     // ============================= 회원가입 관련 ================================
     // email 유저 회원가입
     @Transactional
     @Override
-    public UserDto emailSignUp(EmailUserSignUpDto emailUserSignUpDto) throws DuplicateResourceException {
+    public UserDto emailSignUp(EmailUserSignUpDto emailUserSignUpDto) throws DuplicateResourceException, IllegalArgumentException {
         // 1. 백에서 이메일 중복체크를 한번 더 해준다
         isEmailAlreadyInUse(emailUserSignUpDto.getEmail());
 
@@ -85,28 +80,21 @@ public class UserServiceImpl implements UserService{
         // 3. Password 유효성 검사
         String password = emailUserSignUpDto.getPassword();
         String encodedPassword = null;
-        if (isValidPassword(password)) {
-            // 4. Password 암호화
-            encodedPassword = this.encode(password);
+        // password가 유효하지 않은 경우 IllegalArgumentException 예외 발생
+        isValidPassword(password);
 
-            // 5. 임시 2차 비밀번호 암호화
-            String encoded2Fa = this.encode(random2Fa);
+        // 4. Password 암호화
+        // password가 유효한 경우 password 암호화
+        encodedPassword = this.encode(password);
+        String encoded2Fa = this.encode(random2Fa);
 
-            // 6. 암호화된 비밀번호로 emailUserSignUpDto를 UserEntity로 변경한다.
-            userEntity = emailUserSignUpDto.toEntity(encodedPassword);
+        // 5. emailUserSignUpDto를 UserEntity로 변경하고 2차 비밀번호와 팀 이름을 임의로 넣는다.
+        userEntity = emailUserSignUpDto.toEntity(encodedPassword);
+        userEntity.setTwoFa(encoded2Fa);
+        userEntity.setTeamName(getUniqueTeamName());
 
-            // 7. 암호화된 임시 2차 비밀번호, 임시 팀 이름을 넣는다.
-            userEntity.setTwoFa(encoded2Fa);
-            userEntity.setTeamName(getUniqueTeamName());
-
-            // 7. DB에 유저 정보를 저장하고 UserDto로 변환하여 return
-            return UserDto.toDto(userRepository.save(userEntity));
-        }
-        // 8. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
-        else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
-        }
+        // 6. DB에 유저 정보를 저장하고 UserDto로 변환하여 return
+        return UserDto.toDto(userRepository.save(userEntity));
     }
 
     // email 유저 이메일 중복 체크
@@ -131,7 +119,6 @@ public class UserServiceImpl implements UserService{
         return false;
     }
 
-
     // ====================== 조회, 변경, 탈퇴 ==========================
     // jwt 토큰에서 userId 값을 꺼내와 회원정보 조회
     @Transactional
@@ -151,120 +138,51 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    // email에 해당하는 회원정보 조회
-    @Transactional
-    @Override
-    public UserDto getUserByEmail(String email) {
-        // 1. userId에 해당하는 유저가 DB에 있는 지 확인
-        Optional<UserEntity> existingUserOptional = userRepository.findByEmail(email);
-
-        // 2. DB에 유저가 존재한다면 UserDto로 변환 후 return
-        if (existingUserOptional.isPresent()) {
-            return UserDto.toDto(existingUserOptional.get());
-        }
-        // 3. DB에 유저가 존재하지 않는다면 예외 발생
-        else {
-            log.error("NoSuchElementException: User not found with email: {}", email);
-            throw new NoSuchElementException("User not found");
-        }
-    }
-
     // jwt 토큰에서 userId 값을 꺼내와 회원정보 변경
     @Transactional
     @Override
-    public UserDto updateUserById(int userId, AdditionalUserInfoDto updatedUser) throws DuplicateResourceException, NoSuchElementException {
-        String updatedTwoFa = updatedUser.getTwoFa();
-        String updatedTeamName = updatedUser.getTeamName();
-
+    public UserDto updateUserById(int userId, AdditionalUserInfoDto updatedUser) throws DuplicateResourceException, IllegalArgumentException, NoSuchElementException {
         // 1. userId에 해당하는 유저를 DB에서 가져옴
         // userId에 해당하는 유저가 없을 경우 NoSuchElementException 발생
         UserEntity existingUser = this.getUserById(userId).toEntity();
 
         // 2. 팀 이름 유효성 검사
-        if (updatedTeamName != null) {
+        if (updatedUser.getTeamName() != null) {
             // 백에서 한번 더 팀 이름 중복 체크
             // 팀 이름이 중복 될 경우 DuplicateResourceException 예외 발생
-            isTeamNameAlreadyInUse(updatedTeamName);
-            // 3. 팀 이름이 중복되지 않을 경우 UserEntity 업데이트
-            existingUser.setTeamName(updatedTeamName);
+            isTeamNameAlreadyInUse(updatedUser.getTeamName());
+            existingUser.setTeamName(updatedUser.getTeamName());
         }
 
-        if (updatedTwoFa != null) {
-            // 4. 2차 비밀번호 유효성 검사
-            if (isValid2Fa(updatedTwoFa)) {
-                // 5. 2차 비밀번호가 유효할 경우 UsetEntity 업데이트
-                existingUser.setTwoFa(this.encode(updatedTwoFa));
-            }
-            // 6. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
-            else {
-                log.error("IllegalArgumentException: 2FA has not been verified: {}", updatedTwoFa);
-                throw new IllegalArgumentException("This 2FA has not been verified.");
-            }
-        }
+        // 3. 2차 비밀번호 유효성 검사
+        // 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        isValidPassword(updatedUser.getTwoFa());
 
-        // 6. 업데이트된 유저 정보를 DB에 저장 후 UserDto 형태로 변환하여 return
+        // 4. 2차 비밀번호가 유효할 경우 UsetEntity 업데이트
+        existingUser.setTwoFa(this.encode(updatedUser.getTwoFa()));
+
+        // 5. 업데이트된 유저 정보를 DB에 저장 후 UserDto 형태로 변환하여 return
         return UserDto.toDto(userRepository.save(existingUser));
     }
 
     // jwt 토큰에서 userId 값을 꺼내와 비밀번호 재설정
     @Override
     @Transactional
-    public void resetPassword(String id, PasswordDto passwordDto, String type) throws NoSuchElementException {
-        // userId에 해당하는 유저의 비밀번호 변경을 하는 경우
+    public void resetPassword(int userId, PasswordDto passwordDto) throws IllegalArgumentException, NoSuchElementException {
+        // 1. userId에 해당하는 유저를 DB에서 가져옴
+        // userId에 해당하는 유저가 없을 경우 NoSuchElementException 발생
+        UserEntity existingUser = this.getUserById(userId).toEntity();
+
+        // 2. password가 유효한 지 확인
+        // 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         String password = passwordDto.getPassword();
-        UserEntity existingUser = null;
-        if (type.equals("userId")) {
-            int userId = Integer.parseInt(id);
+        isValidPassword(password);
 
-            // 1. userId에 해당하는 유저를 DB에서 가져옴
-            // userId에 해당하는 유저가 없을 경우 NoSuchElementException 발생
-            existingUser = this.getUserById(userId).toEntity();
+        // 3. password가 유효한 경우 UserEntity에 비밀번호 업데이트
+        existingUser.setPassword(this.encode(password));
 
-        }
-        // email에 해당하는 유저의 비밀번호 변경을 하는 경우
-        else if (type.equals("email")) {
-            String email = id;
-            // 2. email에 해당하는 유저를 DB에서 가져옴
-            // email에 해당하는 유저가 없을 경우 NoSuchElementException 발생
-            existingUser = this.getUserByEmail(email).toEntity();
-        }
-        // 그 외
-        else {
-            return;
-        }
-
-        // 3. password가 유효한 지 확인
-        if (isValidPassword(password)) {
-            // 4. password가 유효한 경우 UserEntity에 비밀번호 업데이트
-            existingUser.setPassword(this.encode(password));
-
-            // 4. DB에 저장
-            userRepository.save(existingUser);
-        }
-        // 5. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
-        else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
-        }
-    }
-
-    // 이메일 토큰이 맞는지 검증
-    @Override
-    public void verifyEmailToken(String email, String emailToken) {
-        // 1. redis에서 email을 id 값으로 가지고 있는 emailToken 가져오기
-        Optional<EmailTokenEntity> existingEmailTokenOptional = emailTokenRepository.findByEmail(email);
-
-        // 2. 있다면 emailToken값 가져오기
-        if (existingEmailTokenOptional.isPresent()) {
-            String redisEmailToken = existingEmailTokenOptional.get().getEmailToken();
-            // redis에 있는 토큰과 같은지 비교
-            if (redisEmailToken.equals(emailToken)) {
-                return;
-            }
-        }
-
-        // 3. redis에 토큰이 존재하지 않거나 redis에 있는 토큰과 들어온 토큰이 같지 않은 경우 IllegalArgumentException 예외 발생
-        throw new IllegalArgumentException("Token is not valid.");
+        // 4. DB에 저장
+        userRepository.save(existingUser);
     }
 
     // 비밀번호 재설정 메일 발송을 위한 토큰 생성
@@ -273,18 +191,11 @@ public class UserServiceImpl implements UserService{
     public String createEmailToken(EmailDto emailDto) {
         String email = emailDto.getEmail();
 
-        // UUID를 사용하여 이메일 토큰 생성
-        String token = UUID.randomUUID().toString();
+        // 1. JWT 토큰 생성
+        long nowMillis = System.currentTimeMillis();
+        String jwtToken = jwtTokenProvider.generateAccessToken(email, nowMillis, EMAIL_TOKEN_EXPIRATION_TIME);
 
-        // Redis에 저장
-        EmailTokenEntity emailToken = EmailTokenEntity.builder()
-                                                        .email(email)
-                                                        .emailToken(token)
-                                                        .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
-                                                        .build();
-        emailTokenRepository.save(emailToken);
-
-        return token;
+        return jwtToken;
     }
 
     // 비밀번호 재설정 메일 발송
@@ -304,19 +215,16 @@ public class UserServiceImpl implements UserService{
     // jwt 토큰에서 userId 값을 꺼내와 2차 비밀번호 검증
     @Override
     public void verify2fa(int userId, TwoFaDto twoFaDto) throws NoSuchElementException {
-        String twoFa = twoFaDto.getTwoFa();
-
         // 1. userId에 해당하는 유저를 DB에서 가져옴
         // userId에 해당하는 유저가 없을 경우 NoSuchElementException 발생
         UserEntity existingUser = this.getUserById(userId).toEntity();
-        String savedTwoFa = existingUser.getTwoFa();
 
         // 2. 입력한 2차 비밀번호와 저장되어있는 해시된 2차 비밀번호를 비교
-        boolean isValid = passwordEncoder.matches(twoFa, savedTwoFa);
+        boolean isValid = passwordEncoder.matches(twoFaDto.getTwoFa(), existingUser.getTwoFa());
 
         // 3. 입력한 2차 비밀번호와 저장되어있는 해시된 2차 비밀번호가 다르다면 IllegalArgumentException 발생
         if (!isValid) {
-            log.error("IllegalArgumentException: 2FA has not been verified: {}", twoFa);
+            log.error("IllegalArgumentException: 2FA has not been verified: {}", twoFaDto.getTwoFa());
             throw new IllegalArgumentException("This 2FA has not been verified.");
         }
     }
@@ -392,32 +300,22 @@ public class UserServiceImpl implements UserService{
         return teamName;
     }
 
-    // 입력으로 들어온 password 유효성 검사
+    // TODO: 좀 더 디테일하게 구현하기
+    // 입력으로 들어온 password가 유효한 지 한번 더 확인
     @Override
-    public boolean isValidPassword(String password) {
-        if (password == null) {
-            return false;
+    public void isValidPassword(String password) {
+        if (password == null || password.trim().equals("")) {
+            log.error("IllegalArgumentException: Password is invalid: {}", password);
+            throw new IllegalArgumentException("This password is invalid");
         }
-        return Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~!@#$%^&*()\\[\\]{}_+=\\-,])[A-Za-z\\d~!@#$%^&*()\\[\\]{}_+=\\-,]{8,16}$").matcher(password).matches();
-    }
-
-    // 입력으로 들어온 2차 비밀번호 유효성 검사
-    @Override
-    public boolean isValid2Fa(String twoFa) {
-        if (twoFa == null) {
-            return false;
-        }
-        return Pattern.compile("^\\d{4}$").matcher(twoFa).matches();
     }
 
     // Request Header에서 토큰 정보 추출
-    @Override
     public String resolveRefreshToken(HttpServletRequest request) {
         return jwtTokenProvider.resolveTokenFromRequestHeader(request);
     }
 
     // 암호화
-    @Override
     public String encode(String text) {
         return passwordEncoder.encode(text);
     }

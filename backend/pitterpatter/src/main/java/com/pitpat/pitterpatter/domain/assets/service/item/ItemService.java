@@ -7,9 +7,12 @@ import com.pitpat.pitterpatter.domain.assets.repository.item.ItemRepository;
 import com.pitpat.pitterpatter.entity.Child;
 import com.pitpat.pitterpatter.entity.ChildItem;
 import com.pitpat.pitterpatter.entity.Item;
+import com.pitpat.pitterpatter.entity.QChildItem;
 import com.pitpat.pitterpatter.entity.enums.ItemType;
-import com.pitpat.pitterpatter.global.exception.exceptions.EntityNotFoundException;
+import com.pitpat.pitterpatter.global.exception.EntityNotFoundException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.pitpat.pitterpatter.entity.QChildItem.childItem;
