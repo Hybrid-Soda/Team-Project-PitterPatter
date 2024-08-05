@@ -140,9 +140,38 @@ export const ActionRow = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 15vh;
+  top: 5vh;
   right: 0;
   padding: 2vh 4vh;
   backdrop-filter: blur(10px);
   background-color: rgba(255,255,255, 0.3);
+`;
+
+export const LayoutCoin = styled.div`
+  position: absolute;
+  top: 5vh;
+  left: 0;
+  width: 10vw;
+  height: 7vh;
+  background-color: #0000003a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  /* border-radius: 10rem; */
+  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  
+  * {
+    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  }
+
+`
+
+export const CoinImg = styled.img`
+  width: 30px;
+`;
+
+export const CoinNumber = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
 `;
