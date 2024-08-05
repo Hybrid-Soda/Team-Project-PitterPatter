@@ -58,22 +58,26 @@ public class Child {
 
     private int point = 0;
 
-    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<ChildItem> childItems = new ArrayList<>();
 
-    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<PointRecord> points = new ArrayList<>();
 
-    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PhysicalRecord> physicalRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY ,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "child", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayRecord> playRecords = new ArrayList<>();
 
     public void addPoint(int amount) {
-        this.point += amount;
+        if (amount > 0 && point > Integer.MAX_VALUE - amount) {
+            point = Integer.MAX_VALUE;
+        } else {
+            point += amount;
+        }
     }
 
     @Builder

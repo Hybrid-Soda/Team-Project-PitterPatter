@@ -66,12 +66,12 @@ public class JwtTokenProvider {
     // Refresh Token을 Redis에 저장
     public void saveRefreshToken(int userId, String refreshToken, long expirationTime) {
         long seconds = expirationTime / 1000; // 초 단위로 바꿈
-        RefreshTokenEntity refreshTokenDto = RefreshTokenEntity.builder()
+        RefreshTokenEntity refreshTokenEntity = RefreshTokenEntity.builder()
                                                         .userId(userId)
                                                         .refreshToken(refreshToken)
                                                         .ttl(seconds)
                                                         .build();
-        refreshTokenRepository.save(refreshTokenDto);
+        refreshTokenRepository.save(refreshTokenEntity);
     }
 
     // Access Token 생성
@@ -117,8 +117,7 @@ public class JwtTokenProvider {
         UserDetails principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
-
-
+    
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
