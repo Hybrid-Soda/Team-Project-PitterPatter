@@ -1,18 +1,53 @@
-import { Blank, BlankRow, ButtonIcon, Frame, GuideText, ActionButton, CurrentWrap, TransparentButton, Wallpaper, CarouselWrap, ActionRow } from "./SnapshotShopStyle";
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { assetsApi } from '../../apiService';
 
-import { useState, useRef } from "react";
-
-import { useNavigate } from "react-router-dom";
+import {
+  Blank,
+  BlankRow,
+  ButtonIcon,
+  Frame,
+  GuideText,
+  ActionButton,
+  CurrentWrap,
+  TransparentButton,
+  Wallpaper,
+  CarouselWrap,
+  ActionRow,
+} from './SnapshotShopStyle';
 
 function SnapshotShop() {
   const Navigator = useNavigate();
 
-  const [frames, setFrames] = useState([
-    "/src/assets/img/Shop/frame/frame1.png",
-    "/src/assets/img/Shop/frame/frame2.png",
-    "/src/assets/img/Shop/frame/frame3.png",
-    "/src/assets/img/Shop/frame/frame4.png",
-  ]);
+  const [frames, setFrames] = useState([]);
+
+  useEffect(() => {
+    const childId = 5; 
+    getFrames(childId);
+  }, []);
+
+  const getFrames = async (childId) => {
+    try {
+      const response = await assetsApi.get("/item", {
+        params: {
+          child_id: childId,
+        },
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDcxMzIsImlhdCI6MTcyMjg0NzEzMiwiZXhwIjoxNzIyODUwMTMyLCJqdGkiOiJjZDIxMTA5Yi1kNWUyLTQzNjQtOWM5Ni1hZDE5ZTVlMjljZDYifQ.MeCxBiNfNPS6KXxPF5XruV8U_S-nSXLasOnffeAQ1dio_wKUp_xaTbq9VdUGPU5W6SKCrz78XP2WqgeDp41kCg'
+        }
+      });
+      // console.log(response.data);
+      const photoUrls = response.data
+        .filter(item => item.itemType === 'FRAME') // Filter items with itemType 'FRAME'
+        .map(item => item.photo); // Assuming response.data is an array of items with a `photo` property
+      setFrames(photoUrls);
+      console.log(response.data
+        .filter(item => item.itemType === 'FRAME'))
+    } catch (error) {
+      console.log("Error fetching frames:", error);
+    }
+  };
 
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -49,28 +84,35 @@ function SnapshotShop() {
 
   const cancel = () => {
     Navigator(-1);
-  }
+  };
 
   const save = () => {
     Navigator(-1);
-  }
+  };
 
   return (
     <Wallpaper>
-      <GuideText>
-          저장될 사진의 프레임을 골라보세요!
-      </GuideText>
+      <GuideText>저장될 사진의 프레임을 골라보세요!</GuideText>
       <ActionRow>
-        <ActionButton style={{ marginRight: "15px" }} onClick={cancel}>취소</ActionButton>
-        <ActionButton highlight="true" onClick={save}>저장</ActionButton>
+        <ActionButton style={{ marginRight: '15px' }} onClick={cancel}>
+          취소
+        </ActionButton>
+        <ActionButton highlight="true" onClick={save}>
+          저장
+        </ActionButton>
       </ActionRow>
       <CurrentWrap>
-        <TransparentButton onClick={handleLeft} style={{left: "100px"}}>
+        <TransparentButton onClick={handleLeft} style={{ left: '100px' }}>
           <ButtonIcon src="/src/assets/icons/ChevronLeft.png" />
         </TransparentButton>
         <CarouselWrap count={frames.length}>
           {frames.map((frame, index) => (
-            <Frame key={index} index={currentIdx} style={{ backgroundImage: `url(${frame})` }} target={index === currentIdx}>
+            <Frame
+              key={index}
+              index={currentIdx}
+              style={{ backgroundImage: `url(${frame})` }}
+              istarget={(index === currentIdx) ? true : undefined}
+            >
               <BlankRow>
                 <Blank />
                 <Blank />
@@ -82,15 +124,19 @@ function SnapshotShop() {
             </Frame>
           ))}
         </CarouselWrap>
-        <TransparentButton onClick={handleRight} style={{right: "100px"}}>
+        <TransparentButton onClick={handleRight} style={{ right: '100px' }}>
           <ButtonIcon src="/src/assets/icons/ChevronRight.png" />
         </TransparentButton>
       </CurrentWrap>
-      {
-        selectedIdx !== currentIdx ? 
-          <ActionButton highlight="true" ref={buttonRef} onClick={handlePurchase}>구매</ActionButton>
-        : <ActionButton disabled ref={buttonRef} >적용 중</ActionButton>
-      }
+      {selectedIdx !== currentIdx ? (
+        <ActionButton highlight="true" ref={buttonRef} onClick={handlePurchase}>
+          구매
+        </ActionButton>
+      ) : (
+        <ActionButton disabled ref={buttonRef}>
+          적용 중
+        </ActionButton>
+      )}
     </Wallpaper>
   );
 }
