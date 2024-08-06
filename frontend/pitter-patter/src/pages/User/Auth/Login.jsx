@@ -107,7 +107,7 @@ function Login() {
   const isEmailValid = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
@@ -127,7 +127,7 @@ function Login() {
      // 요청 설정에서 발생한 오류
      console.error('Error Message:', error.message);
    }
- }
+ };
 
  // 추후 구현
  const test = async () => {
