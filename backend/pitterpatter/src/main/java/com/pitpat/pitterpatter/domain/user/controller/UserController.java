@@ -27,11 +27,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
-    public String test() {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
-    }
-
     // =================== 로그인 관련 ===========================
     // email 유저 로그인 메서드
     @PostMapping("/login/email")
