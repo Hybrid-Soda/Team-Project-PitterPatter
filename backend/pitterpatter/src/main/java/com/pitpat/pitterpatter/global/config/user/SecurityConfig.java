@@ -45,7 +45,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("https://pitter-patter.picel.net", "http://localhost:8080"));
+                        configuration.setAllowedOrigins(Arrays.asList("https://pitter-patter.picel.net", "http://localhost:8080", "http://localhost:5137"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -53,6 +53,7 @@ public class SecurityConfig {
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                        configuration.setExposedHeaders(Collections.singletonList("Content-type"));
 
                         return configuration;
                     }
