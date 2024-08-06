@@ -29,6 +29,7 @@ public class TriggerWall : MonoBehaviour
                     gameScene.UpdateScore2();
                 }
                 gameScene.colliders.Clear();
+                GameManager.Instance.UnityCall();
             }
             else
             {
