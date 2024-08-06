@@ -26,6 +26,8 @@ import DeleteUser from './pages/User/MyPage/DeleteUser';
 import ResetPassword from './pages/User/Auth/ResetPassword';
 import ResetSFA from './pages/User/Auth/ResetSFA';
 import NewSFA from './pages/User/SFA/NewSFA';
+import SFAChild from './pages/User/SFA/SFAChild';
+import ChildMyPage from './pages/User/MyPage/ChildMyPage';
 
 function App() {
   return (
@@ -49,6 +51,7 @@ function App() {
         <Route path="/rank" element={<Rank />} />
 
         <Route path="/child/*" element={<ChildPage />} />
+        <Route path='/child/mypage' element={<ChildMyPage />}></Route>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -58,6 +61,7 @@ function App() {
         <Route path="/mypage/change-password" element={<ChangePassword />} />
         <Route path="/mypage/delete-user" element={<DeleteUser />} />
         <Route path="/sfa" element={<SFA />} />
+        <Route path="/sfa-child" element={<SFAChild />}></Route>
         <Route path='/newsfa' element={<NewSFA />} />
         
         <Route path="*" element={<Error />} />

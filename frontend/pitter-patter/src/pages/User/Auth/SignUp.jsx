@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -48,8 +48,6 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isValidated, setIsValidated] = useState(false);
-  const [isDuplicated, setIsDuplicated] = useState(false);
-  const emailInputRef = useRef(null);
 
   const isPasswordValid = () => {
     if (password === passwordCheck) {

@@ -48,6 +48,9 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> emailSignUp(@RequestBody EmailUserSignUpDto emailUserSignUpDto) {
         UserDto savedUserDto = userService.emailSignUp(emailUserSignUpDto);
 
+        savedUserDto.setTwoFa(null);
+        savedUserDto.setPassword(null);
+
         Map<String, Object> response = new HashMap<>();
         response.put("msg", "Created");
         response.put("data", savedUserDto);
@@ -84,6 +87,9 @@ public class UserController {
         int userId = Integer.parseInt(userDetails.getUsername());
         UserDto userDto = userService.getUserById(userId);
 
+        userDto.setTwoFa(null);
+        userDto.setPassword(null);
+
         Map<String, Object> response = new HashMap<>();
         response.put("msg", "Success");
         response.put("data", userDto);
@@ -95,6 +101,9 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> updateUserById(@AuthenticationPrincipal UserDetails userDetails, @RequestBody AdditionalUserInfoDto updatedUser) {
         int userId = Integer.parseInt(userDetails.getUsername());
         UserDto userDto = userService.updateUserById(userId, updatedUser);
+
+        userDto.setTwoFa(null);
+        userDto.setPassword(null);
 
         Map<String, Object> response = new HashMap<>();
         response.put("msg", "Success");
