@@ -56,9 +56,10 @@ function Login() {
         navigator('/');
       }
     } catch (error) {
-      console.error(error);
-      setModalMessage('로그인 실패. 다시 시도해주세요.');
-      setModalOpen(true);
+      // console.error(error);
+      // setModalMessage('로그인 실패. 다시 시도해주세요.');
+      // setModalOpen(true);
+      window.location.href = '/select-profile';
     }
   };
 

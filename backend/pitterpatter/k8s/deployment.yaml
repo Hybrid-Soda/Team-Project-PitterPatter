@@ -4,7 +4,7 @@ metadata:
   name: backend
   namespace: pitter-patter
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: backend
