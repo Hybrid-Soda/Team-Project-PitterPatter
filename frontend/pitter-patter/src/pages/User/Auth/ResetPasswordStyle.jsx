@@ -46,6 +46,6 @@ export const SubmitButton = styled.button`
   height: 5vh;
   border-radius: 1.5rem;
   font-weight: bold;
-  background-color: ${props => props.isValid ? 'var(--box-yellow-color)' : '#ccc'};
-  cursor: ${props => props.isValid ? 'url(/src/assets/cursor/pointer.png), pointer' : 'not-allowed'};
+  background-color: ${props => props.isvalid ? 'var(--box-yellow-color)' : '#ccc'};
+  cursor: ${props => props.isvalid ? 'url(/src/assets/cursor/pointer.png), pointer' : 'not-allowed'};
 `;
