@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 public class GameManager : MonoBehaviour
 {
     [DllImport("__Internal")]
-    private static extern void UnityToReact(int score);
+    private static extern void UnityToReact(int score, bool isGameEnd);
     public int finalScore;
     public float playTime;
     public string poseData;

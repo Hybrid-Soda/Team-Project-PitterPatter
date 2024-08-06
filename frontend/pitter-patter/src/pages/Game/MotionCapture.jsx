@@ -7,6 +7,7 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
   const [poseList, setPoseList] = useState([]);
   const width = 640
   const height = 480
+  let camera = null;
 
   useEffect(() => {
     // Mediapipe Pose 초기화, 옵션, 콜백 함수 설정
@@ -26,7 +27,8 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
     // 비디오 요소 참조를 통해 카메라 초기화 및 시작
     const videoElement = videoRef.current;
     if (videoElement) {
-      const camera = new Camera(videoElement, {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      camera = new Camera(videoElement, {
         onFrame: async () => {
           await pose.send({ image: videoElement })
         }
@@ -37,10 +39,14 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
     // 컴포넌트 언마운트 시 비디오 트랙 정지
     return () => {
       if (videoElement && videoElement.srcObject) {
-        videoElement.srcObject.getTracks().forEach((track) => track.stop());
+        videoElement.srcObject.getTracks().forEach((track) => track.stop())
       }
-    };
-  }, []);
+      if (camera) {
+        camera.stop();
+        camera = null;
+      }
+    }
+  }, [])
 
   // Pose 결과 처리
   const onPose = (results) => {

@@ -9,7 +9,7 @@ const UnityComponent = () => {
   const backgroundNum = 3
 
   // Provide Unity
-  const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityContext({
+  const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
       loaderUrl: "Build/BuildGZ.loader.js",
       dataUrl: "Build/BuildGZ.data.unityweb",
       frameworkUrl: "Build/BuildGZ.framework.js.unityweb",
@@ -38,6 +38,13 @@ const UnityComponent = () => {
       sendMessage('GameManager', 'ReceiveData', landmarks);
     }
   }, [sendMessage, landmarks, backgroundNum]);
+
+  // 컴포넌트 Unmount 시 유니티 종료
+  useEffect(() => {
+    return () => {
+      unload()
+    }
+  }, [unload])
 
   // Update landmarks
   const UpdateLandmark = (newLandmarks) => {
