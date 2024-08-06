@@ -1,5 +1,5 @@
 mergeInto(LibraryManager.library, {
-  UnityToReact: function (score) {
-    window.dispatchReactUnityEvent("UnityToReact", score);
+  UnityToReact: function (score, isGameEnd) {
+    window.dispatchReactUnityEvent("UnityToReact", score, Boolean(isGameEnd));
   },
 });

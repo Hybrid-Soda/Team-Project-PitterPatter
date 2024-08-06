@@ -37,7 +37,7 @@ export const Frame = styled.div`
   height: 400px;
   width: 328px;
   border-radius: 10px;
-  opacity: ${(props) => (props.target ? "1" : "0.5")};
+  opacity: ${(props) => (props.istarget ? "1" : "0.5")};
   transform: translateX(${(props) => -(props.index * 428)}px);
   transition: transform 0.5s;
 `;
@@ -124,4 +124,33 @@ export const ActionRow = styled.div`
   position: absolute;
   top: 80px;
   right: 100px;
+`;
+
+export const LayoutCoin = styled.div`
+  position: absolute;
+  top: 80px;
+  left: 100px;
+  width: 10vw;
+  height: 6vh;
+  background-color: #0000003a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  border-radius: 10rem;
+  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  
+  * {
+    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  }
+
+`
+
+export const CoinImg = styled.img`
+  width: 30px;
+`;
+
+export const CoinNumber = styled.div`
+  font-size: 1rem;
+  font-weight: bold;
 `;

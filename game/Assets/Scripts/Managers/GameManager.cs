@@ -20,11 +20,11 @@ public class GameManager : MonoBehaviour
     // 싱글톤 인스턴스에 접근하기 위한 정적 프로퍼티
     public static GameManager Instance { get { return instance; } }
 
-    public void UnityCall()
+    public void UnityCall(bool isEnded)
     {
 // 해당 코드가 WebGL 빌드에서만 실행되도록 보장
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-    UnityToReact(finalScore);
+    UnityToReact(finalScore, isEnded);
 #endif
     }
 

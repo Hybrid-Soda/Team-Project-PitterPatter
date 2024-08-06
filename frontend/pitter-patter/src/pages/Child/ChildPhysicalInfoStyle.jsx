@@ -23,7 +23,7 @@ export const PhysicalInfoInput = styled.div`
 export const PhysicalInfoHistory = styled.div`
     width: 100%;
     height: 50%;
-    overflow: hidden;
+    // overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,15 +31,13 @@ export const PhysicalInfoHistory = styled.div`
 
 export const PhysicalInfoHistoryInnerDiv = styled.div`
     width: 68%;
-    height: 100%;
-    /* background-color: #D9D9D9; */
+    height: 90%;
     background-color: #9cb5d429;
-    /* border: 10px solid #D9D9D9; */
     display: flex;
     flex-direction: column;
     gap: 1.7em;
     overflow-y: scroll;
-    padding-top: 3em;
+    padding: 1.5em 0;
 
     div {
         padding: 0px 25px;
@@ -58,6 +56,24 @@ export const PhysicalInfoHistoryInnerDiv = styled.div`
 
     button {
         color: #757575;
+    }
+
+    /* 스크롤바 스타일 */
+    &::-webkit-scrollbar {
+        width: 0; /* 스크롤바의 너비를 0으로 설정하여 보이지 않게 함 */
+        height: 0; /* 가로 스크롤바의 높이를 0으로 설정하여 보이지 않게 함 */
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent; /* 트랙의 배경색을 투명으로 설정 */
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: transparent; /* 핸들의 배경색을 투명으로 설정 */
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: transparent; /* 호버 시 핸들의 배경색을 투명으로 설정 */
     }
 `;
 

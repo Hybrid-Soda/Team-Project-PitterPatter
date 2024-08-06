@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,17 +38,51 @@ public class ItemService {
         return new CreateItemDto(itemName, price, photo, itemType, category);
     }
 
-    public List<FindItemListDto> findAll() {
-        return itemRepository
-                .findAll()
-                .stream()
-                .map(i -> new FindItemListDto(i.getId()))
-                .collect(Collectors.toList());
+    public List<FindItemListDto> findAll(Long childId) {
+        List<Item> items = itemRepository.findAll();
+        if (items == null || items.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<FindItemListDto> itemList = new ArrayList<>();
+        for (Item item : items) {
+            Map<Item, Child> itemByItem = itemRepository.findItemByItem(item.getId(), childId);
+            Child child = itemByItem.get(item);
+            ChildItem childItem1 = queryFactory
+                    .selectFrom(childItem)
+                    .where(childItem.child.eq(child),
+                            childItem.item.eq(item))
+                    .fetchOne();
+            if (childItem1 == null) {
+                itemList.add(new FindItemListDto(
+                        item.getId(),
+                        item.getItemName(),
+                        item.getPrice(),
+                        item.getPhoto(),
+                        item.getItemType(),
+                        item.getCategory(),
+                        false,
+                        false
+                ));
+            } else {
+                itemList.add(new FindItemListDto(
+                        item.getId(),
+                        item.getItemName(),
+                        item.getPrice(),
+                        item.getPhoto(),
+                        item.getItemType(),
+                        item.getCategory(),
+                        childItem1.isOn(),
+                        true
+                ));
+            }
+        }
+        return itemList;
     }
 
-    public FindItemDto findItemByItemId(
-            @PathVariable("item_id") Long itemId,
-            @RequestParam("child_id") Long childId) {
+
+
+    public FindItemDto findItemByItemId(Long itemId, Long childId) {
         Map<Item, Child> itemByItem = itemRepository.findItemByItem(itemId, childId);
         if (itemByItem.isEmpty()) {
             throw new EntityNotFoundException("해당 자녀가 아이템을 보유하고 있지 않습니다.");
@@ -59,7 +94,7 @@ public class ItemService {
                 .where(childItem.child.eq(child),
                         childItem.item.eq(item))
                 .fetchOne();
-        return new FindItemDto(childItem1.getId(),
+        return new FindItemDto(item.getId(),
                 item.getItemName(),
                 item.getPrice(),
                 item.getPhoto(),

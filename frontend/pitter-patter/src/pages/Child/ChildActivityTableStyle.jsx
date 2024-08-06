@@ -39,7 +39,7 @@ export const GraphHeader = styled.div`
     margin-left: 5px;
     font-weight: 700;
     text-decoration: underline;
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    cursor: pointer;
   }
 `;
 

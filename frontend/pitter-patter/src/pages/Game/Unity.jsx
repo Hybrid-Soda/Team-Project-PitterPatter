@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
 
 const UnityComponent = () => {
+  const [isGameEnd, setIsGameEnd] = useState(false);
   const [landmarks, setLandmarks] = useState("")
   const [score, setScore] = useState()
   const backgroundNum = 3
@@ -15,13 +16,18 @@ const UnityComponent = () => {
       codeUrl: "Build/BuildGZ.wasm.unityweb",
   });
 
+  const handleGameEnd = useCallback((score, isGameEnd) => {
+    setIsGameEnd(isGameEnd);
+    setScore(score);
+  }, []);
+
   // Unity -> React
   useEffect(() => {
-    addEventListener("UnityToReact", setScore);
+    addEventListener("UnityToReact", handleGameEnd);
     return () => {
-      removeEventListener("UnityToReact", setScore);
+      removeEventListener("UnityToReact", handleGameEnd);
     };
-  }, [addEventListener, removeEventListener, setScore]);
+  }, [addEventListener, removeEventListener, handleGameEnd]);
 
   // React -> Unity
   useEffect(() => {
@@ -55,6 +61,7 @@ const UnityComponent = () => {
       />
 
       <p>{`You've scored ${score} points.`}</p>
+      <p>{`isGameEnd = ${isGameEnd}`}</p>
       <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );

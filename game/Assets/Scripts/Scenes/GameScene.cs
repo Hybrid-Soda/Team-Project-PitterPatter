@@ -35,6 +35,7 @@ public class GameScene : MonoBehaviour
         roundDuration = 20f;
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
+        GameManager.Instance.UnityCall(false);
     }
 
     void Update()
@@ -129,6 +130,7 @@ public class GameScene : MonoBehaviour
     {
         GameManager.Instance.playTime = playTime;
         GameManager.Instance.playTimeTxt = playTimeTxt.text;
+        GameManager.Instance.UnityCall(true);
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene("Score");
         clearImage.gameObject.SetActive(false);
