@@ -7,25 +7,29 @@ using UnityEngine.SceneManagement;
 public class GameScene : MonoBehaviour
 {
     public int round;
-    public Text playTimeTxt;
-    public Text scoreTxt;
-    public Text roundTxt;
-    public Image clearImage;
     public bool getPoint;
+    public Text scoreTxt;
+    public Text playTimeTxt;
+    public Image clearImage;
+    public Image feedbackImg;
+    public List<Image> feedbackImgs;
+    public List<GameObject> colliders = new();
 
     private int score;
     private bool isEnded;
     private float playTime;
     private float roundDuration;
     private float nextRoundTime;
-
-    // 충돌한 오브젝트 리스트와 점수 획득 여부 저장
-    public List<GameObject> colliders = new();
     private RoundUp roundUp;
 
     void Start()
     {
         roundUp = FindAnyObjectByType<RoundUp>();
+        Init();
+    }
+
+    private void Init()
+    {
         round = 1;
         playTime = 0;
         score = 0;
@@ -35,6 +39,7 @@ public class GameScene : MonoBehaviour
         roundDuration = 20f;
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
+        feedbackImg.gameObject.SetActive(false);
         GameManager.Instance.UnityCall(false);
     }
 
@@ -46,75 +51,93 @@ public class GameScene : MonoBehaviour
             UpdateUI();
         }
 
-        if (isEnded || playTime < nextRoundTime) return;
-
-        if (round == 3) EndGame();
-        else
+        if (!isEnded && playTime >= nextRoundTime)
         {
-            round++;
-            roundUp.IncreaseRound();
-
-            if (round == 3) roundDuration = 10f;
-            
-            nextRoundTime = playTime + roundDuration;
-            colliders.Clear();
-            getPoint = false;
+            if (round == 3) EndGame();
+            else StartNewRound();
         }
+    }
+
+    private void StartNewRound()
+    {
+        round++;
+        roundUp.IncreaseRound();
+
+        if (round == 3) roundDuration = 10f;
+
+        nextRoundTime = playTime + roundDuration;
+        colliders.Clear();
+        getPoint = false;
     }
 
     private void UpdateUI()
     {
-        scoreTxt.text = string.Format("{0:n0}", score);
-        roundTxt.text = string.Format("{0:n0}", round);
+        scoreTxt.text = score.ToString("n0");
 
         int hour = (int)(playTime / 3600);
-        int min = (int)((playTime - hour * 3600) / 60);
+        int min = (int)((playTime % 3600) / 60);
         int second = (int)(playTime % 60);
-        
-        playTimeTxt.text = string.Format("{0:00}", hour) + ":"
-        + string.Format("{0:00}", min)+ ":"
-        + string.Format("{0:00}", second);
+
+        playTimeTxt.text = $"{hour:00}:{min:00}:{second:00}";
     }
 
     // 점수 업데이트
-    public void UpdateScore()
+    public void UpdateScore(int round)
     {
         getPoint = true;
-        if (colliders.Count >= 6)
-        {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
-        }
-        else
-        {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
-        }
-        // 충돌한 오브젝트가 9개 이상 -> 10점 (perfect)
-        if (colliders.Count >= 9) score += 10;
-        // 충돌한 오브젝트가 6개 이상 -> 5점 (good)
-        else if (colliders.Count >= 6) score += 5;
-        // 충돌한 오브젝트가 3개 이상 -> 3점 (soso)
-        else if (colliders.Count >= 3) score += 3;
+        int scoreInc = CalcScore(colliders.Count, round);
+        score += scoreInc;
         GameManager.Instance.finalScore = score;
+        SetFbMsg(scoreInc);
     }
 
-    public void UpdateScore2()
+    // 점수 계산
+    private int CalcScore(int count, int round)
     {
-        getPoint = true;
-        if (colliders.Count < 6)
+        if (round == 1)
         {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+            if (count >= 9) return 10;
+            if (count >= 6) return 5;
+            if (count >= 3) return 3;
         }
         else
         {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
+            if (count < 3) return 10;
+            if (count < 6) return 5;
+            if (count < 9) return 3;
         }
-        // 충돌한 오브젝트가 3개 미만 -> 10점 (perfect)
-        if (0 <= colliders.Count && colliders.Count < 3) score += 10;
-        // 충돌한 오브젝트가 6개 미만 -> 5점 (good)
-        else if (colliders.Count < 6) score += 5;
-        // 충돌한 오브젝트가 9개 미만 -> 3점 (soso)
-        else if (colliders.Count < 9) score += 3;
-        GameManager.Instance.finalScore = score;
+        return 0;
+    }
+
+    private void SetFbMsg(int scoreInc)
+    {
+        switch (scoreInc)
+        {
+            case 10: // Perfect
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                feedbackImg = feedbackImgs[0];
+                break;
+            case 5: // Good
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                feedbackImg = feedbackImgs[1];
+                break;
+            case 3: // Soso
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                feedbackImg = feedbackImgs[2];
+                break;
+            case 0:
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
+                return;
+        }
+
+        feedbackImg.gameObject.SetActive(true);
+        StartCoroutine(HideFbMsg(1.5f));
+    }
+
+    private IEnumerator HideFbMsg(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        feedbackImg.gameObject.SetActive(false);
     }
 
     private void EndGame()

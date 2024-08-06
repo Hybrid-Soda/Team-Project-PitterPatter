@@ -22,11 +22,8 @@ public class TriggerWall : MonoBehaviour
         {
             if (!gameScene.getPoint)
             {
-                if (gameScene.round == 1) {
-                    gameScene.UpdateScore();
-                }
-                else if (gameScene.round == 2) {
-                    gameScene.UpdateScore2();
+                if (gameScene.round < 3) {
+                    gameScene.UpdateScore(gameScene.round);
                 }
                 gameScene.colliders.Clear();
             }
