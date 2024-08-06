@@ -118,6 +118,37 @@ export const sendResetPasswordEmail = async (email) => {
   return response;
 }
 
+// 2차 비밀번호 재설정(이메일 토큰으로)
+export const reset2faByEmailToken = async (email, emailToken, twoFa) => {
+  const response = await userApi.patch("/2fa/reset/token", {
+    "twoFaDto": {
+        "twoFa": twoFa
+    },
+    "emailTokenVerifyDto": {
+        "email": email,
+        "emailToken": emailToken
+    }
+  });
+  return response;
+}
+
+// 2차 비밀번호 재설정 이메일 토큰 검증
+export const verifyEmailTokenForReset2fa = async (email, emailToken) => {
+  const response = await userApi.post("/verify/2fa/reset_token", {
+    "email": email,
+    "emailToken": emailToken,
+  });
+  return response;
+}
+
+// 2차 비밀번호 재설정 이메일 발송
+export const sendReset2faEmail = async (email) => {
+  const response = await userApi.post("/2fa/reset_token", {
+    "email": email
+  });
+  return response;
+}
+
 // ========================== 기타 ===============================
 // 2차 비밀번호 검증
 export const verify2fa = async (jwtToken, twoFa) => {
