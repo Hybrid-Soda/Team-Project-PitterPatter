@@ -2,6 +2,7 @@ package com.pitpat.pitterpatter.global.config.user;
 
 import com.pitpat.pitterpatter.domain.user.jwt.JwtAuthenticationFilter;
 import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
+import com.pitpat.pitterpatter.domain.user.oauth2.CustomFailureHandler;
 import com.pitpat.pitterpatter.domain.user.oauth2.CustomSuccessHandler;
 import com.pitpat.pitterpatter.domain.user.service.CustomOAuth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
+    private final CustomFailureHandler customFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -88,11 +90,12 @@ public class SecurityConfig {
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
+                        .failureHandler(customFailureHandler)
                 )
                 // TODO: 예외 종류에 따라 처리할 수 있도록 exception handler 만들기
                 // 인증되지 않은 접근 시 401 응답
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 );
 
         return http.build();
