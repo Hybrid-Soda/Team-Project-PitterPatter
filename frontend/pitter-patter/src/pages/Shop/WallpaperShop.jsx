@@ -26,6 +26,11 @@ function WallpaperShop() {
   const [wallpapers, setWallpapers] = useState([]);
   const [onWallpaper, setOnWallpaper] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // 추가
+  const [points, setPoints] = useState(0); // 추가
+  const [pointRecords, setPointRecords] = useState([]); // 추가
+  const [page, setPage] = useState(1); // 페이지 번호 추가
+  const itemsPerPage = 20; // 페이지당 아이템 수
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -38,6 +43,8 @@ function WallpaperShop() {
 
   useEffect(() => {
     getFrames(childId);
+    getPoints(childId);
+    getPointRecords(childId, 1); // 첫 페이지 로드
   }, []);
 
   const getFrames = async (childId) => {
@@ -54,6 +61,41 @@ function WallpaperShop() {
     } catch (error) {
       console.log("Error fetching frames:", error);
     }
+  };
+
+  const getPoints = async (childId) => {
+    try {
+      const response = await assetsApi.get(`/point/${childId}`, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+        }
+      });
+      setPoints(response.data.point);
+    } catch (error) {
+      console.log("Error fetching points:", error);
+    }
+  };
+
+  const getPointRecords = async (childId, page) => {
+    try {
+      const response = await assetsApi.get(`/point-record/${childId}`, {
+        params: {
+          page: page,
+          per_page: itemsPerPage,
+        },
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+        }
+      });
+      setPointRecords(prevRecords => [...prevRecords, ...response.data]);
+      setPage(page);
+    } catch (error) {
+      console.log("Error fetching point records:", error);
+    }
+  };
+
+  const loadMoreRecords = () => {
+    getPointRecords(childId, page + 1);
   };
 
   const carouselRef = useRef(null);
@@ -95,7 +137,7 @@ function WallpaperShop() {
     }
   };
 
-const purchaseItem = async (childId, itemId) => {
+  const purchaseItem = async (childId, itemId) => {
     try {
       await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
         headers: {
@@ -131,7 +173,7 @@ const purchaseItem = async (childId, itemId) => {
     <Wallpaper style={{ backgroundImage: `url(${wallpapers[currentIdx]?.photo})` }}>
       <LayoutCoin onClick={openModal}>
         <CoinImg src={Coin} alt="" />
-        <CoinNumber>50 코인</CoinNumber>
+        <CoinNumber>{points} 코인</CoinNumber>
       </LayoutCoin>
 
       <ActionRow>
@@ -176,7 +218,7 @@ const purchaseItem = async (childId, itemId) => {
           </TransparentButton>
         </RowWrap>
       </ToolBar>
-      {isModalOpen && <CoinModal onClose={closeModal} />}
+      {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />} {/* 모달에 pointRecords 전달 */}
     </Wallpaper>
   );
 }
