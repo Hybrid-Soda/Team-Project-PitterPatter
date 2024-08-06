@@ -56,7 +56,7 @@ public class ChildItemService {
 
         List<FindChildItemDto> collect = childItems.stream()
                 .map(childItem -> new FindChildItemDto(
-                        childItem.getId(),
+                        childItem.getItem().getId(),
                         childItem.getItem().getItemName(),
                         childItem.getItem().getPhoto(),
                         childItem.getItem().getItemType(),
