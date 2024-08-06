@@ -20,13 +20,13 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping("/item")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(@RequestParam("child_id") Long childId) {
         try {
-            List<FindItemListDto> items = itemService.findAll();
+            List<FindItemListDto> items = itemService.findAll(childId);
             return ResponseEntity.ok(items);
         } catch (Exception e) {
             ErrorResponseDto errorResponse = new ErrorResponseDto("아이템 리스트 조회 실패: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 

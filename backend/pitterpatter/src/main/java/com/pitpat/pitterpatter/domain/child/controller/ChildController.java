@@ -30,9 +30,8 @@ public class ChildController {
     private final ChildService childService;
 
     @GetMapping
-    public ResponseEntity<List<ChildResponseDTO>> getChildrenList() {
-        // Test용 데이터
-        Integer userId = 1;
+    public ResponseEntity<List<ChildResponseDTO>> getChildrenList(@AuthenticationPrincipal UserDetails userDetails) {
+        int userId = Integer.parseInt(userDetails.getUsername());
         List<ChildResponseDTO> childrenByUserId = childService.getChildrenByUserId(userId);
         return new ResponseEntity<>(childrenByUserId, HttpStatus.OK);
     }

@@ -59,28 +59,13 @@ function UserInfo() {
           <InputTitle>아이디</InputTitle>
           <InputBox type="text" placeholder="아이디" />
         </InputItem>
-        <InputItem>
-          <InputTitle>이름</InputTitle>
-          <InputBox type="text" placeholder="이름" />
-        </InputItem>
-        <InputItem>
-          <InputTitle>닉네임</InputTitle>
-          <InputBox type="text" placeholder="닉네임" />
-        </InputItem>
+        {/* <InputItem>
+          <InputTitle>가입일</InputTitle>
+          <InputBox type="date" placeholder="created-at" />
+        </InputItem> */}
         <InputItem>
           <InputTitle>가족 팀 이름</InputTitle>
           <InputBox type="text" placeholder="팀이름" />
-        </InputItem>
-        <InputItem>
-          <InputTitle>생년월일</InputTitle>
-          <InputBox type="date" placeholder="생년월일" />
-        </InputItem>
-        <InputItem>
-          <InputTitle>성별</InputTitle>
-          <SelectBox>
-            <option value="male">남자</option>
-            <option value="female">여자</option>
-          </SelectBox>
         </InputItem>
       </InputWrap>
       <Profile style={{background: 'none', height: '13vh'}}>

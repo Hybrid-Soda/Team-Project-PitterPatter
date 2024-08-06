@@ -1,8 +1,24 @@
-import { Blank, BlankRow, ButtonIcon, Frame, GuideText, ActionButton, CurrentWrap, TransparentButton, Wallpaper, CarouselWrap, ActionRow } from "./SnapshotShopStyle";
+import { 
+  Blank, 
+  BlankRow, 
+  ButtonIcon, 
+  Frame, 
+  GuideText, 
+  ActionButton, 
+  CurrentWrap, 
+  TransparentButton, 
+  Wallpaper, 
+  CarouselWrap, 
+  ActionRow,
+  CoinImg,
+  LayoutCoin,
+  CoinNumber,
+ } from "./SnapshotShopStyle";
 
 import { useState, useRef } from "react";
-
 import { useNavigate } from "react-router-dom";
+import Coin from "/src/assets/icons/Coin.png";
+import CoinModal from './CoinModal'; // 추가
 
 function SnapshotShop() {
   const Navigator = useNavigate();
@@ -15,9 +31,9 @@ function SnapshotShop() {
   ]);
 
   const [currentIdx, setCurrentIdx] = useState(0);
-
   const buttonRef = useRef(null);
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 추가
 
   const handleLeft = () => {
     buttonRef.current.style.opacity = 0;
@@ -55,11 +71,23 @@ function SnapshotShop() {
     Navigator(-1);
   }
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Wallpaper>
       <GuideText>
           저장될 사진의 프레임을 골라보세요!
       </GuideText>
+      <LayoutCoin onClick={openModal}>
+        <CoinImg src={Coin} alt="" />
+        <CoinNumber>50 코인</CoinNumber>
+      </LayoutCoin>
       <ActionRow>
         <ActionButton style={{ marginRight: "15px" }} onClick={cancel}>취소</ActionButton>
         <ActionButton highlight="true" onClick={save}>저장</ActionButton>
@@ -91,6 +119,7 @@ function SnapshotShop() {
           <ActionButton highlight="true" ref={buttonRef} onClick={handlePurchase}>구매</ActionButton>
         : <ActionButton disabled ref={buttonRef} >적용 중</ActionButton>
       }
+      {isModalOpen && <CoinModal onClose={closeModal} />}
     </Wallpaper>
   );
 }

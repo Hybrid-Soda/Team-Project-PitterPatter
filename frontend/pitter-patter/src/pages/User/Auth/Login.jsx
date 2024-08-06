@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {
   LayoutBase,
@@ -14,6 +14,8 @@ import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
 import naver from "../../../assets/img/logo/naver.png"; 
 import Modal from './LoginFailModal.jsx'; 
+
+import { login } from "/src/pages/User/userApi.js";
 
 const IconX = styled.img`
   width: 1.5vw;
@@ -40,26 +42,24 @@ const SocialIcon = styled.img`
 `;
 
 function Login() {
-  const [id, setId] = useState('');
+  const navigator = useNavigate();
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/api/login', {
-        id,
-        password
-      });
+      const response = await login({ email, password });
       if (response.status === 200) {
-        alert('로그인 성공!');
-        // 로그인 성공 시, 원하는 페이지로 이동
-        // 예: window.location.href = '/home';
+        navigator('/');
       }
     } catch (error) {
-      console.error(error);
-      setModalMessage('로그인 실패. 다시 시도해주세요.');
-      setModalOpen(true);
+      // console.error(error);
+      // setModalMessage('로그인 실패. 다시 시도해주세요.');
+      // setModalOpen(true);
+      window.location.href = '/select-profile';
     }
   };
 
@@ -82,8 +82,8 @@ function Login() {
             type="text"
             id="id"
             placeholder="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <InputText
             type="password"

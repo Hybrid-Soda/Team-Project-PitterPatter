@@ -89,5 +89,17 @@ pipeline {
         }
       }
     }
+
+    stage('Clean up Directory') {
+      steps {
+        script {
+          sh '''
+            rm -rf ./*
+            rm -rf .git
+            rm .gitignore
+          '''
+        }
+      }
+    }
   }
 }

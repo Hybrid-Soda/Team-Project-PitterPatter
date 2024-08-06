@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService{
         }
         // 8. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
+            log.error("IllegalArgumentException: [일반 유저 회원가입] 비밀번호 형식이 잘못되었습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
         }
     }
 
@@ -114,8 +114,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isEmailAlreadyInUse(String email) {
         if (userRepository.existsByEmail(email)) {
-            log.error("DuplicateResourceException: Duplicate email sign-up attempt with email: {}", email);
-            throw new DuplicateResourceException("This email address is already registered.");
+            log.error("DuplicateResourceException: [이메일 중복 체크] 이메일이 중복되었습니다: {}", email);
+            throw new DuplicateResourceException("이미 가입된 계정이 있습니다.");
         }
         return false;
     }
@@ -125,8 +125,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean isTeamNameAlreadyInUse(String teamName) {
         if (userRepository.existsByTeamName(teamName)) {
-            log.error("DuplicateResourceException: Duplicate team name sign-up attempt with team name: {}", teamName);
-            throw new DuplicateResourceException("This team name is already in use.");
+            log.error("DuplicateResourceException: [팀 이름 중복 체크] 이미 사용 중인 팀 이름이 있습니다: {}", teamName);
+            throw new DuplicateResourceException("이미 사용 중인 이름 입니다.");
         }
         return false;
     }
@@ -146,8 +146,8 @@ public class UserServiceImpl implements UserService{
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
         else {
-            log.error("NoSuchElementException: User not found with id: {}", userId);
-            throw new NoSuchElementException("User not found");
+            log.error("NoSuchElementException: [userId값으로 회원정보 조회] 해당 userId를 가진 사용자가 존재하지 않습니다: {}", userId);
+            throw new NoSuchElementException("해당 사용자가 존재하지 않습니다.");
         }
     }
 
@@ -164,8 +164,8 @@ public class UserServiceImpl implements UserService{
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
         else {
-            log.error("NoSuchElementException: User not found with email: {}", email);
-            throw new NoSuchElementException("User not found");
+            log.error("NoSuchElementException: [email값으로 회원정보 조회] 해당 email을 가진 사용자가 존재하지 않습니다: {}", email);
+            throw new NoSuchElementException("해당 사용자가 존재하지 않습니다.");
         }
     }
 
@@ -191,14 +191,14 @@ public class UserServiceImpl implements UserService{
 
         if (updatedTwoFa != null) {
             // 4. 2차 비밀번호 유효성 검사
-            if (isValid2Fa(updatedTwoFa)) {
+            if (isValid2fa(updatedTwoFa)) {
                 // 5. 2차 비밀번호가 유효할 경우 UsetEntity 업데이트
                 existingUser.setTwoFa(this.encode(updatedTwoFa));
             }
             // 6. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
             else {
-                log.error("IllegalArgumentException: 2FA has not been verified: {}", updatedTwoFa);
-                throw new IllegalArgumentException("This 2FA has not been verified.");
+                log.error("IllegalArgumentException: [회원정보 변경] 2차 비밀번호 형식이 잘못되었습니다: {}", updatedTwoFa);
+                throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");
             }
         }
 
@@ -206,7 +206,7 @@ public class UserServiceImpl implements UserService{
         return UserDto.toDto(userRepository.save(existingUser));
     }
 
-    // jwt 토큰에서 userId 값을 꺼내와 비밀번호 재설정
+    // jwt 토큰의 userId값을 이용하거나 email로 비밀번호 재설정
     @Override
     @Transactional
     public void resetPassword(String id, PasswordDto passwordDto, String type) throws NoSuchElementException {
@@ -243,8 +243,32 @@ public class UserServiceImpl implements UserService{
         }
         // 5. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
-            log.error("IllegalArgumentException: Password is invalid: {}", password);
-            throw new IllegalArgumentException("This password is invalid");
+            log.error("IllegalArgumentException: [비밀번호 재설정] 비밀번호 형식이 잘못되었습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
+        }
+    }
+
+    // email로 2차 비밀번호 재설정
+    @Override
+    public void reset2fa(String email, TwoFaDto twoFaDto) throws NoSuchElementException {
+        String twoFa = twoFaDto.getTwoFa();
+
+        // 2. email에 해당하는 유저를 DB에서 가져옴
+        // email에 해당하는 유저가 없을 경우 NoSuchElementException 발생
+        UserEntity existingUser = this.getUserByEmail(email).toEntity();
+
+        // 3. 2차 비밀번호가 유효한 지 확인
+        if (isValid2fa(twoFa)) {
+            // 4. 2차 비밀번호가 유효한 경우 UserEntity에 2차 비밀번호 업데이트
+            existingUser.setTwoFa(this.encode(twoFa));
+
+            // 5. DB에 저장
+            userRepository.save(existingUser);
+        }
+        // 5. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        else {
+            log.error("IllegalArgumentException: [2차 비밀번호 재설정] 2차 비밀번호 형식이 잘못되었습니다: {}", twoFa);
+            throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");
         }
     }
 
@@ -264,13 +288,14 @@ public class UserServiceImpl implements UserService{
         }
 
         // 3. redis에 토큰이 존재하지 않거나 redis에 있는 토큰과 들어온 토큰이 같지 않은 경우 IllegalArgumentException 예외 발생
-        throw new IllegalArgumentException("Token is not valid.");
+        log.error("IllegalArgumentException: [이메일 토큰 검증] DB에 해당 이메일 토큰이 존재하지 않거나 일치하지 않습니다: {}", emailToken);
+        throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
     }
 
     // 비밀번호 재설정 메일 발송을 위한 토큰 생성
     @Override
     @Transactional
-    public String createEmailToken(EmailDto emailDto) {
+    public String createEmailToken(EmailDto emailDto, String type) {
         String email = emailDto.getEmail();
 
         // UUID를 사용하여 이메일 토큰 생성
@@ -278,16 +303,16 @@ public class UserServiceImpl implements UserService{
 
         // Redis에 저장
         EmailTokenEntity emailToken = EmailTokenEntity.builder()
-                                                        .email(email)
-                                                        .emailToken(token)
-                                                        .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
-                                                        .build();
+                .email(type + email)
+                .emailToken(token)
+                .ttl(EMAIL_TOKEN_EXPIRATION_TIME)
+                .build();
         emailTokenRepository.save(emailToken);
 
         return token;
     }
 
-    // 비밀번호 재설정 메일 발송
+    // 비밀번호 / 2차 비밀번호 재설정 메일 발송
     @Override
     public void sendEmail(EmailDto emailDto, String subject, String text) throws MessagingException {
 
@@ -316,8 +341,8 @@ public class UserServiceImpl implements UserService{
 
         // 3. 입력한 2차 비밀번호와 저장되어있는 해시된 2차 비밀번호가 다르다면 IllegalArgumentException 발생
         if (!isValid) {
-            log.error("IllegalArgumentException: 2FA has not been verified: {}", twoFa);
-            throw new IllegalArgumentException("This 2FA has not been verified.");
+            log.error("IllegalArgumentException: [2차 비밀번호 검증] 2차 비밀번호가 일치하지 않습니다: {}", twoFa);
+            throw new IllegalArgumentException("2차 비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -376,7 +401,8 @@ public class UserServiceImpl implements UserService{
         }
 
         // redis에 토큰이 존재하지 않거나 redis에 있는 토큰과 들어온 토큰이 같지 않은 경우 예외 발생
-        throw new IllegalArgumentException("JWT Token is not same");
+        log.error("IllegalArgumentException: [리프레시 토큰 검증] DB에 refresh 토큰이 존재하지 않거나 일치하지 않습니다: {}", refreshToken);
+        throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
     }
 
 
@@ -403,7 +429,7 @@ public class UserServiceImpl implements UserService{
 
     // 입력으로 들어온 2차 비밀번호 유효성 검사
     @Override
-    public boolean isValid2Fa(String twoFa) {
+    public boolean isValid2fa(String twoFa) {
         if (twoFa == null) {
             return false;
         }
