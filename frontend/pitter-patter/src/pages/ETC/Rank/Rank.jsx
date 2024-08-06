@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { rankingListGet } from '../../Child/childApi.js';
 import styled from 'styled-components';
 import {
   OuterBox,
@@ -32,42 +33,45 @@ const CollapseContent = styled.div`
 
 function Rank() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [data, setData] = useState([]);
+  const [childRank, setChildRank] = useState(-1);
 
-  const rankData = [
-    {
-      rank: 1,
-      name: "Ranker 1",
-      score: 12323451451243
-    },
-    {
-      rank: 2,
-      name: "Ranker 2",
-      score: 12323451451243
-    },
-    {
-      rank: 3,
-      name: "Ranker 3",
-      score: 12323451451243
-    },
-    {
-      rank: 1234,
-      name: "Player 1234",
-      score: 12323451451243
-    },
-    {
-      rank: 1235,
-      name: "Me",
-      score: 12323451451243
-    },
-    {
-      rank: 1236,
-      name: "Player 1236",
-      score: 12323451451243
-    }
-  ];
+  const childId = 1; // 테스트용 childId 변수 선언
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDg2MjMsImlhdCI6MTcyMjkwODYyMywiZXhwIjoxNzIyOTA5NTIzLCJqdGkiOiI2MjdiNDA1Zi02OGUwLTQwNTMtYjA2Mi01NWI3ZTcyZjdjNmYifQ.SmkBbWFtTtyZNwkfSXF9wjaXJ1qEIA7WWkS1UFiUsRmqrHXzYKdiAn4Bk4N5zV6GiNg_UdCkRAcV2vKa4TB_vA";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const rankingData = await rankingListGet(childId, token);
+        const formattedData = rankingData.data.map((item, idx) => {
+          console.log(childRank);
+          if(childId == item.childId) {
+            setChildRank(idx);
+            console.log(childId);
+          }
+          return {
+            childId: item.childId,
+            nickname: item.nickname,
+            profileImage: item.profileImage,
+            maxScore: item.maxScore,
+            ranking: item.ranking
+          };
+        });
+        setData(formattedData);
+        console.log(formattedData);
+      } catch (error) {
+        console.error('다음과 같은 문제가 발생 했습니다:', error);
+      }
+    };
+    fetchData();
+  }, [childId, token]);
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleImageError = (e) => {
+    e.target.src = Trophy;
   };
 
   return (
@@ -77,29 +81,29 @@ function Rank() {
         <RankBarOverlay>
           <RankBarWrap style={{ left: "41vw" }} delay={0}>
             {/* trophy 사진 대신 유저 프로필 사진 넣어야 함 */}
-            <ProfileImg src={Trophy} alt="Trophy" />
+            <ProfileImg src={data.length > 0 ? data[0].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
             <RankBar style={{ height: "69vh" }}>
               <RankName>
                 <MedalIMG src={firstMedal} alt="" />
-                {rankData[0].name}
+                {data.length > 0 ? data[0].nickname : ""}
               </RankName>
             </RankBar>
           </RankBarWrap>
           <RankBarWrap style={{ left: "11vw" }} delay={0.3}>
-            <ProfileImg src={Trophy} alt="Trophy" />
+            <ProfileImg src={data.length > 1 ? data[1].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
             <RankBar style={{ height: "62vh" }}>
               <RankName>
                 <MedalIMG src={secondMedal} alt="" />
-                {rankData[1].name}
+                {data.length > 1 ? data[1].nickname : ""}
               </RankName>
             </RankBar>
           </RankBarWrap>
           <RankBarWrap style={{ left: "71vw" }} delay={0.5}>
-            <ProfileImg src={Trophy} alt="Trophy" />
+            <ProfileImg src={data.length > 2 ? data[2].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
             <RankBar style={{ height: "58vh" }}>
               <RankName>
                 <MedalIMG src={thirdMedal} alt="" />
-                {rankData[2].name}
+                {data.length > 2 ? data[2].nickname : ""}
               </RankName>
             </RankBar>
           </RankBarWrap>
@@ -108,27 +112,27 @@ function Rank() {
           <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
           <RankWrap>
             <div>
-              <RankOrder># {rankData[3].rank}</RankOrder>
-              <span>{rankData[3].name}</span>
+              <RankOrder># {data.length > 3 ? data[3].ranking : 999}</RankOrder>
+              <span>{data.length > 3 ? data[3].nickname : ""}</span>
             </div>
-            <span>{rankData[3].score}</span>
+            <span>{data.length > 3 ? data[3].maxScore : ""}</span>
           </RankWrap>
           <RankWrap  style={{ backgroundColor: '#ffe75c47' }}>
             <div>
-              <RankOrder># {rankData[4].rank}</RankOrder>
-              <span>{rankData[4].name}</span>
+              <RankOrder># {data.length > 4 ? data[4].ranking : 999}</RankOrder>
+              <span>{data.length > 4 ? data[4].nickname : ""}</span>
             </div>
-            <span>{rankData[4].score}</span>
+            <span>{data.length > 4 ? data[4].maxScore : ""}</span>
           </RankWrap>
             {/* <CollapseContent activate={toggleCollapse}>
               <p>최고 점수 ##</p>
             </CollapseContent> */}
           <RankWrap>
             <div>
-              <RankOrder># {rankData[5].rank}</RankOrder>
-              <span>{rankData[5].name}</span>
+              <RankOrder># {data.length > 5 ? data[5].ranking : 999}</RankOrder>
+              <span>{data.length > 5 ? data[5].nickname : ""}</span>
             </div>
-            <span>{rankData[5].score}</span>
+            <span>{data.length > 5 ? data[5].maxScore : ""}</span>
           </RankWrap>
           <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
         </InnerBox>

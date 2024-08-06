@@ -46,3 +46,12 @@ export const childBMIHistory = async (childId, startDate, endDate, token) => {
     });
     return response;
 };
+
+export const rankingListGet = async (childId, token) => {
+    const response = await childApi.get(`/${childId}/play-record/ranking`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response;
+};
