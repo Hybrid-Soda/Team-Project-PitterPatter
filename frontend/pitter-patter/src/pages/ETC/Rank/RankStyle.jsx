@@ -107,4 +107,5 @@ export const RankName = styled.div`
 export const ProfileImg = styled.img`
   width: 10vw;
   height: 10vw;
+  border-radius: 50%
 `;
