@@ -142,19 +142,20 @@ function SignUp() {
 
   // test 중.
   const test = async () => {
-    try {
-      const response = await kakaoLogin();
-      const msg = response.data.msg;
+    window.location.href = "https://pitter-patter.picel.net/oauth2/authorization/kakao";
+    // try {
+    //   const response = await kakaoLogin();
+    //   const msg = response.data.msg;
 
-      if (response.status === 200) {
-        alert(msg);
-      } else {
-        alert("카카오 로그인에 실패했습니다.");
-      }
-    } catch (error) {
-      alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
-      handleError(error);
-    }
+    //   if (response.status === 200) {
+    //     alert(msg);
+    //   } else {
+    //     alert("카카오 로그인에 실패했습니다.");
+    //   }
+    // } catch (error) {
+    //   alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
+    //   handleError(error);
+    // }
   }
 
   const handleError = (error) => {

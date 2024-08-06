@@ -4,6 +4,7 @@ import com.pitpat.pitterpatter.domain.user.jwt.JwtAuthenticationFilter;
 import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
 import com.pitpat.pitterpatter.domain.user.oauth2.CustomSuccessHandler;
 import com.pitpat.pitterpatter.domain.user.service.CustomOAuth2UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +36,25 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Arrays.asList("https://pitter-patter.picel.net", "http://localhost:8080"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                }))
                 // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -38,6 +63,7 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/",
+                                        "/favicon.ico",
                                         "/api/user/2fa/reset/token",
                                         "/api/user/verify/2fa/reset_token",
                                         "/api/user/2fa/reset_token",
