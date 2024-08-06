@@ -210,30 +210,26 @@ export const GoResultButton = styled.button`
   transition: 0.3s;
 `;
 
-export const Countdown = styled.div`
-  font-size: 40px;
-  color: #f9810a;
-  font-family: "LOTTERIACHAB";
-  background-color: rgba(255, 255, 255, ${(props) => (props.timer) / 6});
-  transition: ease-in-out 0.5s;
-  z-index: 1;
+export const Modal = styled.div`
   position: absolute;
-  top: 16px;
-  left: ${(props) => props.index % 2 == 0 ? "16px" : "172px"};
-  width: 140px;
-  height: 126px;
+  z-index: 10;
+  overflow: hidden;
+  width:40vw;
+  height:36vw;
+  object-fit: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-export const Modal = styled.div`
-  width: 50vw;
-  height: auto;
-  position: absolute;
-  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.7);
 `
 
 export const ModalContent = styled.div`
-  
+    height: 100%;
+    width: 100%;
+`
+
+export const ViewFinder = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
