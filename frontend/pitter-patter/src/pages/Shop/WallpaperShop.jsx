@@ -20,12 +20,12 @@ function WallpaperShop() {
           child_id: childId,
         },
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NjM0NTAsImlhdCI6MTcyMjg2MzQ1MCwiZXhwIjoxNzIyODY2NDUwLCJqdGkiOiI2YzY2N2I3Ni1mYWI2LTQ4NjQtOWNmZC0wNjVjOGY2ZjMzYTIifQ.swAqzv8jMVyynOXG-eurM8TeHePYTc4fkwffgIQJkblnEykDlTJbEzFVhkIQAIsxJYRinBt1YoDYYXNurFv8Ag'
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIyOTA3NjYxLCJqdGkiOiJmYmY3YWRmNS0yZTIxLTRmMjEtYTZhYy05MDViZjg0ODhmZTgifQ.RFDnaDjT-u6qyYtEBiwOjd44N0aQ7qsNy1cM1WRwDSoqf6lyT2CD6Ic_8kJJTfuX-9c7vXYNzuXP5u3evfrTOw'
         }
       });
       setWallpapers(response.data.filter(item => item.itemType === 'BACKGROUND'));
     } catch (error) {
-      console.log("Error fetching frames:", error);
+      console.log("Error fetching frames:", error.response.data.msg);
     }
   };
 
@@ -51,28 +51,53 @@ function WallpaperShop() {
     Navigator(-1);
   };
 
-  // Todo 아이템 has가 false일때 처리
-  // 구매 or 장착 만들어야됌
   const save = async () => {
-    if (onWallpaper && !onWallpaper.on) { // on이 true가 아닌 경우에만 요청을 보냄
+    if (onWallpaper && !onWallpaper.on) {
       try {
         await assetsApi.patch(`/item-property/${childId}/on/${onWallpaper.id}`, {}, {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NjM0NTAsImlhdCI6MTcyMjg2MzQ1MCwiZXhwIjoxNzIyODY2NDUwLCJqdGkiOiI2YzY2N2I3Ni1mYWI2LTQ4NjQtOWNmZC0wNjVjOGY2ZjMzYTIifQ.swAqzv8jMVyynOXG-eurM8TeHePYTc4fkwffgIQJkblnEykDlTJbEzFVhkIQAIsxJYRinBt1YoDYYXNurFv8Ag'
+            Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIyOTA3NjYxLCJqdGkiOiJmYmY3YWRmNS0yZTIxLTRmMjEtYTZhYy05MDViZjg0ODhmZTgifQ.RFDnaDjT-u6qyYtEBiwOjd44N0aQ7qsNy1cM1WRwDSoqf6lyT2CD6Ic_8kJJTfuX-9c7vXYNzuXP5u3evfrTOw'
           }
         });
         Navigator(-1);
       } catch (error) {
-        console.error("Error saving wallpaper:", error);
+        console.error("Error saving wallpaper:", error.response.data.msg);
       }
     } else {
-      Navigator(-1); // on이 true인 경우 그냥 돌아가기
+      Navigator(-1);
     }
+  };
+
+  const purchaseItem = async (childId, itemId) => {
+    try {
+      await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIyOTA3NjYxLCJqdGkiOiJmYmY3YWRmNS0yZTIxLTRmMjEtYTZhYy05MDViZjg0ODhmZTgifQ.RFDnaDjT-u6qyYtEBiwOjd44N0aQ7qsNy1cM1WRwDSoqf6lyT2CD6Ic_8kJJTfuX-9c7vXYNzuXP5u3evfrTOw'
+        }
+      });
+
+      setWallpapers(prevWallpapers =>
+        prevWallpapers.map(wallpaper =>
+          wallpaper.id === itemId ? { ...wallpaper, has: true } : wallpaper
+        )
+      );
+    } catch (error) {
+      console.error("Error purchasing item:", error.response.data.msg);
+    }
+  };
+
+  const toggleWallpaper = (index) => {
+    setWallpapers(prevWallpapers =>
+      prevWallpapers.map((wallpaper, i) =>
+        i === index ? { ...wallpaper, on: !wallpaper.on } : { ...wallpaper, on: false }
+      )
+    );
   };
 
   const handleSelect = (index) => {
     setSelectedWallpaper(index);
     setOnWallpaper(wallpapers[index]);
+    toggleWallpaper(index);
   };
 
   return (
@@ -97,8 +122,17 @@ function WallpaperShop() {
                 {
                   index === currentIdx &&
                   <PreviewFilter>
-                    <ActionButton disabled={selectedWallpaper === index} onClick={() => handleSelect(index)}>
-                      {selectedWallpaper === index ? "장착됨" : "장착"}
+                    <ActionButton
+                      disabled={selectedWallpaper === index && wallpaper.has && wallpaper.on}
+                      onClick={() => {
+                        if (!wallpaper.has) {
+                          purchaseItem(childId, wallpaper.id);
+                        } else {
+                          handleSelect(index);
+                        }
+                      }}
+                    >
+                      {wallpaper.has ? (wallpaper.on ? "장착됨" : "장착") : "구매"}
                     </ActionButton>
                   </PreviewFilter>
                 }

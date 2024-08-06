@@ -33,7 +33,7 @@ function SnapshotShop() {
           child_id: childId,
         },
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NjM0NTAsImlhdCI6MTcyMjg2MzQ1MCwiZXhwIjoxNzIyODY2NDUwLCJqdGkiOiI2YzY2N2I3Ni1mYWI2LTQ4NjQtOWNmZC0wNjVjOGY2ZjMzYTIifQ.swAqzv8jMVyynOXG-eurM8TeHePYTc4fkwffgIQJkblnEykDlTJbEzFVhkIQAIsxJYRinBt1YoDYYXNurFv8Ag'
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIyOTA3NjYxLCJqdGkiOiJmYmY3YWRmNS0yZTIxLTRmMjEtYTZhYy05MDViZjg0ODhmZTgifQ.RFDnaDjT-u6qyYtEBiwOjd44N0aQ7qsNy1cM1WRwDSoqf6lyT2CD6Ic_8kJJTfuX-9c7vXYNzuXP5u3evfrTOw'
         }
       });
       // console.log(response.data);
