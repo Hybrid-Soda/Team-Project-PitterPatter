@@ -38,7 +38,6 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/",
-                                        "/api/user/test", // 테스트를 위함
                                         "/api/user/2fa/reset/token",
                                         "/api/user/verify/2fa/reset_token",
                                         "/api/user/2fa/reset_token",
