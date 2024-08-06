@@ -15,7 +15,7 @@ import kakao from "../../../assets/img/logo/kakao.png";
 import naver from "../../../assets/img/logo/naver.png"; 
 import Modal from './LoginFailModal.jsx'; 
 
-import { login } from "/src/pages/User/userApi.js";
+import { login, getUser } from "/src/pages/User/userApi.js";
 
 const IconX = styled.img`
   width: 1.5vw;
@@ -82,10 +82,21 @@ function Login() {
         const data = response.data.data;
         const accessToken = data.accessToken;
         const refreshToken = data.refreshToken;
-        const grantType = data.grantType; 
+        const grantType = data.grantType;
+
         // jwt 토큰을 여기서 redux에 저장시켜야 함
         // ...
-        navigator('/');
+
+        // 만들어진 토큰을 기반으로 사용자 정보를 가져와서 redux에 저장
+        const isComplted = await saveUserInfo(accessToken);
+
+        if (isComplted) {
+          // TODO: 로그인 시켜주기
+          navigator("/");
+        } else {
+          setModalMessage('회원정보를 가져올 수 없습니다. 다시 시도해주세요.');
+          setModalOpen(true);
+        }
       } else {
         setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');
         setModalOpen(true);
@@ -103,6 +114,31 @@ function Login() {
       }
     }
   };
+
+  const saveUserInfo = async (accessToken) => {
+    try {
+      const response = await getUser(accessToken);
+      
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.msg;
+        if (exception === undefined) {
+          const userInfo = response.data.data;
+          
+          // 여기서 유저 정보를 redux에 저장
+          // ...
+          
+          return true;
+        }  else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
 
   const isEmailValid = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
