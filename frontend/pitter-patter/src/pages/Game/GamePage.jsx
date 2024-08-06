@@ -10,7 +10,6 @@ function GamePage() {
   const [testCompleted, setTestCompleted] = useState(false)
   const handleTestComplete = () => {
     setTestCompleted(true)
-    console.log("Test complete")
   }
 
   const closeModal = () => {

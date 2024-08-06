@@ -2,41 +2,56 @@ import React, { useEffect, useState, useRef } from "react"
 import {WebcamTest, DeviceSelect, VideoContainer, VideoPreview, CompleteButton } from "./WebcamTestPageStyle"
 
 const WebcamTestPage = ({ onTestComplete }) => {
-  const [devices, setDevices] = useState([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState("");
-  const videoRef = useRef(null);
+  const [devices, setDevices] = useState([])
+  const [selectedDeviceId, setSelectedDeviceId] = useState("")
+  const videoRef = useRef(null)
 
   // 컴포넌트가 마운트될 때 웹캠 장치를 가져옴
   useEffect(() => {
     const getWebcams = async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(device => device.kind === "videoinput");
-      setDevices(videoDevices);
+      const devices = await navigator.mediaDevices.enumerateDevices()
+      const videoDevices = devices.filter(device => device.kind === "videoinput")
+      setDevices(videoDevices)
       if (videoDevices.length > 0) {
-        setSelectedDeviceId(videoDevices[0].deviceId);
+        setSelectedDeviceId(videoDevices[0].deviceId)
       }
-    };
-    getWebcams();
-  }, []);
+    }
+    getWebcams()
+  }, [])
 
   // 선택된 장치 ID가 변경될 때 웹캠 스트림 시작
   useEffect(() => {
+    let stream
     const startWebcam = async () => {
       if (selectedDeviceId && videoRef.current) {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
           video: { deviceId: selectedDeviceId }
-        });
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
+        })
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
       }
-    };
-    startWebcam();
-  }, [selectedDeviceId]);
+    }
+
+    startWebcam()
+
+    // 컴포넌트 언마운트 시 비디오 트랙 정지
+    return () => {
+      console.log(videoRef)
+      if (stream) {
+        const tracks = stream.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      if (videoRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        videoRef.current.srcObject = null;
+      }
+    }
+  }, [selectedDeviceId])
 
   // 장치 변경 처리 핸들러
   const handleDeviceChange = (event) => {
-    setSelectedDeviceId(event.target.value);
-  };
+    setSelectedDeviceId(event.target.value)
+  }
 
   return (
     <WebcamTest>
@@ -55,7 +70,7 @@ const WebcamTestPage = ({ onTestComplete }) => {
       {/* 테스트 완료 버튼 */}
       <CompleteButton onClick={onTestComplete}>완료</CompleteButton>
     </WebcamTest>
-  );
-};
+  )
+}
 
-export default WebcamTestPage;
+export default WebcamTestPage
