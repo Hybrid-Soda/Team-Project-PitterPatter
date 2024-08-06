@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class RoundUp : MonoBehaviour
 {
 
-    public Image roundImage; // 표시할 이미지
-    public Sprite[] roundSprites; // 각 라운드에 해당하는 스프라이트 배열
-    public float displayDuration = 2.5f; // 이미지 표시 시간
+    public Image startImage;
+    public Image roundImage;
+    public Sprite[] roundSprites;
+    public float displayDuration = 2.5f;
     public bool isRoundUp = false;
 
     private GameScene gameScene;
@@ -18,15 +19,23 @@ public class RoundUp : MonoBehaviour
     {
         gameScene = FindAnyObjectByType<GameScene>();
         roundImage.gameObject.SetActive(false);
+        StartCoroutine(DisplayStartImg());
     }
 
     // 라운드 증가 시 호출되는 메서드
     public void IncreaseRound()
     {
-        StartCoroutine(DisplayRoundImage());
+        StartCoroutine(DisplayRoundImg());
     }
 
-    private IEnumerator DisplayRoundImage()
+    private IEnumerator DisplayStartImg()
+    {
+        startImage.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        startImage.gameObject.SetActive(false);
+    }
+
+    private IEnumerator DisplayRoundImg()
     {
         if (currentRound < roundSprites.Length)
         {
