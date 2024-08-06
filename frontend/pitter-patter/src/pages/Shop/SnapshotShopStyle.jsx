@@ -37,7 +37,7 @@ export const Frame = styled.div`
   height: 400px;
   width: 328px;
   border-radius: 10px;
-  opacity: ${(props) => (props.target ? "1" : "0.5")};
+  opacity: ${(props) => (props.istarget ? "1" : "0.5")};
   transform: translateX(${(props) => -(props.index * 428)}px);
   transition: transform 0.5s;
 `;
