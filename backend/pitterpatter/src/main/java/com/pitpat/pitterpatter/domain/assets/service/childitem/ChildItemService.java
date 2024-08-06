@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,10 +42,17 @@ public class ChildItemService {
     // 착용 아이템 리스트 조회
     public List<FindChildItemDto> isOnItems(@PathVariable("child_id") Long childId) {
         List<ChildItem> childItems = childItemRepository.isOnItems(childId);
+
         if (childItems.isEmpty()) {
             throw new EntityNotFoundException("착용 중인 아이템이 없습니다.");
         }
-        return childItems.stream()
+
+        List<FindChildItemDto> result = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            result.add(null);
+        }
+
+        List<FindChildItemDto> collect = childItems.stream()
                 .map(childItem -> new FindChildItemDto(
                         childItem.getId(),
                         childItem.getItem().getItemName(),
@@ -52,6 +60,16 @@ public class ChildItemService {
                         childItem.getItem().getItemType(),
                         childItem.getItem().getCategory()))
                 .collect(Collectors.toList());
+
+        for (FindChildItemDto item : collect) {
+            if ("BACKGROUND".equals(item.getItemType())) {
+                result.set(0, item);
+            } else if ("FRAME".equals(item.getItemType())) {
+                result.set(1, item);
+            }
+        }
+
+        return result;
     }
 
     // 아이템 버리기
