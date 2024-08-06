@@ -45,7 +45,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("https://pitter-patter.picel.net", "http://localhost:8080", "http://localhost:5137"));
+                        configuration.setAllowedOrigins(Arrays.asList("https://pitter-patter.picel.net", "http://localhost:8080", "http://localhost:5173"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));

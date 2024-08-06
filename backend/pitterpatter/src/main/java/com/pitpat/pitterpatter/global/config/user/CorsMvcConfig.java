@@ -14,7 +14,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("Set-Cookie")
                 .allowedOrigins("https://pitter-patter.picel.net",
                         "http://localhost:8080",
-                        "http://localhost:5137")
+                        "http://localhost:5173")
                 .allowedMethods("*")
                 .allowedHeaders("Authorization", "Content-type") // 모든 헤더 허용
                 .exposedHeaders("Set-Cookie") // 응답에서 클라이언트가 접근할 수 있는 헤더
