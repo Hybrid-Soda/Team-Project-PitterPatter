@@ -104,10 +104,10 @@ function MenuModal({ isOpen, onClose }) {
               <NavText>출석 체크</NavText>
             </NavItemWrap>
           </Link> 
-          <Link to='/SFA'>
+          <Link to='/sfa-child'>
             <NavItemWrap>
               <NavIcon src={Mypage} alt="mypage" />
-              <NavText>마이 페이지</NavText>
+              <NavText>보호자 페이지</NavText>
             </NavItemWrap>
           </Link>
         </LayoutNav>
