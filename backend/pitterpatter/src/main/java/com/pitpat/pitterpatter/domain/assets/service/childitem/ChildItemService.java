@@ -53,7 +53,6 @@ public class ChildItemService {
             return result;
         }
 
-
         List<FindChildItemDto> collect = childItems.stream()
                 .map(childItem -> new FindChildItemDto(
                         childItem.getItem().getId(),
