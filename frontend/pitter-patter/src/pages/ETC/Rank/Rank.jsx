@@ -34,20 +34,18 @@ const CollapseContent = styled.div`
 function Rank() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [data, setData] = useState([]);
-  const [childRank, setChildRank] = useState(-1);
+  const [childIdx, setChildIdx] = useState(-1);
 
-  const childId = 1; // 테스트용 childId 변수 선언
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDg2MjMsImlhdCI6MTcyMjkwODYyMywiZXhwIjoxNzIyOTA5NTIzLCJqdGkiOiI2MjdiNDA1Zi02OGUwLTQwNTMtYjA2Mi01NWI3ZTcyZjdjNmYifQ.SmkBbWFtTtyZNwkfSXF9wjaXJ1qEIA7WWkS1UFiUsRmqrHXzYKdiAn4Bk4N5zV6GiNg_UdCkRAcV2vKa4TB_vA";
+  const childId = 11; // 테스트용 childId 변수 선언
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MjA0NDIsImlhdCI6MTcyMjkyMDQ0MiwiZXhwIjoxNzIyOTIxMzQyLCJqdGkiOiIyMDY3MTI5Zi04ZTAxLTQ1MjAtOTg5Yi0zNjY1ZWRkNGVlMGEifQ.PjXkywsjZ682B6MU4OOD4HT0zFRBln9YDUTg7kchkPd7Nqri0xd-KG8DWlPE7joRNjSkpSD30rsgfqau1GPWfw";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const rankingData = await rankingListGet(childId, token);
         const formattedData = rankingData.data.map((item, idx) => {
-          console.log(childRank);
           if(childId == item.childId) {
-            setChildRank(idx);
-            console.log(childId);
+            setChildIdx(idx);
           }
           return {
             childId: item.childId,
@@ -58,7 +56,6 @@ function Rank() {
           };
         });
         setData(formattedData);
-        console.log(formattedData);
       } catch (error) {
         console.error('다음과 같은 문제가 발생 했습니다:', error);
       }
@@ -66,13 +63,110 @@ function Rank() {
     fetchData();
   }, [childId, token]);
 
-  const toggleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-
   const handleImageError = (e) => {
     e.target.src = Trophy;
   };
+
+  const renderRankWraps = (index) => {
+    if (data.length > 0) {
+      let content;
+  
+      if (index === 0) {
+        content = (
+          <>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+            <RankWrap style={{ backgroundColor: '#ffe75c47' }}>
+              <div>
+                <RankOrder># {data[index].ranking}</RankOrder>
+                <span>{data[index].nickname}</span>
+              </div>
+              <span>{data[index].maxScore}</span>
+            </RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># {data.length > index+1 ? data[index+1].ranking : 999}</RankOrder>
+                <span>{data.length > index+1 ? data[index+1].nickname : ""}</span>
+              </div>
+              <span>{data.length > index+1 ? data[index+1].maxScore : ""}</span>
+            </RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># {data.length > index+2 ? data[index+2].ranking : 999}</RankOrder>
+                <span>{data.length > index+2 ? data[index+2].nickname : ""}</span>
+              </div>
+              <span>{data.length > index+2 ? data[index+2].maxScore : ""}</span>
+            </RankWrap>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+          </>
+        );
+      } else if (index === data.length - 1) {
+        content = (
+          <>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># {data.length > 2 ? data[index-2].ranking : 999}</RankOrder>
+                <span>{data.length > 2 ? data[index-2].nickname : "NoName"}</span>
+              </div>
+              <span>{data.length > 2 ? data[index-2].maxScore : 0}</span>
+            </RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># {data.length > 1 ? data[index-1].ranking : 999}</RankOrder>
+                <span>{data.length > 1 ? data[index-1].nickname : "NoName"}</span>
+              </div>
+              <span>{data.length > 1 ? data[index-1].maxScore : 0}</span>
+            </RankWrap>
+            <RankWrap style={{ backgroundColor: '#ffe75c47' }}>
+              <div>
+                <RankOrder># { data[index].ranking } </RankOrder>
+                <span>{ data[index].nickname }</span>
+              </div>
+              <span>{ data[index].maxScore }</span>
+            </RankWrap>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+          </>
+        );
+      } else {
+        content = (
+          <>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># { data[index-1].ranking } </RankOrder>
+                <span>{ data[index-1].nickname }</span>
+              </div>
+              <span>{ data[index-1].maxScore }</span>
+            </RankWrap>
+            <RankWrap style={{ backgroundColor: '#ffe75c47' }}>
+              <div>
+                <RankOrder># { data[index].ranking } </RankOrder>
+                <span>{ data[index].nickname }</span>
+              </div>
+              <span>{ data[index].maxScore }</span>
+            </RankWrap>
+            <RankWrap>
+              <div>
+                <RankOrder># { data[index+1].ranking }</RankOrder>
+                <span>{ data[index+1].nickname }</span>
+              </div>
+              <span>{ data[index+1].maxScore }</span>
+            </RankWrap>
+            <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
+          </>
+        );
+      }
+  
+      return (
+        <InnerBox>
+          {content}
+        </InnerBox>
+      );
+    }
+  };
+  
+  
+  
 
   return (
     <div>
@@ -108,34 +202,13 @@ function Rank() {
             </RankBar>
           </RankBarWrap>
         </RankBarOverlay>
-        <InnerBox>
-          <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
-          <RankWrap>
-            <div>
-              <RankOrder># {data.length > 3 ? data[3].ranking : 999}</RankOrder>
-              <span>{data.length > 3 ? data[3].nickname : ""}</span>
-            </div>
-            <span>{data.length > 3 ? data[3].maxScore : ""}</span>
-          </RankWrap>
-          <RankWrap  style={{ backgroundColor: '#ffe75c47' }}>
-            <div>
-              <RankOrder># {data.length > 4 ? data[4].ranking : 999}</RankOrder>
-              <span>{data.length > 4 ? data[4].nickname : ""}</span>
-            </div>
-            <span>{data.length > 4 ? data[4].maxScore : ""}</span>
-          </RankWrap>
-            {/* <CollapseContent activate={toggleCollapse}>
-              <p>최고 점수 ##</p>
-            </CollapseContent> */}
-          <RankWrap>
-            <div>
-              <RankOrder># {data.length > 5 ? data[5].ranking : 999}</RankOrder>
-              <span>{data.length > 5 ? data[5].nickname : ""}</span>
-            </div>
-            <span>{data.length > 5 ? data[5].maxScore : ""}</span>
-          </RankWrap>
-          <RankWrap style={{padding: '2.5vh 0'}}><div style={{width: '100%', textAlign: 'center'}}>⋮</div></RankWrap>
-        </InnerBox>
+          {childIdx >= 0 ? (
+            renderRankWraps(childIdx)
+          ) : (
+            <InnerBox>
+              <h2>자녀의 기록이 존재하지 않습니다.</h2>
+            </InnerBox>
+          )}
       </OuterBox>
     </div>
   );
