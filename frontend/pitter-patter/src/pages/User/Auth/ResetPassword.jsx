@@ -33,15 +33,15 @@ function ResetPassword() {
     // 컴포넌트가 마운트될 때 호출
     useEffect(() => {
         const checkToken = async () => {
-            const isValid = await isVerifiedEmailToken(email, emailToken);
+            const isValid = await isVerifiedEmailToken();
       
             if (!isValid) {
               navigate('/expired');
             }
-          };
+        };
       
-          checkToken();
-      }, []); // 빈 배열을 두 번째 인수로 전달하여 마운트 시 한 번만 실행되도록 함.
+        checkToken();
+    }, []); // 빈 배열을 두 번째 인수로 전달하여 마운트 시 한 번만 실행되도록 함.
 
     const handleResetPassword = async () => {
         // 새 비밀번호 필수 입력
@@ -51,7 +51,7 @@ function ResetPassword() {
         }
 
         try {
-            const response = await resetPasswordByEmailToken();
+            const response = await resetPasswordByEmailToken(email, emailToken, newPassword);
             if (response.status === 200) {
                 const exception = response.data.exception;
                 const msg = response.data.msg;
