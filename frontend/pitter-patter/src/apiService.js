@@ -19,3 +19,8 @@ export const childApi = axios.create({
   baseURL: `${baseURL}/child`,
   timeout: timeout,
 });
+
+export const assetsApi = axios.create({
+  baseURL: `${baseURL}/assets`,
+  timeout: timeout,
+});
