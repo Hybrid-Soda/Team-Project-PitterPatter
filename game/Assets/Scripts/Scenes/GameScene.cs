@@ -32,7 +32,7 @@ public class GameScene : MonoBehaviour
         isEnded = false;
         getPoint = false;
         colliders.Clear();
-        roundDuration = 60f;
+        roundDuration = 20f;
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
     }

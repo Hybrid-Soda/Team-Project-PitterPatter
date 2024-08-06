@@ -1,24 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
 
 const UnityComponent = () => {
-  const { unityProvider, sendMessage } = useUnityContext({
-    loaderUrl: "Build/Build.loader.js",
-    dataUrl: "Build/Build.data",
-    frameworkUrl: "Build/Build.framework.js",
-    codeUrl: "Build/Build.wasm",
+  const [landmarks, setLandmarks] = useState("")
+  const [score, setScore] = useState()
+  const backgroundNum = 3
+
+  // Provide Unity
+  const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityContext({
+      loaderUrl: "Build/BuildGZ.loader.js",
+      dataUrl: "Build/BuildGZ.data.unityweb",
+      frameworkUrl: "Build/BuildGZ.framework.js.unityweb",
+      codeUrl: "Build/BuildGZ.wasm.unityweb",
   });
 
-  const [landmarks, setLandmarks] = useState("");
-
+  // Unity -> React
   useEffect(() => {
+    addEventListener("UnityToReact", setScore);
+    return () => {
+      removeEventListener("UnityToReact", setScore);
+    };
+  }, [addEventListener, removeEventListener, setScore]);
+
+  // React -> Unity
+  useEffect(() => {
+    if (backgroundNum) {
+      sendMessage('GameManager', 'ReceiveStaticData', backgroundNum);
+    }
     if (landmarks) {
       sendMessage('GameManager', 'ReceiveData', landmarks);
     }
-  }, [landmarks, sendMessage]);
+  }, [sendMessage, landmarks, backgroundNum]);
 
-  const handleLandmarksUpdate = (newLandmarks) => {
+  // Update landmarks
+  const UpdateLandmark = (newLandmarks) => {
     setLandmarks(newLandmarks);
   };
 
@@ -37,7 +53,9 @@ const UnityComponent = () => {
         unityProvider={unityProvider} 
         style={{ width: '80%', height: '80%' }} 
       />
-      <MotionCapture onLandmarksUpdate={handleLandmarksUpdate} />
+
+      <p>{`You've scored ${score} points.`}</p>
+      <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );
 };
