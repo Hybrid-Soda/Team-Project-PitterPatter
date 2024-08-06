@@ -16,7 +16,7 @@ function BMIGraph() {
   const childId = 1; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4MzU1ODUsImlhdCI6MTcyMjgzNTU4NSwiZXhwIjoxNzIyODM4NTg1LCJqdGkiOiI3MzkxOWQzMy05NTBmLTQzMGQtOGM1Zi1iZDY0ZDAwMmZlNjgifQ.68py1vVGTr_Z4ETfp5r4HMBG8uP8fJyXiRPhL7LUj_Almaoe_GDLXHMgemGVqH0RNZ22WQ3P33945FxOErKyEw";
+  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDQwNjcsImlhdCI6MTcyMjg0NDA2NywiZXhwIjoxNzIyODQ3MDY3LCJqdGkiOiIyOTVlNGQ0My1jNTdiLTQzOGYtYmZhMi1iYTgxY2ZjODhiZjkifQ.26imCUiKUgvhsMFLfMWALQ2BWiDnNz3nZidUCLW4waEbI5WbSVNFoePMoz0p7KGX4I8V9buste_pbowZnrpbQg";
   const age = 10; // 테스트용 나이
   const gender = 'male'; // 테스트용 성별
   const childName = "배준짱"; // 테스트용 이름
@@ -25,7 +25,7 @@ function BMIGraph() {
     const fetchData = async () => {
       try {
         const bmiHistoryData = await childBMIHistory(childId, startDate, endDate, token);
-        const formattedData = bmiHistoryData.map(item => {
+        const formattedData = bmiHistoryData.data.map(item => {
           const bmiLevel = getBmiLevel(age, gender, item.bmi);
           return {
             updatedAt: formatDateToYYYYMMDD(item.updatedAt),
