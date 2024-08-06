@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../../LandingPage/Header";
 import {
@@ -12,9 +12,9 @@ import {
   UserImg,
   AddImg,
   GoResultButton,
-  Countdown,
   Modal,
   ModalContent,
+  ViewFinder,
 } from "./SnapshotStyle";
 import AddImageIcon from "/src/assets/icons/AddImage.png";
 import EG1 from "/src/assets/img/Snapshot/eg1.png";
@@ -31,7 +31,6 @@ function Snapshot() {
   const navigate = useNavigate();
   const BlankRefs = useRef([]);
   const [isFilled, setIsFilled] = useState(false);
-  const [timer, setTimer] = useState([null, null, null, null]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVideoStream, setModalVideoStream] = useState(null);
 
@@ -81,12 +80,6 @@ function Snapshot() {
     beep.volume = 0.5;
     beep.play();
 
-    setTimer(prevTimer => {
-      const newTimer = [...prevTimer];
-      newTimer[index] = countdown;
-      return newTimer;
-    });
-
     const interval = setInterval(() => {
       countdown -= 1;
 
@@ -98,12 +91,6 @@ function Snapshot() {
         beep.volume = 0.5;
         beep.play();
       }
-
-      setTimer(prevTimer => {
-        const newTimer = [...prevTimer];
-        newTimer[index] = countdown;
-        return newTimer;
-      });
 
       if (countdown === 0) {
         clearInterval(interval);
@@ -138,11 +125,6 @@ function Snapshot() {
         });
 
         video.srcObject = null;
-        setTimer(prevTimer => {
-          const newTimer = [...prevTimer];
-          newTimer[index] = null;
-          return newTimer;
-        });
         setIsModalOpen(false);
         setModalVideoStream(null);
       }
@@ -155,21 +137,21 @@ function Snapshot() {
     }
   }, [imageList, navigate]);
 
-  useEffect(() => {
-    if (isModalOpen) {
-      const modalTimer = setTimeout(() => {
-        if (modalVideoStream) {
-          let tracks = modalVideoStream.getTracks();
-          tracks.forEach(function(track) {
-            track.stop();
-          });
-        }
-        setIsModalOpen(false);
-        setModalVideoStream(null);
-      }, 3000);
-      return () => clearTimeout(modalTimer);
-    }
-  }, [isModalOpen, modalVideoStream]);
+  // useEffect(() => {
+  //   if (isModalOpen) {
+  //     const modalTimer = setTimeout(() => {
+  //       if (modalVideoStream) {
+  //         let tracks = modalVideoStream.getTracks();
+  //         tracks.forEach(function(track) {
+  //           track.stop();
+  //         });
+  //       }
+  //       setIsModalOpen(false);
+  //       setModalVideoStream(null);
+  //     }, 3000);
+  //     return () => clearTimeout(modalTimer);
+  //   }
+  // }, [isModalOpen, modalVideoStream]);
 
   return (
     <MainWrap>
@@ -197,40 +179,28 @@ function Snapshot() {
           </Frame>
           <Frame ref={frameRef}>
             <BlankRow>
-              <>
-                <Blank onClick={() => getImage(0)} active ref={(el) => (BlankRefs.current[0] = el)}>
-                  {(imageList[0] && <UserImg src={imageList[0]} alt="snapshot" />) || (
-                      <AddImg src={AddImageIcon} alt="add" />
-                  )}
-                </Blank>
-                {timer[0] !== null && <Countdown timer={timer[0]} index={0}>{timer[0]}</Countdown>}
-              </>
-              <>
-                <Blank onClick={() => getImage(1)} active ref={(el) => (BlankRefs.current[1] = el)}>
-                  {(imageList[1] && <UserImg src={imageList[1]} alt="snapshot" />) || (
-                      <AddImg src={AddImageIcon} alt="add" />
-                  )}
-                </Blank>
-                {timer[1] !== null && <Countdown timer={timer[1]} index={1}>{timer[1]}</Countdown>}
-              </>
+              <Blank onClick={() => getImage(0)} active ref={(el) => (BlankRefs.current[0] = el)}>
+                {(imageList[0] && <UserImg src={imageList[0]} alt="snapshot" />) || (
+                    <AddImg src={AddImageIcon} alt="add" />
+                )}
+              </Blank>
+              <Blank onClick={() => getImage(1)} active ref={(el) => (BlankRefs.current[1] = el)}>
+                {(imageList[1] && <UserImg src={imageList[1]} alt="snapshot" />) || (
+                    <AddImg src={AddImageIcon} alt="add" />
+                )}
+              </Blank>
             </BlankRow>
             <BlankRow>
-              <>
-                <Blank onClick={() => getImage(2)} active ref={(el) => (BlankRefs.current[2] = el)}>
-                  {(imageList[2] && <UserImg src={imageList[2]} alt="snapshot" />) || (
-                      <AddImg src={AddImageIcon} alt="add" />
-                  )}
-                </Blank>
-                {timer[2] !== null && <Countdown timer={timer[2]} index={2}>{timer[2]}</Countdown>}
-              </>
-              <>
-                <Blank onClick={() => getImage(3)} active ref={(el) => (BlankRefs.current[3] = el)}>
-                  {(imageList[3] && <UserImg src={imageList[3]} alt="snapshot" />) || (
-                      <AddImg src={AddImageIcon} alt="add" />
-                  )}
-                </Blank>
-                {timer[3] !== null && <Countdown timer={timer[3]} index={3}>{timer[3]}</Countdown>}
-              </>
+              <Blank onClick={() => getImage(2)} active ref={(el) => (BlankRefs.current[2] = el)}>
+                {(imageList[2] && <UserImg src={imageList[2]} alt="snapshot" />) || (
+                    <AddImg src={AddImageIcon} alt="add" />
+                )}
+              </Blank>
+              <Blank onClick={() => getImage(3)} active ref={(el) => (BlankRefs.current[3] = el)}>
+                {(imageList[3] && <UserImg src={imageList[3]} alt="snapshot" />) || (
+                    <AddImg src={AddImageIcon} alt="add" />
+                )}
+              </Blank>
             </BlankRow>
           </Frame>
         </CenterRow>
@@ -241,11 +211,11 @@ function Snapshot() {
       {isModalOpen && (
         <Modal>
           <ModalContent>
-            <video autoPlay muted style={{ width: '100%', transform: 'scaleX(-1)' }} ref={videoRef => {
+            <ViewFinder autoPlay muted style={{ transform: 'scaleX(-1)' }} ref={videoRef => {
               if (videoRef) {
                 videoRef.srcObject = modalVideoStream;
               }
-            }}></video>
+            }}></ViewFinder>
           </ModalContent>
         </Modal>
       )}

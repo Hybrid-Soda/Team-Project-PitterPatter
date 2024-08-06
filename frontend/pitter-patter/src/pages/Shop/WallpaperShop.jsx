@@ -13,15 +13,13 @@ import {
   LayoutCoin,
   CoinImg,
   CoinNumber,
- } from "./WallpaperShopStyle";
-import React, 
-{ useState, useRef, useEffect } from 'react';
+} from "./WallpaperShopStyle";
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { assetsApi } from '../../apiService';
 
 import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal'; // 추가
-
 
 function WallpaperShop() {
   const Navigator = useNavigate();
@@ -35,7 +33,6 @@ function WallpaperShop() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
 
   const childId = 5;
 
@@ -81,8 +78,6 @@ function WallpaperShop() {
     Navigator(-1);
   };
 
-  // Todo 아이템 has가 false일때 처리
-  // 구매 or 장착 만들어야됌
   const save = async () => {
     if (onWallpaper && !onWallpaper.on) { // on이 true가 아닌 경우에만 요청을 보냄
       try {
@@ -100,9 +95,36 @@ function WallpaperShop() {
     }
   };
 
+const purchaseItem = async (childId, itemId) => {
+    try {
+      await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
+        headers: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+        }
+      });
+
+      setWallpapers(prevWallpapers =>
+        prevWallpapers.map(wallpaper =>
+          wallpaper.id === itemId ? { ...wallpaper, has: true } : wallpaper
+        )
+      );
+    } catch (error) {
+      console.error("Error purchasing item:", error.response.data.msg);
+    }
+  };
+
+  const toggleWallpaper = (index) => {
+    setWallpapers(prevWallpapers =>
+      prevWallpapers.map((wallpaper, i) =>
+        i === index ? { ...wallpaper, on: !wallpaper.on } : { ...wallpaper, on: false }
+      )
+    );
+  };
+
   const handleSelect = (index) => {
     setSelectedWallpaper(index);
     setOnWallpaper(wallpapers[index]);
+    toggleWallpaper(index);
   };
 
   return (
@@ -132,8 +154,17 @@ function WallpaperShop() {
                 {
                   index === currentIdx &&
                   <PreviewFilter>
-                    <ActionButton disabled={selectedWallpaper === index} onClick={() => handleSelect(index)}>
-                      {selectedWallpaper === index ? "장착됨" : "장착"}
+                    <ActionButton
+                      disabled={selectedWallpaper === index && wallpaper.has && wallpaper.on}
+                      onClick={() => {
+                        if (!wallpaper.has) {
+                          purchaseItem(childId, wallpaper.id);
+                        } else {
+                          handleSelect(index);
+                        }
+                      }}
+                    >
+                      {wallpaper.has ? (wallpaper.on ? "장착됨" : "장착") : "구매"}
                     </ActionButton>
                   </PreviewFilter>
                 }
