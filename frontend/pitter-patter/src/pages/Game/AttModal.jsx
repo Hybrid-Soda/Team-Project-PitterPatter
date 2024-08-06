@@ -18,7 +18,7 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: white;
-  padding: 20px;
+  padding: 2rem;
   border-radius: 10px;
   width: 300px;
   height: 200px;
@@ -29,24 +29,23 @@ const ModalContent = styled.div`
 `;
 
 const CloseButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #ccc;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #bbb;
-  }
+  background-color: var(--box-yellow-color);
+  border-radius: 21px;
+  width: fit-content;
+  padding: .3rem 1rem;
+  font-size: 1rem;
+  box-shadow: 0px 5px 0px 0px var(--logo-yellow-color);
 `;
 
 const ModalImg = styled.img`
+  width: 5vw; /* 필요에 따라 크기를 조절하세요 */
+  height: 5vw; /* 필요에 따라 크기를 조절하세요 */
+  margin-bottom: 1rem;
+`;
 
-`
-
-function CoinModal({ onClose }) {
+function AttModal({ onClose }) {
   const navigate = useNavigate();
+
   const goAttendance = () => {
     navigate('/attendance');
   };
@@ -54,13 +53,15 @@ function CoinModal({ onClose }) {
   return (
     <ModalOverlay>
       <ModalContent>
-        <ModalImg src={Coin} /> + 10
+        <ModalImg src={Coin} alt="Coin" />
         <h2>출석 보상이 지급되었습니다.</h2>
-        <CloseButton onClick={onClose}>계속 하기</CloseButton>
-        <CloseButton onClick={goAttendance()}>확인하러 가기</CloseButton>
+        <div style={{display: 'flex', width: '100%', justifyContent: 'center', gap: '1rem', marginTop: '1rem'}}>
+          <CloseButton onClick={onClose} style={{ backgroundColor: 'var(--background)', boxShadow: '0px 5px 0px 0px lightgray' }}>계속 하기</CloseButton>
+          <CloseButton onClick={goAttendance}>확인하러 가기</CloseButton>
+        </div>
       </ModalContent>
     </ModalOverlay>
   );
 }
 
-export default CoinModal;
+export default AttModal;
