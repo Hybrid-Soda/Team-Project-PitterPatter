@@ -32,7 +32,7 @@ spring:
                         client-id: ENC(rElGPU14K+QjqMxusHsabVRDuS+UWRy1FcJxljwKHYqq7Pe31yMhQmw9qMOIBAXU) # 앱키 -> REST API 키를 jasypt로 암호화한 값
                         client-secret: ENC(7oiM5KCxcFBSylt0IeBBTtYOJaozWk+jSx2I7KGR0r9gZ6pOB3BVJpMPO4mmg90E) # 카카오 로그인 -> 보안 -> Client Secret 코드를 jasypt로 암호화한 값
                         authorization-grant-type: authorization_code
-                        redirect-uri: "https://pitter-patter.picel.net/login/oauth2/code/{registrationId}"
+                        redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
                         client-authentication-method: client_secret_post
                         client-name: kakao
                 provider:
