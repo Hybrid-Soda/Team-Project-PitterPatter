@@ -92,7 +92,7 @@ public class SecurityConfig {
                 // TODO: 예외 종류에 따라 처리할 수 있도록 exception handler 만들기
                 // 인증되지 않은 접근 시 401 응답
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN))
                 );
 
         return http.build();
