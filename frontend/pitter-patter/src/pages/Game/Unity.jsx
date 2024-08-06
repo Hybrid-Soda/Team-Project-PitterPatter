@@ -10,10 +10,10 @@ const UnityComponent = () => {
 
   // Provide Unity
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
-      loaderUrl: "Build/BuildGZ.loader.js",
-      dataUrl: "Build/BuildGZ.data.unityweb",
-      frameworkUrl: "Build/BuildGZ.framework.js.unityweb",
-      codeUrl: "Build/BuildGZ.wasm.unityweb",
+      loaderUrl: "Build/Build.loader.js",
+      dataUrl: "Build/Build.data.unityweb",
+      frameworkUrl: "Build/Build.framework.js.unityweb",
+      codeUrl: "Build/Build.wasm.unityweb",
   });
 
   const handleGameEnd = useCallback((score, isGameEnd) => {
@@ -66,9 +66,6 @@ const UnityComponent = () => {
         unityProvider={unityProvider} 
         style={{ width: '80%', height: '80%' }} 
       />
-
-      <p>{`You've scored ${score} points.`}</p>
-      <p>{`isGameEnd = ${isGameEnd}`}</p>
       <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );
