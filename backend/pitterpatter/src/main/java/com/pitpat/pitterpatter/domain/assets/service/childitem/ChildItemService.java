@@ -45,6 +45,7 @@ public class ChildItemService {
         List<ChildItem> childItems = childItemRepository.isOnItems(childId);
 
         List<FindChildItemDto> result = new ArrayList<>();
+
         for (int i = 0; i < 2; i++) {
             result.add(null);
         }
