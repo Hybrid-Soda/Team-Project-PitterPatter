@@ -60,6 +60,7 @@ export const ProfileImage = styled.div`
   &:hover {
     box-shadow: 0px 11px 39.6px 0px rgba(0, 0, 0, 0.25);
     cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    transition: ease-in-out 0.2s;
   }
 `;
 
@@ -71,3 +72,24 @@ export const IconPlus = styled.img`
 export const UserId = styled.span`
   font-size: 1.2vw;
 `;
+
+export const LayoutMypage = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+export const MypageButton = styled.button`
+  font-size: 1rem;
+  color: var(--font-color);
+  border: .13rem solid var(--font-color);
+  border-radius: 1.4rem;
+  padding: .5rem 2rem;
+  font-weight: bold;
+  /* margin-top: 3%; */
+  &:hover {
+    background-color: var(--box-yellow-color);
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+    transition: ease-in-out .2s;
+  }
+`

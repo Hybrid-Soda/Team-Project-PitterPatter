@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
                 targetClass = ChildRankDTO.class,
                 columns = {
                         @ColumnResult(name = "childId", type = Long.class),
+                        @ColumnResult(name = "profile_image", type=String.class),
+                        @ColumnResult(name = "nickname", type=String.class),
                         @ColumnResult(name = "maxScore", type = Integer.class),
                         @ColumnResult(name = "ranking", type = Integer.class)
                 }
