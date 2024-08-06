@@ -38,7 +38,6 @@ const WebcamTestPage = ({ onTestComplete }) => {
 
     // 컴포넌트 언마운트 시 비디오 트랙 정지
     return () => {
-      console.log(videoRef)
       if (stream) {
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
