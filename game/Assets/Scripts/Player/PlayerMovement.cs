@@ -64,10 +64,10 @@ public class PlayerMovement : MonoBehaviour
     // 나머지 랜드마크 회전 업데이트
     private void UpdateOtherLandmarks(GameObject[] body)
     {
-        UpdateLimbRotation(7, body[25], body[23], -180); // LeftUpLeg
+        UpdateLimbRotation(7, body[25], body[23], 180); // LeftUpLeg
         UpdateLimbRotation(8, body[27], body[25]); // LeftLeg
         UpdateLimbRotation(9, body[31], body[27], 180); // LeftFoot
-        UpdateLimbRotation(11, body[26], body[24], -180); // RightUpLeg
+        UpdateLimbRotation(11, body[26], body[24], 180); // RightUpLeg
         UpdateLimbRotation(12, body[28], body[26]); // RightLeg
         UpdateLimbRotation(13, body[32], body[28], 180); // RightFoot
         UpdateLimbRotation(15, body[13], body[11], 180); // LeftArm

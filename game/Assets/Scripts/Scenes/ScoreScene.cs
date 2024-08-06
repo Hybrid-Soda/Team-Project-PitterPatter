@@ -10,7 +10,6 @@ public class ScoreScene : MonoBehaviour
     void Start()
     {
         playTimeTxt.text = GameManager.Instance.playTimeTxt;
-        GameManager.Instance.UnityCall();
         // 점수 텍스트 업데이트
         correctScoreTxt.text = string.Format("{0:n0}", GameManager.Instance.finalScore);
     }
