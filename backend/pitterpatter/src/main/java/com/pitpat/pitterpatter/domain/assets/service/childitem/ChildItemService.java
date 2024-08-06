@@ -4,6 +4,7 @@ import com.pitpat.pitterpatter.domain.assets.model.dto.childitem.FindChildItemDt
 import com.pitpat.pitterpatter.domain.assets.model.dto.childitem.PurchaseResult;
 import com.pitpat.pitterpatter.domain.assets.repository.childitem.ChildItemRepository;
 import com.pitpat.pitterpatter.entity.ChildItem;
+import com.pitpat.pitterpatter.entity.enums.ItemType;
 import com.pitpat.pitterpatter.global.exception.exceptions.AlreadyHaveItemException;
 import com.pitpat.pitterpatter.global.exception.exceptions.EntityNotFoundException;
 import com.pitpat.pitterpatter.global.exception.exceptions.InsufficientPointsException;
@@ -43,14 +44,15 @@ public class ChildItemService {
     public List<FindChildItemDto> isOnItems(@PathVariable("child_id") Long childId) {
         List<ChildItem> childItems = childItemRepository.isOnItems(childId);
 
-        if (childItems.isEmpty()) {
-            throw new EntityNotFoundException("착용 중인 아이템이 없습니다.");
-        }
-
         List<FindChildItemDto> result = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             result.add(null);
         }
+
+        if (childItems.isEmpty()) {
+            return result;
+        }
+
 
         List<FindChildItemDto> collect = childItems.stream()
                 .map(childItem -> new FindChildItemDto(
@@ -62,9 +64,9 @@ public class ChildItemService {
                 .collect(Collectors.toList());
 
         for (FindChildItemDto item : collect) {
-            if ("BACKGROUND".equals(item.getItemType())) {
+            if (ItemType.BACKGROUND.equals(item.getItemType())) {
                 result.set(0, item);
-            } else if ("FRAME".equals(item.getItemType())) {
+            } else if (ItemType.FRAME.equals(item.getItemType())) {
                 result.set(1, item);
             }
         }
