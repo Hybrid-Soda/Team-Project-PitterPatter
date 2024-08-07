@@ -7,7 +7,7 @@ import {
     LayoutBase, 
     // LayoutModal, 
     LayoutTitle, 
-} from '../SFA/ForgotPWmodalStyle';
+} from '../SFA/ForgotSFAmodalStyle';
 
 const DeleteUserImage = styled.img`
     width: 10vw;

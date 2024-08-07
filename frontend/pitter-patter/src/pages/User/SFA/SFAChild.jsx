@@ -15,7 +15,7 @@ import {
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
 import { useNavigate, Link } from 'react-router-dom';
-import ForgotPWmodal from './ForgotPWmodal';
+import ForgotSFAmodal from './ForgotSFAmodal';
 
 
 function SFAChild() {
@@ -87,7 +87,7 @@ function SFAChild() {
         <ForgotPassword>
           <button onClick={() => setModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {modalOpen && <ForgotPWmodal onClose={() => setModalOpen(false)} />}
+        {modalOpen && <ForgotSFAmodal onClose={() => setModalOpen(false)} />}
       </LayoutSFA>
     </LayoutBase>
   );
