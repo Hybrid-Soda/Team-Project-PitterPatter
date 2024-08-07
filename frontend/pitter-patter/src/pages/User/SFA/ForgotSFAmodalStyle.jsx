@@ -39,17 +39,17 @@ export const LayoutInput = styled.div`
     gap: 1vw;
 `
     
-// export const EmailInput = styled.input`
-//     height: 3.5vh;
-//     width: 16vw;
-//     border-radius: .3rem;
-//     border: 1px solid #D9D9D9;
-//     padding: .5rem;
+export const EmailInput = styled.input`
+    height: 3.5vh;
+    width: 16vw;
+    border-radius: .3rem;
+    border: 1px solid #D9D9D9;
+    padding: .5rem;
 
-//     ::placeholder {
-//         color: #D9D9D9;
-//     }
-// `
+    ::placeholder {
+        color: #D9D9D9;
+    }
+`
 
 export const NoButton = styled.button`
     color: #757575;
