@@ -23,6 +23,7 @@ function MyPage() {
   const [activeComponent, setActiveComponent] = useState('userInfo');
 
   // 추후 redux에서 가져와야할 정보들
+  // 토큰 재발급 미구현
   const [accessToken, setAccessToken] = useState('access token');
   const [refreshToken, setRefreshToken] = useState('refresh token');
 
@@ -39,7 +40,6 @@ function MyPage() {
     }
   };
 
-  // 토큰 재발급 부분은 일단 빼고 구현
   const handleDeleteUser = async () => {
     try {
       const response = await deleteUser(accessToken);

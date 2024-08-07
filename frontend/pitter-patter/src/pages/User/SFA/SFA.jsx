@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   LayoutBase,
   LayoutSFA,
@@ -14,7 +13,7 @@ import {
 } from './SFAStyle';
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ForgotSFAmodal from './ForgotSFAmodal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
@@ -26,6 +25,7 @@ function SFA() {
   const [modalOpen, setModalOpen] = useState(false);
 
   // 추후 redux에서 가져와야 할 정보
+  // 토큰 재발급 미구현
   const [accessToken, setAccessToken] = useState('access token');
   const [refreshToken, setRefreshToken] = useState('refresh token');
 
@@ -57,7 +57,6 @@ function SFA() {
     setPassword(password.slice(0, -1));
   };
 
-  // 토큰 재발급은 우선 빼고 구현
   const isVerifiedSFA = async () => {
     try {
       const response = await verify2fa(accessToken, password);

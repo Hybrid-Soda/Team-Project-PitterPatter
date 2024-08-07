@@ -82,6 +82,7 @@ function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   // 추후 redux에서 가져와야할 정보들
   const [accessToken, setAccessToken] = useState('access token');
   const [refreshToken, setRefreshToken] = useState('refresh token');
