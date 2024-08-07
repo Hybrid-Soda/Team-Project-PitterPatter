@@ -30,6 +30,8 @@ function WallpaperShop() {
   const [pointRecords, setPointRecords] = useState([]); // 추가
   const [page, setPage] = useState(1); // 페이지 번호 추가
   const itemsPerPage = 20; // 페이지당 아이템 수
+  const childId = 23;
+  const jwtToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkzNjU3LCJpYXQiOjE3MjI5OTM2NTcsImV4cCI6MTcyMzU5ODQ1NywianRpIjoiYTI3ODNkYWYtMGQ3ZC00Zjg5LWEwNzQtZDExMzkxMGQ2MjE4In0.UwVTKI1xMvVxSmn3NWqLKG5XzNDXdd5dOkvQY-_aPVwPr3MsHCh00yHJiXEXLMghXDRtQqFNm2eveoCOdv7gdA'
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -39,7 +41,7 @@ function WallpaperShop() {
     setIsModalOpen(false);
   };
 
-  const childId = 5;
+
 
   useEffect(() => {
     getFrames(childId);
@@ -54,12 +56,13 @@ function WallpaperShop() {
           child_id: childId,
         },
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+          Authorization: `${jwtToken}`
         }
       });
       setWallpapers(response.data.filter(item => item.itemType === 'BACKGROUND'));
     } catch (error) {
-      console.log("Error fetching frames:", error);
+      console.log("Error fetching frames:", error.response.data.msg);
+      alert(error.response.data.msg);
     }
   };
 
@@ -67,12 +70,13 @@ function WallpaperShop() {
     try {
       const response = await assetsApi.get(`/point/${childId}`, {
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+          Authorization: `${jwtToken}`
         }
       });
       setPoints(response.data.point);
     } catch (error) {
-      console.log("Error fetching points:", error);
+      console.log("Error fetching points:", error.response.data.msg);
+      alert(error.response.data.msg);
     }
   };
 
@@ -84,13 +88,14 @@ function WallpaperShop() {
           per_page: itemsPerPage,
         },
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+          Authorization: `${jwtToken}`
         }
       });
       setPointRecords(prevRecords => [...prevRecords, ...response.data]);
       setPage(page);
     } catch (error) {
-      console.log("Error fetching point records:", error);
+      console.log("Error fetching point records:", error.response.data.msg);
+      alert(error.response.data.msg);
     }
   };
 
@@ -125,12 +130,13 @@ function WallpaperShop() {
       try {
         await assetsApi.patch(`/item-property/${childId}/on/${onWallpaper.id}`, {}, {
           headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+            Authorization: `${jwtToken}`
           }
         });
         Navigator(-1);
       } catch (error) {
-        console.error("Error saving wallpaper:", error);
+        console.error("Error saving wallpaper:", error.response.data.msg);
+        alert(error.response.data.msg);
       }
     } else {
       Navigator(-1); // on이 true인 경우 그냥 돌아가기
@@ -141,7 +147,7 @@ function WallpaperShop() {
     try {
       await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
         headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4IiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MDY3NjEsImlhdCI6MTcyMjkwNjc2MSwiZXhwIjoxNzIzNTExNTYxLCJqdGkiOiIwZDdhMTI3Mi0xMzQzLTRmYTctODJmOS1jMmYwMzUwYzlkMjgifQ.1N0esU9NWJwUTSc3sJB3tZPQr1mVEyk2FBz8mmCa8YWDBls-19c_DtIS83eCXrD0rSFiiPSrMQtFk8Y5U2YoRA'
+          Authorization: `${jwtToken}`
         }
       });
 
@@ -152,6 +158,7 @@ function WallpaperShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
+      alert(error.response.data.msg);
     }
   };
 
@@ -192,7 +199,8 @@ function WallpaperShop() {
           </TransparentButton>
           <CarouselWrap ref={carouselRef}>
             {wallpapers.map((wallpaper, index) => (
-              <Preview key={index} style={{ backgroundImage: `url(${wallpaper.photo})` }} onClick={() => setCurrentIdx(index)} selected={selectedWallpaper === index}>
+              <Preview key={index} style={{ backgroundImage: `url(${wallpaper.photo})` }} 
+              onClick={() => setCurrentIdx(index)} selected={selectedWallpaper === index}>
                 {
                   index === currentIdx &&
                   <PreviewFilter>
