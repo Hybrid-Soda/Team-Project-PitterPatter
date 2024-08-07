@@ -42,11 +42,17 @@ export const kakaoLogin = async () => {
   return response;
 }
 
+// 비밀번호 검증
+export const verifyPassword = async () => {
+  const response = await userApi.post("/verify/password");
+  return response;
+}
+
 
 // ====================== 조회, 변경, 탈퇴 관련 =====================
 // 회원 정보 조회
 export const getUser = async (jwtToken) => {
-  const response = await userApi.get("/", {
+  const response = await userApi.get("", {
     headers: {
       "Authorization": `Bearer ${jwtToken}`
     },
@@ -56,7 +62,7 @@ export const getUser = async (jwtToken) => {
 
 // 회원 정보 변경(2차 비밀번호, 팀 이름)
 export const updateUser = async (jwtToken, data) => {
-  const response = await userApi.patch("/",
+  const response = await userApi.patch("",
     data, {
     headers: {
       "Authorization": `Bearer ${jwtToken}`,
@@ -67,7 +73,7 @@ export const updateUser = async (jwtToken, data) => {
 
 // 회원 탈퇴
 export const deleteUser = async (jwtToken) => {
-  const response = await userApi.delete("/", {
+  const response = await userApi.delete("", {
     headers: {
       "Authorization": `Bearer ${jwtToken}`,
     }

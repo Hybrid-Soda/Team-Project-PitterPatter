@@ -56,7 +56,7 @@ function SignUp() {
     if (password === passwordCheck) {
       return "";
     } else {
-      return "비밀번호가 일치하지 않습니다.";
+      return "비밀번호 확인이 일치하지 않습니다.";
     }
   };
 
@@ -123,7 +123,7 @@ function SignUp() {
     }
 
     if (isPasswordValid() !== "") {
-      alert('비밀번호가 일치하지 않습니다.');
+      alert('비밀번호 확인이 일치하지 않습니다.');
       return;
     }
 
