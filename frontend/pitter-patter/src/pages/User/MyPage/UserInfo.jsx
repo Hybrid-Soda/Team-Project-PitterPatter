@@ -56,8 +56,8 @@ function UserInfo() {
   // 추후 redux에서 가져와야할 정보들
   const [teamName, setTeamName] = useState('테스트2');
   const email = "wlgjs8474@naver.com";
-  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk0MTMzLCJpYXQiOjE3MjI5OTQxMzMsImV4cCI6MTcyMjk5NTAzMywianRpIjoiNTNmMTQyZDQtY2EyNy00OGYwLTg5ZTktM2Q2YjdkZGI1Mjk3In0.m-myWcdWI1Bz6VUrt8qyY2VuOJkshdcrOne5R6NyyjC-bJ3q0osKrs_SZ7t_8QN8fq_OuWopL9YKGsKzBQPOsg");
-  const [refreshToken, setRefreshToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk0MTMzLCJpYXQiOjE3MjI5OTQxMzMsImV4cCI6MTcyMzU5ODkzMywianRpIjoiZmJlZWY2MGQtNzA2Ni00MTJhLWI4OTUtMDU3OWQ2Y2JmNDcwIn0._KVxTkmIKrfjvoFPM15gop3_PimE6xqDupkz2socXu4KSDn9FFFIpl3r-zUH8Qy2P0mh2_CsyGlr3QmYGLzTCA");
+  const [accessToken, setAccessToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
 
   const handleSubmit = async () => {
     await updateTeamName();
@@ -88,16 +88,13 @@ function UserInfo() {
           // 토큰 재발급 후 다시 요청
           const isCompleted = await doReissue();
 
-          console.log("ㅇㅇ" + " " + isCompleted);
           if (isCompleted) {
             await updateTeamName();
           } else {
             // TODO: 로그아웃 처리
-            alert("reissue 왜안됨?");
-            // navigator("/login");
+            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+            navigator("/login");
           }
-          
-          return;
         }
       }
       alert("문제가 발생했습니다. 다시 시도해주세요.");
@@ -109,7 +106,6 @@ function UserInfo() {
     try {
       const response = await reissueJwtToken(refreshToken);
 
-      console.log("왜" + response);
       if (response.status === 200) {
         const exception = response.data.exception;
 
@@ -133,7 +129,6 @@ function UserInfo() {
       return false;
     }
   }
-
   const handleError = (error) => {
     // 오류 처리
     if (error.response) {
