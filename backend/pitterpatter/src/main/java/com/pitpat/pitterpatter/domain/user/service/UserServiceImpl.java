@@ -77,14 +77,14 @@ public class UserServiceImpl implements UserService{
         log.info("UserServiceImpl - verifyPassword 호출");
         String password = passwordDto.getPassword();
 
-        log.info("password: {}, userId: {}", password, userId);
+        log.info("password: {}, userId: {}", "숨김", userId);
 
         // 1. userId 기반으로 비밀번호를 가져온다
         // 유저 정보가 DB에 없을 경우 NoSuchElementException 발생
         UserDto userDto = this.getUserById(userId);
 
         String savedPassword = userDto.getPassword();
-        log.info("savedPassword: {}", savedPassword);
+        log.info("savedPassword: {}", "숨김");
 
         boolean isValid = passwordEncoder.matches(password, savedPassword);
         if (!isValid) {
