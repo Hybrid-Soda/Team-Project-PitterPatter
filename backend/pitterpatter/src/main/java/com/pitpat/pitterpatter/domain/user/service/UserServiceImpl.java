@@ -74,19 +74,25 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void verifyPassword(int userId, PasswordDto passwordDto) throws NoSuchElementException {
+        log.info("UserServiceImpl - verifyPassword 호출");
         String password = passwordDto.getPassword();
+
+        log.info("password: {}, userId: {}", "숨김", userId);
 
         // 1. userId 기반으로 비밀번호를 가져온다
         // 유저 정보가 DB에 없을 경우 NoSuchElementException 발생
         UserDto userDto = this.getUserById(userId);
 
-        String savedPassword = userDto.getEmail();
+        String savedPassword = userDto.getPassword();
+        log.info("savedPassword: {}", "숨김");
 
         boolean isValid = passwordEncoder.matches(password, savedPassword);
         if (!isValid) {
             log.error("IllegalArgumentException: [비밀번호 검증] 비밀번호가 일치하지 않습니다: {}", password);
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+        log.info("비밀번호가 검증됨.");
+        log.info("UserServiceImpl - verifyPassword 끝");
     }
 
 
@@ -156,11 +162,14 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto getUserById(int userId) {
+        log.info("UserServiceImpl - getUserById 호출");
+
         // 1. userId에 해당하는 유저가 DB에 있는 지 확인
         Optional<UserEntity> existingUserOptional = userRepository.findByUserId(userId);
 
         // 2. DB에 유저가 존재한다면 UserDto로 변환 후 return
         if (existingUserOptional.isPresent()) {
+            log.info("DB에 userId값을 가진 유저가 존재. 유저 정보 반환");
             return UserDto.toDto(existingUserOptional.get());
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
