@@ -8,9 +8,9 @@ import {
     // EmailInput,
     SubmitButton,
     NoButton,
-} from './ForgotPWmodalStyle';
+} from './ForgotSFAmodalStyle';
 
-function ForgotPWModal({ onClose }) {
+function ForgotSFAModal({ onClose }) {
     return(
         <LayoutBase onClick={onClose}>
             <LayoutModal onClick={(e) => e.stopPropagation()}>
@@ -25,4 +25,4 @@ function ForgotPWModal({ onClose }) {
     );
 }
 
-export default ForgotPWModal;
+export default ForgotSFAModal;

@@ -212,7 +212,7 @@ function Login() {
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
             <SocialIcon src={kakao} alt="kakao" onClick={test}/>
-            <SocialIcon src={naver} alt="naver" />
+            {/* <SocialIcon src={naver} alt="naver" /> */}
           </div>
         </div>
       </LayoutLogin>
