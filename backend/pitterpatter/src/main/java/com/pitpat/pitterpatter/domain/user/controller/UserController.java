@@ -46,12 +46,15 @@ public class UserController {
     // 비밀번호 검증
     @PostMapping("/verify/password")
     public ResponseEntity<Map<String, Object>> verifyPassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody PasswordDto passwordDto) {
+        log.info("UserController - verifyPassword 호출");
         int userId = Integer.parseInt(userDetails.getUsername());
+        log.info("password: {}, userId: {}", "숨김", userId);
         userService.verifyPassword(userId, passwordDto);
 
         Map<String, Object> response = new HashMap<>();
         response.put("msg", "비밀번호가 검증되었습니다.");
         response.put("data", null);
+        log.info("UserController - verifyPassword 끝");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
