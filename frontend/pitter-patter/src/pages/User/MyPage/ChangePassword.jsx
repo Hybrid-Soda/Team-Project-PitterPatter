@@ -88,6 +88,12 @@ function ChangePassword() {
 
   const isNewPasswordValid = newPassword === confirmPassword;
 
+  const handleCancel = async () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+  }
+
   const handleSubmit = async () => {
     // 현재 비밀번호는 필수
     if (currentPassword === "" || currentPassword === undefined) {
@@ -263,7 +269,7 @@ function ChangePassword() {
         </div>
       </InputWrap>
       <ButtonWrap>
-        <CancleButton>취소</CancleButton>
+        <CancleButton onClick={handleCancel}>취소</CancleButton>
         <SubmitButton onClick={handleSubmit}>저장</SubmitButton>
       </ButtonWrap>
     </LayoutMyPage>

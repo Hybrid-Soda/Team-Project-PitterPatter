@@ -55,12 +55,30 @@ function UserInfo() {
 
   // 추후 redux에서 가져와야할 정보들
   const [teamName, setTeamName] = useState('테스트2');
-  const email = "wlgjs8474@naver.com";
-  const [accessToken, setAccessToken] = useState("");
-  const [refreshToken, setRefreshToken] = useState("");
+  const email = "example@example.com";
+  const [accessToken, setAccessToken] = useState('access token');
+  const [refreshToken, setRefreshToken] = useState('refresh token');
 
   const handleSubmit = async () => {
-    await updateTeamName();
+    // 가족 팀 이름은 필수 입력값
+    if (teamName === '') {
+      alert("가족 팀 이름을 입력해주세요.");
+      return;
+    }
+
+    // 가족 팀 이름 변경
+    const isUpdated = await updateTeamName();
+    if (isUpdated === 'reissue') {
+      const isCompleted = await doReissue();
+      if (isCompleted) {
+        alert("토큰이 재발급되었으니 다시 시도해보세욥");
+      } else {
+        // TODO: 로그아웃 처리
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/login");
+        return;
+      }
+    }
   };
 
   const updateTeamName = async () => {
@@ -89,13 +107,14 @@ function UserInfo() {
           const isCompleted = await doReissue();
 
           if (isCompleted) {
-            await updateTeamName();
+            alert("토큰이 재발급되었으니 다시 시도해보세요.");
           } else {
             // TODO: 로그아웃 처리
             alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
             navigator("/login");
           }
         }
+        return;
       }
       alert("문제가 발생했습니다. 다시 시도해주세요.");
       handleError(error);
@@ -114,9 +133,10 @@ function UserInfo() {
           
           // 재발급한 JWT 토큰을 redux에 저장
           // ...
-
+          
           setAccessToken(reissuedJwtToken.accessToken);
           setRefreshToken(reissuedJwtToken.refreshToken);
+
           return true;
         } else {
           return false;
@@ -128,7 +148,8 @@ function UserInfo() {
       handleError(error);
       return false;
     }
-  }
+  };
+
   const handleError = (error) => {
     // 오류 처리
     if (error.response) {
