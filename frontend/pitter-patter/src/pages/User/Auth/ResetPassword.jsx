@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Layoutbody,
@@ -24,6 +24,8 @@ function ResetPassword() {
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const newPasswordInputRef = useRef(null);
+    const confirmPasswordInputRef = useRef(null);
 
     const emailToken = searchParams.get("token");
     const email = searchParams.get("email");
@@ -47,6 +49,7 @@ function ResetPassword() {
         // 새 비밀번호 필수 입력
         if (newPassword === "" || newPassword === undefined) {
             alert("새 비밀번호를 입력해주세요.");
+            newPasswordInputRef.current.focus();
             return;
         }
 
@@ -120,11 +123,13 @@ function ResetPassword() {
                 <span style={{marginBottom: '2vh'}}>{email}의 비밀번호를 변경합니다.</span>
                 <Password type="password" placeholder="새로운 비밀번호"
                     value={newPassword} 
-                    onChange={(e) => setNewPassword(e.target.value)} 
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    ref={newPasswordInputRef} 
                 />
                 <Password type="password" placeholder="새로운 비밀번호를 한번 더 입력해주세요."
                     value={confirmPassword} 
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    ref={confirmPasswordInputRef} 
                 />
 
                 {/* 비밀번호 제약조건 일단 임의로 넣어둠(추후 스타일 변경 필요) */}
