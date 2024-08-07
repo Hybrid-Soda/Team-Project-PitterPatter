@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
     AudioSource[] sfxPlayers;
     int channelIndex;
 
-    public enum Sfx { ChangeScene, ToggleBtn, NoGetScore, GetScore, Success, RoundUp }
+    public enum Sfx { ChangeScene, ToggleBtn, NoGetScore, GetScore, Success, RoundUp, ShowScore }
     public enum Bgm { MainBgm, GameBgm }
 
     void Awake()

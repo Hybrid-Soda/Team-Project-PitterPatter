@@ -31,8 +31,8 @@ public class GameScene : MonoBehaviour
     private void Init()
     {
         round = 1;
-        playTime = 0;
         score = 0;
+        playTime = 0;
         isEnded = false;
         getPoint = false;
         colliders.Clear();
@@ -75,7 +75,7 @@ public class GameScene : MonoBehaviour
         scoreTxt.text = score.ToString("n0");
 
         int hour = (int)(playTime / 3600);
-        int min = (int)((playTime % 3600) / 60);
+        int min = (int)(playTime % 3600 / 60);
         int second = (int)(playTime % 60);
 
         playTimeTxt.text = $"{hour:00}:{min:00}:{second:00}";
@@ -117,33 +117,32 @@ public class GameScene : MonoBehaviour
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
                 feedbackImg = feedbackImgs[0];
                 break;
-            case 5: // Good
+            case 5: // Great
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
                 feedbackImg = feedbackImgs[1];
                 break;
-            case 3: // Soso
+            case 3: // Good
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
                 feedbackImg = feedbackImgs[2];
                 break;
             case 0:
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
-                return;
+                break;
         }
 
-        feedbackImg.gameObject.SetActive(true);
-        StartCoroutine(HideFbMsg(1.5f));
+        StartCoroutine(FbMsg());
     }
 
-    private IEnumerator HideFbMsg(float delay)
+    private IEnumerator FbMsg()
     {
-        yield return new WaitForSeconds(delay);
+        feedbackImg.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
         feedbackImg.gameObject.SetActive(false);
     }
 
     private void EndGame()
     {
         isEnded = true;
-        // "Clear" 문구를 보여주고 3초 후에 다음 씬으로 이동
         clearImage.gameObject.SetActive(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
         StartCoroutine(LoadScoreScene(3f));
