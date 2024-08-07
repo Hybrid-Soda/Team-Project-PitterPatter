@@ -1,8 +1,12 @@
 import React from "react";
 import { configureStore } from "@reduxjs/toolkit";
 
-export default configureStore({
-    reducer: {},
+import userReducer from "./userSlice";
+
+export const store = configureStore({
+    reducer: {
+      user: userReducer,
+    },
+    devTools: process.env.NODE_ENV !== "production",
   })
 
-export const API_URL = "http://localhost:8080"

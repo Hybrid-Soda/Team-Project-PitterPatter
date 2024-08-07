@@ -13,6 +13,8 @@ import {
   MypageButton,
 } from './SelectProfileStyle';
 import PlusSquare from "../../assets/icons/PlusSquare.png";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from '../../redux/userSlice';
 
 function SelectProfile() {
   const navigate = useNavigate();
@@ -25,6 +27,12 @@ function SelectProfile() {
     navigate('/child/mypage', { state: { addProfile: true } });
   };
 
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const getProfile = () => {
+        dispatch(getUser());
+  };
+
   return (
     <LayoutBase>
       <LayoutProfileWrap>
@@ -32,7 +40,7 @@ function SelectProfile() {
           <MainText>플레이어를 선택해주세요.</MainText>
           <ProfileList>
             <Link to='/' style={{ alignItems: 'flex-start' }}>
-              <Profile>
+              <Profile onClick={getProfile}>
                 <ProfileImage />
                 <UserId>user01</UserId>
               </Profile>
