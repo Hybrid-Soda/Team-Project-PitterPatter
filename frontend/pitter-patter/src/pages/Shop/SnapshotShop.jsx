@@ -215,7 +215,6 @@ function SnapshotShop() {
               key={index}
               index={currentIdx}
               style={{ backgroundImage: `url(${frame.photo})` }}
-              onClick={() => setCurrentIdx(index)} selected={selectedFrame === index}
               istarget={(index === currentIdx) ? true : undefined}
             >
               <BlankRow>
