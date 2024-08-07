@@ -53,12 +53,11 @@ const SubmitButton = styled.button`
 function UserInfo() {
   const navigator = useNavigate();
 
-  const [teamName, setTeamName] = useState('example');
-
   // 추후 redux에서 가져와야할 정보들
+  const [teamName, setTeamName] = useState('테스트2');
   const email = "wlgjs8474@naver.com";
-  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTczMDc4LCJpYXQiOjE3MjI5NzMwNzgsImV4cCI6MTcyMjk3Mzk3OCwianRpIjoiNzI0ZGQxN2ItN2Y2NS00ZWU0LTlkZWUtOTNlZWEyYTYyMjlkIn0.ZuXb-6GzFN1k9KN1jJ_ATdA1MQVMDvOn0DVTTnYBkZp5RniycDMfDOhzrAL82ZHaO-TOqWT7NgKJ0-X_mNfhLg");
-  const [refreshToken, setRefreshToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTczMDc4LCJpYXQiOjE3MjI5NzMwNzgsImV4cCI6MTcyMzU3Nzg3OCwianRpIjoiMjlmNmNhNjQtMzdhNy00MDE5LTgzNTQtYzNhNmRhNzVhYjJhIn0.2DuTwnup6uYMEIMU3-IAoFP9XiFE97hkCqbts6KDk1XDnDhGl0lF7cVeta02EIN0opaWgKHGCGZu6RIzuARqAw");
+  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk0MTMzLCJpYXQiOjE3MjI5OTQxMzMsImV4cCI6MTcyMjk5NTAzMywianRpIjoiNTNmMTQyZDQtY2EyNy00OGYwLTg5ZTktM2Q2YjdkZGI1Mjk3In0.m-myWcdWI1Bz6VUrt8qyY2VuOJkshdcrOne5R6NyyjC-bJ3q0osKrs_SZ7t_8QN8fq_OuWopL9YKGsKzBQPOsg");
+  const [refreshToken, setRefreshToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk0MTMzLCJpYXQiOjE3MjI5OTQxMzMsImV4cCI6MTcyMzU5ODkzMywianRpIjoiZmJlZWY2MGQtNzA2Ni00MTJhLWI4OTUtMDU3OWQ2Y2JmNDcwIn0._KVxTkmIKrfjvoFPM15gop3_PimE6xqDupkz2socXu4KSDn9FFFIpl3r-zUH8Qy2P0mh2_CsyGlr3QmYGLzTCA");
 
   const handleSubmit = async () => {
     await updateTeamName();
@@ -78,6 +77,7 @@ function UserInfo() {
           // ...
 
           setTeamName(updatedUserInfo.teamName);
+          alert("회원정보가 성공적으로 변경되었습니다.");
         } else {
           alert(msg);
         }
@@ -88,11 +88,13 @@ function UserInfo() {
           // 토큰 재발급 후 다시 요청
           const isCompleted = await doReissue();
 
+          console.log("ㅇㅇ" + " " + isCompleted);
           if (isCompleted) {
             await updateTeamName();
           } else {
             // TODO: 로그아웃 처리
-            navigator("/login");
+            alert("reissue 왜안됨?");
+            // navigator("/login");
           }
           
           return;
@@ -107,6 +109,7 @@ function UserInfo() {
     try {
       const response = await reissueJwtToken(refreshToken);
 
+      console.log("왜" + response);
       if (response.status === 200) {
         const exception = response.data.exception;
 
@@ -116,8 +119,8 @@ function UserInfo() {
           // 재발급한 JWT 토큰을 redux에 저장
           // ...
 
-          setAccessToken(reissueJwtToken.accessToken);
-          setRefreshToken(reissueJwtToken.refreshToken);
+          setAccessToken(reissuedJwtToken.accessToken);
+          setRefreshToken(reissuedJwtToken.refreshToken);
           return true;
         } else {
           return false;

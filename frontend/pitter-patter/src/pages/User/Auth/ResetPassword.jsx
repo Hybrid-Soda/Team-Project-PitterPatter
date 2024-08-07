@@ -140,7 +140,7 @@ function ResetPassword() {
 
                 <div style={{height: '5vh'}}>
                     {newPassword !== confirmPassword && confirmPassword !== "" && (
-                    <WarningMessage>비밀번호가 일치하지 않습니다.</WarningMessage>
+                    <WarningMessage>새 비밀번호 확인이 일치하지 않습니다.</WarningMessage>
                     )}
                 </div>
 
