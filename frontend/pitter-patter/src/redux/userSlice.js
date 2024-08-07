@@ -28,6 +28,8 @@ const userSlice = createSlice({
         teamName: null,
         email: null,
         isLoggedIn: false,
+        status: 'idle',
+        error: null,
     },
     reducers: {
         setUser: (state, action) => {

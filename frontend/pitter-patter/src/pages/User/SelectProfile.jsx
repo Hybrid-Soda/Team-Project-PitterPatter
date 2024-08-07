@@ -13,8 +13,12 @@ import {
   MypageButton,
 } from './SelectProfileStyle';
 import PlusSquare from "../../assets/icons/PlusSquare.png";
+
+import { childApi } from '../../apiService';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../redux/userSlice';
+import { getItem } from '../../redux/itemSlice';
+import { getChild } from '../../redux/childSlice';
 
 function SelectProfile() {
   const navigate = useNavigate();
@@ -27,11 +31,11 @@ function SelectProfile() {
     navigate('/child/mypage', { state: { addProfile: true } });
   };
 
+  // redux: 유저 아이템 받아오기
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
   const getProfile = () => {
-        dispatch(getUser());
-        console.log(user);
+        dispatch(getItem());
+        dispatch(getChild());
   };
 
   return (

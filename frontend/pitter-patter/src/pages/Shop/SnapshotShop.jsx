@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assetsApi } from '../../apiService';
+import { useSelector } from 'react-redux';
 
 import { 
   Blank, 
@@ -32,7 +33,9 @@ function SnapshotShop() {
   const [onFrame, setOnFrame] = useState(null)
   const [selectedFrame, setSelectedFrame] = useState(0);
   const itemsPerPage = 20; // 페이지당 아이템 수
-  const childId = 23; 
+
+  const childId = useSelector((state) => state.child.id);
+
   const [currentIdx, setCurrentIdx] = useState(0);
   const buttonRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false); // 추가
@@ -41,7 +44,6 @@ function SnapshotShop() {
   useEffect(() => {
     getFrames(childId);
     getPoints(childId);
-    getPointRecords(childId, 1); // 첫 페이지 로드
   }, []);
 
   const getFrames = async (childId) => {
