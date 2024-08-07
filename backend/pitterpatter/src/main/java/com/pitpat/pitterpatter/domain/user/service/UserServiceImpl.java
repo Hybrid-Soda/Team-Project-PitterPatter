@@ -70,6 +70,25 @@ public class UserServiceImpl implements UserService{
         return jwtToken;
     }
 
+    // 비밀번호 검증
+    @Override
+    @Transactional
+    public void verifyPassword(int userId, PasswordDto passwordDto) throws NoSuchElementException {
+        String password = passwordDto.getPassword();
+
+        // 1. userId 기반으로 비밀번호를 가져온다
+        // 유저 정보가 DB에 없을 경우 NoSuchElementException 발생
+        UserDto userDto = this.getUserById(userId);
+
+        String savedPassword = userDto.getEmail();
+
+        boolean isValid = passwordEncoder.matches(password, savedPassword);
+        if (!isValid) {
+            log.error("IllegalArgumentException: [비밀번호 검증] 비밀번호가 일치하지 않습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
 
     // ============================= 회원가입 관련 ================================
     // email 유저 회원가입
