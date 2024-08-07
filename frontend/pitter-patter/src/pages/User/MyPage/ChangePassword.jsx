@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 import {
   resetPasswordByUserId,
   reissueJwtToken,
@@ -77,12 +77,14 @@ const CancleButton = styled.button`
 `
 
 function ChangePassword() {
+  const navigator = useNavigate();
+
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk0MTMzLCJpYXQiOjE3MjI5OTQxMzMsImV4cCI6MTcyMjk5NTAzMywianRpIjoiNTNmMTQyZDQtY2EyNy00OGYwLTg5ZTktM2Q2YjdkZGI1Mjk3In0.m-myWcdWI1Bz6VUrt8qyY2VuOJkshdcrOne5R6NyyjC-bJ3q0osKrs_SZ7t_8QN8fq_OuWopL9YKGsKzBQPOsg");
-  const [refreshToken, setRefreshToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTk5MjMwLCJpYXQiOjE3MjI5OTkyMzAsImV4cCI6MTcyMzYwNDAzMCwianRpIjoiZWJjOGVhZWYtN2RmMC00NGU1LTg1MTUtYTdmNGY4MzA5ZmQ4In0.Gw3XGPjAn5zjho7BWpyJxmh9PN5wihhZ21BkQNli75X4nFFvA3UqMfYCf97UoizgAy7IaUcvdcHUBRjWNbe6Vw");
+  const [accessToken, setAccessToken] = useState("");
+  const [refreshToken, setRefreshToken] = useState("");
 
   const isNewPasswordValid = newPassword === confirmPassword;
 
@@ -111,34 +113,34 @@ function ChangePassword() {
       return;
     }
 
-    // 비밀번호 재설정
-    try {
-      const response = await resetPasswordByUserId();
+    // // 비밀번호 재설정
+    // try {
+    //   const response = await resetPasswordByUserId();
       
-      if (response.status === 200) {
-        const msg = response.data.msg;
-        alert(msg);
-      } else {
-        alert("비밀번호 변경에 실패했습니다.");
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          // 토큰 재발급 후 다시 요청
-          const isCompleted = await doReissue();
+    //   if (response.status === 200) {
+    //     const msg = response.data.msg;
+    //     alert(msg);
+    //   } else {
+    //     alert("비밀번호 변경에 실패했습니다.");
+    //   }
+    // } catch (error) {
+    //   if (error.response) {
+    //     if (error.response.status === 401) {
+    //       // 토큰 재발급 후 다시 요청
+    //       const isCompleted = await doReissue();
 
-          if (isCompleted) {
-            await handleSubmit();
-          } else {
-            // TODO: 로그아웃 처리
-            alert("reissue 왜안됨?");
-            // navigator("/login");
-          }
-        }
-      }
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
-      handleError(error);
-    }
+    //       if (isCompleted) {
+    //         await handleSubmit();
+    //       } else {
+    //         // TODO: 로그아웃 처리
+    //         alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+    //         navigator("/login");
+    //       }
+    //     }
+    //   }
+    //   alert("문제가 발생했습니다. 다시 시도해주세요.");
+    //   handleError(error);
+    // }
 
   };
 
@@ -158,7 +160,6 @@ function ChangePassword() {
         }
       }
     } catch (error) {
-      console.log("checkCurrentPassword");
       if (error.response) {
         if (error.response.status === 401) {
           // 토큰 재발급 후 다시 요청
@@ -169,8 +170,8 @@ function ChangePassword() {
             return true;
           } else {
             // TODO: 로그아웃 처리
-            alert("reissue 왜안됨?");
-            // navigator("/login");
+            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+            navigator("/login");
           }
         }
 

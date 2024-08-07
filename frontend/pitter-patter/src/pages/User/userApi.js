@@ -171,7 +171,8 @@ export const verify2fa = async (jwtToken, twoFa) => {
 
 // 토큰 재발급
 export const reissueJwtToken = async (jwtRefreshToken) => {
-  const response = await userApi.patch("/reissue", {
+  const response = await userApi.patch("/reissue", {},
+    {
     headers: {
       "Authorization": `Bearer ${jwtRefreshToken}`,
     }
