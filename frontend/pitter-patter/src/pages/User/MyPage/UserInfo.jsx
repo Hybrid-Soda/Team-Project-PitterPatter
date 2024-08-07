@@ -71,7 +71,7 @@ function UserInfo() {
     if (isUpdated === 'reissue') {
       const isCompleted = await doReissue();
       if (isCompleted) {
-        alert("토큰이 재발급되었으니 다시 시도해보세욥");
+        alert("토큰이 재발급되었으니 다시 시도해보세요.");
       } else {
         // TODO: 로그아웃 처리
         alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
