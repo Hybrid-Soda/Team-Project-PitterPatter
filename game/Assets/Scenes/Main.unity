@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 224057253}
   - component: {fileID: 224057255}
   - component: {fileID: 224057254}
+  - component: {fileID: 224057256}
   m_Layer: 5
   m_Name: Start Text
   m_TagString: Untagged
@@ -276,6 +277,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 224057252}
   m_CullTransparentMesh: 1
+--- !u!114 &224057256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224057252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b7d73c8bbb2a74fa108873236fc90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &333087908
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,7 +755,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1487961872}
   - component: {fileID: 1487961871}
-  - component: {fileID: 1487961873}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -777,19 +789,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1487961873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1487961870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2b7d73c8bbb2a74fa108873236fc90e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  textToBlink: {fileID: 224057254}
 --- !u!1 &1541023331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,6 +1022,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ab767bf880b9bf44e9cc840ec2371007, type: 3}
   - {fileID: 8300000, guid: 67cca941ff8b3cd48bd39ccbd7540c08, type: 3}
   - {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  - {fileID: 8300000, guid: 5c7c14ec2df28184089e098d84388d9f, type: 3}
   sfxVolume: 0.5
   channels: 6
 --- !u!1660057539 &9223372036854775807
