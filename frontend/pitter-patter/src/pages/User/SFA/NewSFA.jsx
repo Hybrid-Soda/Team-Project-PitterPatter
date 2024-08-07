@@ -17,13 +17,18 @@ import BackSpace from "../../../assets/icons/BackSpace.png";
 import Modal from './Modal'; // 모달 컴포넌트를 import 합니다
 
 function NewSFA() {
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isFirstInput, setIsFirstInput] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const navigate = useNavigate();
+  // 추후 redux에서 가져와야 하는 정보
+  // 토큰 재발급 미구현
+  const [accessToken, setAccessToken] = useState('access token');
+  const [refreshToken, setRefreshToken] = useState('refresh token');
 
   const handleKeyPress = (value) => {
     if (isFirstInput) {
@@ -53,29 +58,49 @@ function NewSFA() {
     } else if (!isFirstInput && confirmPassword.length === 4) {
       setTimeout(() => {
         if (password === confirmPassword) {
-          setModalMessage("새 비밀번호가 설정되었습니다.");
-          setModalOpen(true);
-          // setTimeout(() => {
-          //   setPassword("");
-          //   setConfirmPassword("");
-          //   navigate("/mypage");
-          // }, 2000); // 모달창을 띄운 후 2초 뒤에 페이지를 이동하거나 비밀번호를 초기화합니다.
+          updateSFA();
         } else {
           setModalMessage("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
           setModalOpen(true);
-          // setTimeout(() => {
-          //   setPassword("");
-          //   setConfirmPassword("");
-          //   setIsFirstInput(true);
-          // }, 2000); // 모달창을 띄운 후 2초 뒤에 비밀번호를 초기화합니다.
         }
       }, 100);
     }
   }, [password, confirmPassword, isFirstInput, navigate]);
 
+  const updateSFA = async () => {
+    try {
+      const response = await updateUser(accessToken, { "twoFa": password });
+
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.msg;
+
+        if (exception === undefined) {
+          const updatedUserInfo = response.data.data;
+
+          // 여기서 redux에 업데이트 된 사용자 정보 갱신
+          // ...
+
+          setModalMessage("새 2차 비밀번호가 설정되었습니다.");
+          setModalOpen(true);
+        } else {
+          setModalMessage(msg);
+          setModalOpen(true);
+        }
+      } else {
+        setModalMessage("2차 비밀번호를 설정하는데 실패했습니다.");
+        setModalOpen(true);
+      }
+    } catch (error) {
+      setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
+      setModalOpen(true);
+      handleError(error);
+    }
+  };
+
   const closeModal = () => {
     setModalOpen(false);
-    if (modalMessage === "새 비밀번호가 설정되었습니다.") {
+    if (modalMessage === "새 2차 비밀번호가 설정되었습니다.") {
       navigate("/mypage");
     } else {
       setPassword("");
@@ -86,6 +111,22 @@ function NewSFA() {
 
   const goBack = () => {
     navigate(-1); // 뒤로가기 기능
+  };
+
+  const handleError = (error) => {
+    // 오류 처리
+    if (error.response) {
+      // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
+      console.error('Error Response Status:', error.response.status);
+      console.error('Error Response Data:', error.response.data);
+      console.error('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      // 요청은 성공적으로 전송되었지만 응답을 받지 못함
+      console.error('Error Request:', error.request);
+    } else {
+      // 요청 설정에서 발생한 오류
+      console.error('Error Message:', error.message);
+    }
   };
 
   return (

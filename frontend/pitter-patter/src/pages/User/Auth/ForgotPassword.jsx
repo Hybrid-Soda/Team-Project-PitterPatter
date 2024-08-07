@@ -15,7 +15,7 @@ import {
     sendResetPasswordEmail,
 } from "/src/pages/User/userApi.js";
 
-function ForgotPasswordModal() {
+function ForgotPassword() {
     const navigate = useNavigate();
     
     const [email, setEmail] = useState('');
@@ -99,4 +99,4 @@ function ForgotPasswordModal() {
     )
 }
 
-export default ForgotPasswordModal;
+export default ForgotPassword;
