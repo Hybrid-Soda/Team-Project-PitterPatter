@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Layoutbody,
@@ -24,6 +24,8 @@ function ResetSFA() {
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const newPasswordInputRef = useRef(null);
+    const confirmPasswordInputRef = useRef(null);
 
     const emailToken = searchParams.get("token");
     const email = searchParams.get("email");
@@ -46,7 +48,8 @@ function ResetSFA() {
     const handleResetSFA = async () => {
         // 새 2차 비밀번호는 필수 입력 값임.
         if (newPassword === "" || newPassword === undefined) {
-            alert("새 비밀번호를 입력해주세요.");
+            alert("새 2차 비밀번호를 입력해주세요.");
+            newPasswordInputRef.current.focus();
             return;
         }
 
@@ -119,11 +122,13 @@ function ResetSFA() {
                 <span style={{marginBottom: '2vh'}}>{email}의 비밀번호를 변경합니다.</span>
                 <Password type="password" placeholder="새로운 2차 비밀번호"
                     value={newPassword} 
-                    onChange={(e) => setNewPassword(e.target.value)} 
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    ref={newPasswordInputRef}
                 />
                 <Password type="password" placeholder="새로운 2차 비밀번호를 한번 더 입력해주세요."
                     value={confirmPassword} 
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    ref={confirmPasswordInputRef}
                 />
                 
                 <div style={{height: '5vh'}}>

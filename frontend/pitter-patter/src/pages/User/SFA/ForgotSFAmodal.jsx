@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
     LayoutBase, 
@@ -18,6 +18,7 @@ function ForgotSFAModal({ onClose }) {
     
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState(false);
+    const emailInputRef = useRef(null);
 
     // email이 변경될 때 마다 호출
     useEffect(() => {
@@ -33,11 +34,13 @@ function ForgotSFAModal({ onClose }) {
         // 이메일은 필수 입력값임
         if (email === '') {
             alert("이메일을 입력해주세요.");
+            emailInputRef.current.focus();
             return;
         }
 
         if (!emailValid) {
             alert("이메일 형식이 올바르지 않습니다.");
+            emailInputRef.current.focus();
             return;
         }
 
@@ -89,6 +92,7 @@ function ForgotSFAModal({ onClose }) {
                         type="text"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        ref={emailInputRef}
                     />
                     <SubmitButton onClick={handleSubmit}>전송</SubmitButton>
                     <NoButton onClick={onClose}>취소</NoButton>

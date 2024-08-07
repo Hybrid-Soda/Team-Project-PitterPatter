@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -52,6 +52,8 @@ const SubmitButton = styled.button`
 
 function UserInfo() {
   const navigator = useNavigate();
+  
+  const teamNameInputRef = useRef(null);
 
   // 추후 redux에서 가져와야할 정보들
   const [teamName, setTeamName] = useState('테스트2');
@@ -63,6 +65,7 @@ function UserInfo() {
     // 가족 팀 이름은 필수 입력값
     if (teamName === '') {
       alert("가족 팀 이름을 입력해주세요.");
+      teamNameInputRef.current.focus();
       return;
     }
 
@@ -187,6 +190,7 @@ function UserInfo() {
             placeholder="팀이름"
             value={teamName}
             onChange={(e) => {setTeamName(e.target.value)}}
+            ref={teamNameInputRef}
           />
         </InputItem>
       </InputWrap>

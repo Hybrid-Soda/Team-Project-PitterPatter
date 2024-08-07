@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -82,6 +82,9 @@ function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const newPaswordInputRef = useRef(null);
+  const confirmPasswordInputRef = useRef(null);
+  const currentPasswordInputRef = useRef(null);
 
   // 추후 redux에서 가져와야할 정보들
   const [accessToken, setAccessToken] = useState('access token');
@@ -99,18 +102,21 @@ function ChangePassword() {
     // 현재 비밀번호는 필수
     if (currentPassword === "" || currentPassword === undefined) {
       alert("현재 비밀번호를 입력해주세요.");
+      currentPasswordInputRef.current.focus();
       return;
     }
 
     // 새 비밀번호는 필수
     if (newPassword === "" || currentPassword === undefined) {
       alert("새 비밀번호를 입력해주세요.");
+      newPaswordInputRef.current.focus();
       return;
     }
 
     // 새 비밀번호 확인 일치는 필수
     if (!isNewPasswordValid) {
       alert("새 비밀번호 확인이 일치하지 않습니다.");
+      confirmPasswordInputRef.current.focus();
       return;
     }
 
@@ -244,7 +250,8 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={currentPassword} 
-            onChange={(e) => setCurrentPassword(e.target.value)} 
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            ref={currentPasswordInputRef}
           />
         </InputItem>
         <InputItem>
@@ -252,7 +259,8 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={newPassword} 
-            onChange={(e) => setNewPassword(e.target.value)} 
+            onChange={(e) => setNewPassword(e.target.value)}
+            ref={newPaswordInputRef}
           />
         </InputItem>        
         <InputItem>
@@ -260,7 +268,8 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            ref={confirmPasswordInputRef}
           />
         </InputItem>
         <div style={{height: '5vh'}}>
