@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -48,9 +48,19 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isValidated, setIsValidated] = useState(false);
-  const [isDuplicated, setIsDuplicated] = useState(false);
+  const [isDuplicated, setIsDuplicated] = useState(true);
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+
+  // email이 변경될 때 마다 호출
+  useEffect(() => {
+    setIsValidated(isEmailValid(email) || email === '');
+  }, [email]);
+
+  const isEmailValid = (email) => {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+  };
 
   const isPasswordValid = () => {
     if (password === passwordCheck) {
@@ -60,18 +70,26 @@ function SignUp() {
     }
   };
 
-  const checkEmailValid = () => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      setIsDuplicated(true);
-    } else {
-      setIsDuplicated(false);
-    }
-  }
+  // const checkEmailValid = () => {
+  //   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  //   if (!emailRegex.test(email)) {
+  //     setIsDuplicated(true);
+  //   } else {
+  //     setIsDuplicated(false);
+  //   }
+  // }
 
   const isEmailDuplicate = async () => {
-    if (isDuplicated) {
-      emailInputRef.current.focus(); // 이메일 형식이 올바르지 않을 때 포커스를 이메일 입력 필드로 설정
+    // 이메일 필수 입력
+    if (email === "" || email === undefined) {
+      alert("이메일을 입력해주세요.");
+      emailInputRef.current.focus();
+      return;
+    }
+
+    // 이메일 형식 체크
+    if (!isValidated) {
+      emailInputRef.current.focus();
       return;
     }
 
@@ -80,19 +98,20 @@ function SignUp() {
       if (response.status === 200) {
         const exception = response.data.exception;
         const msg = response.data.msg;
-        setIsValidated(false);
+        setIsDuplicated(true);
 
-        if (exception === undefined || exception === null) {
-          setIsValidated(true);
+        if (exception === undefined) {
+          setIsDuplicated(false);
         }
 
         alert(msg);
       } else {
+        setIsDuplicated(true);
         alert('이메일 중복 확인에 실패했습니다.');
       }
     } catch (error) {
-      setIsValidated(false);
-      alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
+      setIsDuplicated(true);
+      alert('문제가 발생했습니다. 다시 시도해주세요.');
       handleError(error);
     }
   };
@@ -112,12 +131,12 @@ function SignUp() {
       return;
     }
 
-    if (isDuplicated) {
-      emailInputRef.current.focus(); // 이메일 형식이 올바르지 않을 때 포커스를 이메일 입력 필드로 설정
+    if (!isValidated) {
+      emailInputRef.current.focus();
       return;
     }
 
-    if (!isValidated) {
+    if (isDuplicated) {
       alert('이메일 중복 확인을 해주세요.');
       return;
     }
@@ -134,6 +153,7 @@ function SignUp() {
 
     try {
       const response = await signUp(data);
+      
       const msg = response.data.msg;
       if (response.status === 201) {
         alert('회원가입이 완료되었습니다.');
@@ -144,15 +164,14 @@ function SignUp() {
         alert('회원가입에 실패했습니다.');
       }
     } catch (error) {
-      alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
+      alert('문제가 발생했습니다. 다시 시도해주세요.');
       handleError(error);
     }
   }
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-    setIsValidated(false);
-    checkEmailValid();
+    setIsDuplicated(true);
   }
 
   // test 중.
@@ -207,8 +226,8 @@ function SignUp() {
             onChange={handleEmail}
             ref={emailInputRef}
           />
-          {isDuplicated &&  <ValidationText isvalid={isDuplicated ? true : undefined}>
-            {isDuplicated ? '이메일 형식이 올바르지 않습니다.' : ''}
+          {!isValidated &&  <ValidationText isvalid={true}>
+            이메일 형식이 올바르지 않습니다.
           </ValidationText>}
           <ButtonCheckId id="button-check-id" onClick={isEmailDuplicate}>
             중복 확인
