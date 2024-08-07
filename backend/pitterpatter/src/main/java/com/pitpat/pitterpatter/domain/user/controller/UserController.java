@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> verifyPassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody PasswordDto passwordDto) {
         log.info("UserController - verifyPassword 호출");
         int userId = Integer.parseInt(userDetails.getUsername());
-        log.info("password: {}, userId: {}", passwordDto.getPassword(), userId);
+        log.info("password: {}, userId: {}", "숨김", userId);
         userService.verifyPassword(userId, passwordDto);
 
         Map<String, Object> response = new HashMap<>();
