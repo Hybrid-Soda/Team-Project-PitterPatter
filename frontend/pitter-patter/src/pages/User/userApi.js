@@ -43,8 +43,14 @@ export const kakaoLogin = async () => {
 }
 
 // 비밀번호 검증
-export const verifyPassword = async () => {
-  const response = await userApi.post("/verify/password");
+export const verifyPassword = async (jwtToken, password) => {
+  const response = await userApi.post("/verify/password", {
+    "password": password,
+  }, {
+    headers: {
+      "Authorization": `Bearer ${jwtToken}`
+    }
+  });
   return response;
 }
 
