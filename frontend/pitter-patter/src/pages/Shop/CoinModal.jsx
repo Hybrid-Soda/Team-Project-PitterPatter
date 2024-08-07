@@ -101,8 +101,14 @@ function CoinModal({ onClose, pointRecords, loadMoreRecords, hasMore }) {
     };
   }, [lastRecordRef.current, loadMoreRecords, hasMore, loading]);
 
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <ModalOverlay>
+    <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
         <CloseButton onClick={onClose} />
         <h2>코인 정보</h2>
