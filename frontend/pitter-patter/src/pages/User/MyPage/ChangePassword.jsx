@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -83,8 +83,8 @@ function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState("");
-  const [refreshToken, setRefreshToken] = useState("");
+  const [accessToken, setAccessToken] = useState('access token');
+  const [refreshToken, setRefreshToken] = useState('refresh token');
 
   const isNewPasswordValid = newPassword === confirmPassword;
 
@@ -108,39 +108,51 @@ function ChangePassword() {
     }
 
     // 현재 비밀번호 검증
-    const isVerifyPassword = await checkCurrentPassword();
-    if (!isVerifyPassword) {
+    const isPasswordVerify = await checkCurrentPassword();
+    if (isPasswordVerify === "reissue") {
+      const isCompleted = await doReissue();
+          if (isCompleted) {
+            alert("토큰이 재발급되었으니 다시 시도해보세욥");
+          } else {
+            // TODO: 로그아웃 처리
+            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+            navigator("/login");
+            return;
+          }
+      return;
+    } else if (isPasswordVerify === "false") {
       return;
     }
 
-    // // 비밀번호 재설정
-    // try {
-    //   const response = await resetPasswordByUserId();
+    // 비밀번호 재설정
+    try {
+      const response = await resetPasswordByUserId(accessToken, newPassword);
       
-    //   if (response.status === 200) {
-    //     const msg = response.data.msg;
-    //     alert(msg);
-    //   } else {
-    //     alert("비밀번호 변경에 실패했습니다.");
-    //   }
-    // } catch (error) {
-    //   if (error.response) {
-    //     if (error.response.status === 401) {
-    //       // 토큰 재발급 후 다시 요청
-    //       const isCompleted = await doReissue();
+      if (response.status === 200) {
+        const msg = response.data.msg;
+        alert(msg);
+      } else {
+        alert("비밀번호 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          // 토큰 재발급 후 다시 요청
+          const isCompleted = await doReissue();
 
-    //       if (isCompleted) {
-    //         await handleSubmit();
-    //       } else {
-    //         // TODO: 로그아웃 처리
-    //         alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    //         navigator("/login");
-    //       }
-    //     }
-    //   }
-    //   alert("문제가 발생했습니다. 다시 시도해주세요.");
-    //   handleError(error);
-    // }
+          if (isCompleted) {
+            alert("토큰이 재발급되었으니 다시 시도해보세욥");
+          } else {
+            // TODO: 로그아웃 처리
+            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+            navigator("/login");
+          }
+          return;
+        }
+      }
+      alert("문제가 발생했습니다. 다시 시도해주세요.");
+      handleError(error);
+    }
 
   };
 
@@ -153,33 +165,22 @@ function ChangePassword() {
         const msg = response.data.msg;
 
         if (exception === undefined) {
-          return true;
+          return "true";
         } else {
           alert(msg);
-          return false;
+          return "false";
         }
       }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
-          // 토큰 재발급 후 다시 요청
-          const isCompleted = await doReissue();
-
-          if (isCompleted) {
-            await checkCurrentPassword();
-            return true;
-          } else {
-            // TODO: 로그아웃 처리
-            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-            navigator("/login");
-          }
+          return "reissue";
         }
-
-        return false;
+        return "false";
       }
-      // alert("문제가 발생했습니다. 다시 시도해주세요.");
-      // handleError(error);
-      return false;
+      alert("문제가 발생했습니다. 다시 시도해주세요.");
+      handleError(error);
+      return "false";
     }
   }
 
@@ -195,9 +196,10 @@ function ChangePassword() {
           
           // 재발급한 JWT 토큰을 redux에 저장
           // ...
-
+          
           setAccessToken(reissuedJwtToken.accessToken);
           setRefreshToken(reissuedJwtToken.refreshToken);
+
           return true;
         } else {
           return false;
