@@ -7,7 +7,7 @@ export const getUser = createAsyncThunk(
     'user/getUser',
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get(`${userApi}/user`, {
+            const response = await userApi.get('', {
                 headers: {
                     Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNiIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkyNjI1LCJpYXQiOjE3MjI5OTI2MjUsImV4cCI6MTcyMzU5NzQyNSwianRpIjoiOTJkMzdkYjEtNmQ2ZC00MzQxLTk5MTQtNWFjZmQ4MTNiZWFlIn0.53pqQTDwTGgv_l3vlRLOLlN1MEwC0qafz_lZs8Fz0jF88FMSB6-4H2xTZQeuenIkTuHGHngDKvHuy7MbbzHjOg`,
                 },
@@ -24,23 +24,21 @@ export const getUser = createAsyncThunk(
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        id: null,
-        name: null,
+        userId: null,
+        teamName: null,
         email: null,
         isLoggedIn: false,
-        status: 'idle',
-        error: null,
     },
     reducers: {
         setUser: (state, action) => {
-            state.id = action.payload.id;
-            state.name = action.payload.name;
+            state.userId = action.payload.userId;
+            state.teamName = action.payload.teamName;
             state.email = action.payload.email;
             state.isLoggedIn = true;
         },
         logoutUser: (state) => {
-            state.id = null;
-            state.name = null;
+            state.userId = null;
+            state.teamName = null;
             state.email = null;
             state.isLoggedIn = false;
         },
@@ -52,9 +50,9 @@ const userSlice = createSlice({
             })
             .addCase(getUser.fulfilled, (state, action) => {
                 console.log('getUser fulfilled:', action.payload); // 성공 시 데이터 출력
-                state.id = action.payload.id;
-                state.name = action.payload.name;
-                state.email = action.payload.email;
+                state.userId = action.payload.data.userId;
+                state.teamName = action.payload.data.teamName;
+                state.email = action.payload.data.email;
                 state.isLoggedIn = true;
                 state.status = 'succeeded';
             })

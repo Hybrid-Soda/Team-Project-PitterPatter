@@ -31,6 +31,7 @@ function SelectProfile() {
   const user = useSelector((state) => state.user);
   const getProfile = () => {
         dispatch(getUser());
+        console.log(user);
   };
 
   return (
