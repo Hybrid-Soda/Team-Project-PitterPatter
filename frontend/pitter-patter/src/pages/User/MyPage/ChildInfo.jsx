@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { childApi } from '../../../apiService';
 import axios from 'axios';
 
 import {
@@ -72,10 +73,15 @@ const CancleButton = styled.button`
 `;
 
 function ChildInfo() {
-  const location = useLocation();
-  const isAddProfile = location.state?.addProfile || false;
+  const childId = useSelector((state) => state.child.id);
+  const token = useSelector((state) => state.token.refreshToken);
+
   const [profileImage, setProfileImage] = useState(SingingBanana);
   const fileInputRef = useRef(null);
+
+  const [nickname, setNickname] = useState('');
+  const [birth, setbirth] = useState('');
+  const [gender, setGender] = useState('MALE');
 
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -94,19 +100,33 @@ function ChildInfo() {
 
   const handleSubmit = () => {
     const userProfileData = {
-      // 여기에 전송할 데이터 작성
+      nickname,
+      birth,
+      gender,
+      profileImage,
     };
 
-    if (isAddProfile) {
-      axios.post('/api/profile', userProfileData)
+    if (!childId) {
+      childApi.post('', userProfileData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
         .then(response => {
           console.log('Profile added successfully:', response.data);
+          // const childId = response.data.childId;
         })
         .catch(error => {
           console.error('There was an error adding the profile!', error);
+          console.log(userProfileData)
         });
     } else {
-      axios.patch('/api/profile', userProfileData)
+      childApi.patch(`/${childId}`, userProfileData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then(response => {
           console.log('Profile updated successfully:', response.data);
         })
@@ -135,22 +155,18 @@ function ChildInfo() {
       </Profile>
       <InputWrap>
         <InputItem>
-          <InputTitle>이름</InputTitle>
-          <InputBox type="text" placeholder="이름" />
-        </InputItem>
-        <InputItem>
           <InputTitle>닉네임</InputTitle>
-          <InputBox type="text" placeholder="닉네임" />
+          <InputBox type="text" placeholder="닉네임" value={nickname} onChange={(e) => setNickname(e.target.value)} />
         </InputItem>
         <InputItem>
           <InputTitle>생년월일</InputTitle>
-          <InputBox type="date" placeholder="생년월일" />
+          <InputBox type="date" placeholder="생년월일" value={birth} onChange={(e) => setbirth(e.target.value)} />
         </InputItem>
         <InputItem>
           <InputTitle>성별</InputTitle>
-          <SelectBox>
-            <option value="male">남자</option>
-            <option value="female">여자</option>
+          <SelectBox value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="MALE">남자</option>
+            <option value="FEMALE">여자</option>
           </SelectBox>
         </InputItem>
       </InputWrap>

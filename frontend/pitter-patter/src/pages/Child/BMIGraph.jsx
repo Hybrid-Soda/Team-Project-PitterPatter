@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { bmiCriteria } from './bmiCriteria.js';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { childBMIHistory } from './../Child/childApi.js';  // API 함수 임포트
@@ -13,10 +14,13 @@ import {
 
 function BMIGraph() {
   const [data, setData] = useState([]);
-  const childId = 1; // 테스트용 childId 변수 선언
+
+  const child = useSelector((state) => state.child);
+  const token = `Bearer ${useSelector((state) => state.token.refreshToken)}`;
+
+  const childId = child.id; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDQwNjcsImlhdCI6MTcyMjg0NDA2NywiZXhwIjoxNzIyODQ3MDY3LCJqdGkiOiIyOTVlNGQ0My1jNTdiLTQzOGYtYmZhMi1iYTgxY2ZjODhiZjkifQ.26imCUiKUgvhsMFLfMWALQ2BWiDnNz3nZidUCLW4waEbI5WbSVNFoePMoz0p7KGX4I8V9buste_pbowZnrpbQg";
   const age = 10; // 테스트용 나이
   const gender = 'male'; // 테스트용 성별
   const childName = "배준짱"; // 테스트용 이름

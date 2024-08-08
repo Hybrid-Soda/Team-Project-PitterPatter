@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const Navbar = styled.div`
   display: flex;
@@ -75,36 +76,38 @@ function MenuModal({ isOpen, onClose }) {
     return null;
   }
 
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
   return (
     <>
-    <BackDrop onClick={onClose} />
+      <BackDrop onClick={onClose} />
       <Navbar>
         <LayoutNav>
-          <Link to='/game/select-mode'>
+          <Link to={isLoggedIn ? '/game/select-mode' : '/login'}>
             <NavItemWrap>
               <NavIcon src={Game} alt="game" />
               <NavText>게임 시작하기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to='/shop'>
+          <Link to={isLoggedIn ? '/shop' : '/login'}>
             <NavItemWrap>
               <NavIcon src={Market} alt="market" />
               <NavText>상점 둘러보기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to='/rank'>
+          <Link to={isLoggedIn ? '/rank' : '/login'}>
             <NavItemWrap>
               <NavIcon src={Ranking} alt="ranking" />
               <NavText>랭킹 확인하기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to='/attendance'>
+          <Link to={isLoggedIn ? '/attendance' : '/login'}>
             <NavItemWrap>
               <NavIcon src={Attendance} alt="attendance" />
               <NavText>출석 체크</NavText>
             </NavItemWrap>
-          </Link> 
-          <Link to='/sfa-child'>
+          </Link>
+          <Link to={isLoggedIn ? '/sfa-child' : '/login'}>
             <NavItemWrap>
               <NavIcon src={Mypage} alt="mypage" />
               <NavText>보호자 페이지</NavText>
