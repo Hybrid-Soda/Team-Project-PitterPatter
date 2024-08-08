@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PointRecordRepository extends JpaRepository<PointRecord, Long>, PointRecordRepositoryCustom {
-    @Query("SELECT p FROM PointRecord p WHERE p.child.id = :childId")
+    @Query("SELECT p FROM PointRecord p WHERE p.child.id = :childId ORDER BY p.createdAt DESC")
     List<PointRecord> findRecordsByChild(@Param("childId") Long childId);
 }

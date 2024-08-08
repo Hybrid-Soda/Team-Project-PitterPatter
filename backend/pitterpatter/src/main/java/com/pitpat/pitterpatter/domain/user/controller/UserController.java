@@ -30,7 +30,7 @@ public class UserController {
     // =================== 로그인 관련 ===========================
     // email 유저 로그인 메서드
     @PostMapping("/login/email")
-    public ResponseEntity<?> emailLogin(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Map<String, Object>> emailLogin(@RequestBody LoginDto loginDto) {
         String email = loginDto.getEmail();
         String password = loginDto.getPassword();
         JwtTokenDto jwtToken = userService.emailLogin(email, password);
@@ -40,6 +40,21 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         response.put("msg", "Success");
         response.put("data", jwtToken);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    // 비밀번호 검증
+    @PostMapping("/verify/password")
+    public ResponseEntity<Map<String, Object>> verifyPassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody PasswordDto passwordDto) {
+        log.info("UserController - verifyPassword 호출");
+        int userId = Integer.parseInt(userDetails.getUsername());
+        log.info("password: {}, userId: {}", "숨김", userId);
+        userService.verifyPassword(userId, passwordDto);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("msg", "비밀번호가 검증되었습니다.");
+        response.put("data", null);
+        log.info("UserController - verifyPassword 끝");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -208,7 +223,7 @@ public class UserController {
         String emailToken =  userService.createEmailToken(emailDto, "pw");
 
         // 메일 발송
-        String resetUrl = "https://pitter-patter.picel.net/password/reset?token=" + emailToken + "&email=" + email;
+        String resetUrl = "https://ssafy-common.b-cdn.net/reset-password?token=" + emailToken + "&email=" + email;
         String subject = "[피터패터] 비밀번호 재설정 요청 메일입니다.";
         String htmlContent = "<h1>비밀번호 재설정을 요청하셨습니다.</h1><br>" +
                 "<p>안녕하세요.</p>" +
@@ -235,7 +250,7 @@ public class UserController {
         String emailToken =  userService.createEmailToken(emailDto, "2fa");
 
         // 메일 발송
-        String resetUrl = "https://pitter-patter.picel.net/2fa/reset?token=" + emailToken + "&email=" + email;
+        String resetUrl = "https://ssafy-common.b-cdn.net/reset-sfa?token=" + emailToken + "&email=" + email;
         String subject = "[피터패터] 2차 비밀번호 재설정 요청 메일입니다.";
         String htmlContent = "<h1>2차 비밀번호 재설정을 요청하셨습니다.</h1><br>" +
                 "<p>안녕하세요.</p>" +
