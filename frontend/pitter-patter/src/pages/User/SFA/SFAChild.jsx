@@ -25,9 +25,7 @@ function SFAChild() {
   const [modalOpen, setModalOpen] = useState(false);
 
   // 추후 redux에서 가져와야 할 정보
-  // 토큰 재발급 미구현
   const [accessToken, setAccessToken] = useState('access token');
-  const [refreshToken, setRefreshToken] = useState('refresh token');
 
   useEffect(() => {
     const verifyPassword = async () => {
@@ -76,27 +74,20 @@ function SFAChild() {
         return false;
       }
     } catch (error) {
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
-      handleError(error);
-      return false;
+      if (error.response && error.response.status === 401) {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else if (error.msg && error.msg === "토큰 검증 실패") {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else {
+        alert("문제가 발생했습니다. 다시 시도해주세요.");
+        return false;
+      }
     }
   };
-
-  const handleError = (error) => {
-    // 오류 처리
-    if (error.response) {
-     // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-     console.error('Error Response Status:', error.response.status);
-     console.error('Error Response Data:', error.response.data);
-     console.error('Error Response Headers:', error.response.headers);
-   } else if (error.request) {
-     // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-     console.error('Error Request:', error.request);
-   } else {
-     // 요청 설정에서 발생한 오류
-     console.error('Error Message:', error.message);
-   }
- };
 
   return (
     <LayoutBase>
