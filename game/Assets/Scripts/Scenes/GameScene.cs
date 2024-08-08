@@ -88,6 +88,7 @@ public class GameScene : MonoBehaviour
         int scoreInc = CalcScore(colliders.Count, round);
         score += scoreInc;
         GameManager.Instance.finalScore = score;
+        GameManager.Instance.UnityCall(false);
         SetFbMsg(scoreInc);
     }
 
