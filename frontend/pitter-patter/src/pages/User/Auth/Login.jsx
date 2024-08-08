@@ -15,7 +15,7 @@ import kakao from "../../../assets/img/logo/kakao.png";
 import naver from "../../../assets/img/logo/naver.png"; 
 import Modal from './LoginFailModal.jsx'; 
 
-import { login, getUser } from "/src/pages/User/userApi.js";
+import { login } from "/src/pages/User/userApi.js";
 
 const IconX = styled.img`
   width: 1.5vw;
@@ -87,16 +87,7 @@ function Login() {
         // jwt 토큰을 여기서 redux에 저장시켜야 함
         // ...
 
-        // 만들어진 토큰을 기반으로 사용자 정보를 가져와서 redux에 저장
-        const isComplted = await saveUserInfo(accessToken);
-
-        if (isComplted) {
-          // TODO: 로그인 시켜주기
-          navigator("/");
-        } else {
-          setModalMessage('회원정보를 가져올 수 없습니다. 다시 시도해주세요.');
-          setModalOpen(true);
-        }
+        navigator("/");
       } else {
         setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');
         setModalOpen(true);
@@ -110,35 +101,9 @@ function Login() {
       else {
         setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
         setModalOpen(true);
-        handleError(error);
       }
     }
   };
-
-  const saveUserInfo = async (accessToken) => {
-    try {
-      const response = await getUser(accessToken);
-      
-      if (response.status === 200) {
-        const exception = response.data.exception;
-        const msg = response.data.msg;
-        if (exception === undefined) {
-          const userInfo = response.data.data;
-          
-          // 여기서 유저 정보를 redux에 저장
-          // ...
-          
-          return true;
-        }  else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } catch (error) {
-      return false;
-    }
-  }
 
   const isEmailValid = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -148,22 +113,6 @@ function Login() {
   const closeModal = () => {
     setModalOpen(false);
   };
-
-  const handleError = (error) => {
-    // 오류 처리
-    if (error.response) {
-     // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-     console.error('Error Response Status:', error.response.status);
-     console.error('Error Response Data:', error.response.data);
-     console.error('Error Response Headers:', error.response.headers);
-   } else if (error.request) {
-     // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-     console.error('Error Request:', error.request);
-   } else {
-     // 요청 설정에서 발생한 오류
-     console.error('Error Message:', error.message);
-   }
- };
 
  // 추후 구현
  const test = async () => {

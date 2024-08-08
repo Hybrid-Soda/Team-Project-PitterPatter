@@ -70,15 +70,6 @@ function SignUp() {
     }
   };
 
-  // const checkEmailValid = () => {
-  //   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  //   if (!emailRegex.test(email)) {
-  //     setIsDuplicated(true);
-  //   } else {
-  //     setIsDuplicated(false);
-  //   }
-  // }
-
   const isEmailDuplicate = async () => {
     // 이메일 필수 입력
     if (email === "" || email === undefined) {
@@ -112,7 +103,6 @@ function SignUp() {
     } catch (error) {
       setIsDuplicated(true);
       alert('문제가 발생했습니다. 다시 시도해주세요.');
-      handleError(error);
     }
   };
 
@@ -165,7 +155,6 @@ function SignUp() {
       }
     } catch (error) {
       alert('문제가 발생했습니다. 다시 시도해주세요.');
-      handleError(error);
     }
   }
 

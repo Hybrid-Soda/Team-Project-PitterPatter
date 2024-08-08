@@ -88,7 +88,6 @@ function ChangePassword() {
 
   // 추후 redux에서 가져와야할 정보들
   const [accessToken, setAccessToken] = useState('access token');
-  const [refreshToken, setRefreshToken] = useState('refresh token');
 
   const isNewPasswordValid = newPassword === confirmPassword;
 
@@ -122,18 +121,8 @@ function ChangePassword() {
 
     // 현재 비밀번호 검증
     const isPasswordVerify = await checkCurrentPassword();
-    if (isPasswordVerify === "reissue") {
-      const isCompleted = await doReissue();
-          if (isCompleted) {
-            alert("토큰이 재발급되었으니 다시 시도해보세욥");
-          } else {
-            // TODO: 로그아웃 처리
-            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-            navigator("/login");
-            return;
-          }
-      return;
-    } else if (isPasswordVerify === "false") {
+    if (!isPasswordVerify) {
+      alert("현재 비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -148,25 +137,18 @@ function ChangePassword() {
         alert("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          // 토큰 재발급 후 다시 요청
-          const isCompleted = await doReissue();
-
-          if (isCompleted) {
-            alert("토큰이 재발급되었으니 다시 시도해보세욥");
-          } else {
-            // TODO: 로그아웃 처리
-            alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-            navigator("/login");
-          }
-          return;
-        }
+      if (error.response && error.response.status === 401) {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else if (error.msg && error.msg === "토큰 검증 실패") {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else {
+        alert("문제가 발생했습니다. 다시 시도해주세요.");
       }
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
-      handleError(error);
     }
-
   };
 
   const checkCurrentPassword = async () => {
@@ -175,72 +157,26 @@ function ChangePassword() {
 
       if (response.status === 200) {
         const exception = response.data.exception;
-        const msg = response.data.msg;
 
         if (exception === undefined) {
-          return "true";
-        } else {
-          alert(msg);
-          return "false";
-        }
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401) {
-          return "reissue";
-        }
-        return "false";
-      }
-      alert("문제가 발생했습니다. 다시 시도해주세요.");
-      handleError(error);
-      return "false";
-    }
-  }
-
-  const doReissue = async () => {
-    try {
-      const response = await reissueJwtToken(refreshToken);
-
-      if (response.status === 200) {
-        const exception = response.data.exception;
-
-        if (exception === undefined) {
-          const reissuedJwtToken = response.data.data;
-          
-          // 재발급한 JWT 토큰을 redux에 저장
-          // ...
-          
-          setAccessToken(reissuedJwtToken.accessToken);
-          setRefreshToken(reissuedJwtToken.refreshToken);
-
           return true;
-        } else {
-          return false;
         }
-      } else {
-        return false;
       }
-    } catch (error) {
-      handleError(error);
       return false;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else if (error.msg && error.msg === "토큰 검증 실패") {
+        // intercetor에서 토큰 재발급 수행
+        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        navigator("/");
+      } else {
+        alert("문제가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   }
-
-  const handleError = (error) => {
-    // 오류 처리
-    if (error.response) {
-     // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-     console.error('Error Response Status:', error.response.status);
-     console.error('Error Response Data:', error.response.data);
-     console.error('Error Response Headers:', error.response.headers);
-   } else if (error.request) {
-     // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-     console.error('Error Request:', error.request);
-   } else {
-     // 요청 설정에서 발생한 오류
-     console.error('Error Message:', error.message);
-   }
- };
 
   return (
     <LayoutMyPage>
