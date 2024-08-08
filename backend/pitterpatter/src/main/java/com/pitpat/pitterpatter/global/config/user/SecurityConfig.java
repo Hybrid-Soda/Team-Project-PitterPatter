@@ -2,8 +2,10 @@ package com.pitpat.pitterpatter.global.config.user;
 
 import com.pitpat.pitterpatter.domain.user.jwt.JwtAuthenticationFilter;
 import com.pitpat.pitterpatter.domain.user.jwt.JwtTokenProvider;
+import com.pitpat.pitterpatter.domain.user.oauth2.CustomFailureHandler;
 import com.pitpat.pitterpatter.domain.user.oauth2.CustomSuccessHandler;
 import com.pitpat.pitterpatter.domain.user.service.CustomOAuth2UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +33,7 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
+    private final CustomFailureHandler customFailureHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,6 +46,8 @@ public class SecurityConfig {
                 // 경로별 인가 작업
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/",
+                                        "/login?error",
+                                        "/favicon.ico",
                                         "/api/user/2fa/reset/token",
                                         "/api/user/verify/2fa/reset_token",
                                         "/api/user/2fa/reset_token",
@@ -61,6 +71,7 @@ public class SecurityConfig {
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler)
+                        .failureHandler(customFailureHandler)
                 )
                 // TODO: 예외 종류에 따라 처리할 수 있도록 exception handler 만들기
                 // 인증되지 않은 접근 시 401 응답

@@ -8,6 +8,7 @@ public class SceneManagerEx : MonoBehaviour
     public void ChangeSceneBtn()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ChangeScene);
+        GameManager.Instance.UnityCall(false);
         switch (this.gameObject.name)
         {
             case "toMainBtn":
@@ -21,10 +22,6 @@ public class SceneManagerEx : MonoBehaviour
 
             case "toGameBtn":
                 SceneManager.LoadScene("Game");
-                break;
-
-            case "toScoreBtn":
-                SceneManager.LoadScene("Score");
                 break;
         }
     }

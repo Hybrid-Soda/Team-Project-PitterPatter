@@ -9,6 +9,8 @@ public interface UserService {
     // ===================== 로그인 관련 ==========================
     // email 유저 로그인
     public JwtTokenDto emailLogin(String email, String password);
+    // 비밀번호 검증
+    public void verifyPassword(int userId, PasswordDto passwordDto);
 
     // ===================== 회원가입 관련 ========================
     // email 유저 회원가입
