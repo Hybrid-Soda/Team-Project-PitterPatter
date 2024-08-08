@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-
 import userdelete from "../../../assets/img/User/userdelete.png";
 
 import { 
     LayoutBase, 
     // LayoutModal, 
     LayoutTitle, 
-} from '../SFA/ForgotPWmodalStyle';
+} from '../SFA/ForgotSFAmodalStyle';
 
 const DeleteUserImage = styled.img`
     width: 10vw;
