@@ -4,6 +4,7 @@ import { hostApi } from "../../apiService.js";
 // =================== 회원가입 관련 ========================
 // 일반 유저 회원가입
 export const signUp = async (data) => {
+  console.error(data.email, data.password);
   const response = await userApi.post("/email", data);
   return response;
 };
