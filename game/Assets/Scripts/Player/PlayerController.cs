@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        string receivedData = GameManager.Instance.poseData;
+        string receivedData = Managers.Network.poseData;
         if (receivedData == null) return;
 
         // 데이터 전처리

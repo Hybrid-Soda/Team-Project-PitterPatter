@@ -9,14 +9,14 @@ public class StopBtn : MonoBehaviour
     public void OnClickStopBtn()
     {
         Time.timeScale = 0;
-        AudioManager.instance.PauseBgm();
+        Managers.Sound.PauseBgm();
         stopWindow.SetActive(true);
     }
 
     public void OnClickContinueBtn()
     {
         Time.timeScale = 1;
-        AudioManager.instance.ResumeBgm();
+        Managers.Sound.ResumeBgm();
         stopWindow.SetActive(false);
     }
 
@@ -28,14 +28,14 @@ public class StopBtn : MonoBehaviour
         {
             // stopWindow가 활성화되어 있으면 비활성화하고 게임 재개
             Time.timeScale = 1;
-            AudioManager.instance.ResumeBgm();
+            Managers.Sound.ResumeBgm();
             stopWindow.SetActive(false);
         }
         else
         {
             // stopWindow가 비활성화되어 있으면 활성화하고 게임 일시정지
             Time.timeScale = 0;
-            AudioManager.instance.PauseBgm();
+            Managers.Sound.PauseBgm();
             stopWindow.SetActive(true);
         }
     }
