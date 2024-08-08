@@ -30,8 +30,10 @@ function WallpaperShop() {
   const [pointRecords, setPointRecords] = useState([]); // 추가
   const [page, setPage] = useState(1); // 페이지 번호 추가
   const itemsPerPage = 20; // 페이지당 아이템 수
-  const childId = 23;
   const jwtToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkzNjU3LCJpYXQiOjE3MjI5OTM2NTcsImV4cCI6MTcyMzU5ODQ1NywianRpIjoiYTI3ODNkYWYtMGQ3ZC00Zjg5LWEwNzQtZDExMzkxMGQ2MjE4In0.UwVTKI1xMvVxSmn3NWqLKG5XzNDXdd5dOkvQY-_aPVwPr3MsHCh00yHJiXEXLMghXDRtQqFNm2eveoCOdv7gdA'
+
+  // const childId = useSelector((state) => state.child.id);
+  const childId = 24;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -40,8 +42,6 @@ function WallpaperShop() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
-
 
   useEffect(() => {
     getFrames(childId);

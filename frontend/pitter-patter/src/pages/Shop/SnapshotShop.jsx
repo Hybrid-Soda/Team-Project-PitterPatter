@@ -34,7 +34,8 @@ function SnapshotShop() {
   const [selectedFrame, setSelectedFrame] = useState(0);
   const itemsPerPage = 20; // 페이지당 아이템 수
 
-  const childId = useSelector((state) => state.child.id);
+  // const childId = useSelector((state) => state.child.id);
+  const childId = 24;
 
   const [currentIdx, setCurrentIdx] = useState(0);
   const buttonRef = useRef(null);
