@@ -41,6 +41,7 @@ export const Profile = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 1rem;
 `;
 
 export const ProfileImage = styled.div`
@@ -67,6 +68,7 @@ export const ProfileImage = styled.div`
 export const IconPlus = styled.img`
   width: 4vw;
   height: 4vw;
+  object-fit: fill;
 `;
 
 export const UserId = styled.span`

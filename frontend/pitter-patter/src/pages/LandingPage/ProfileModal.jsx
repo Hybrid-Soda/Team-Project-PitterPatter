@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ModalOverlay = styled.div`
   display: flex;
@@ -72,6 +73,15 @@ const Divider = styled.div`
 
 function ProfileModal({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  const handleNavigation = (path) => {
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      navigate('/login');
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -79,13 +89,13 @@ function ProfileModal({ isOpen, onClose }) {
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={e => e.stopPropagation()}>
         <GridItem>
-          <ProfileButton onClick={() => navigate('/child/mypage')}>
+          <ProfileButton onClick={() => handleNavigation('/child/mypage')}>
             마이 페이지
           </ProfileButton>
         </GridItem>
         <Divider />
         <GridItem>
-          <ProfileButton onClick={() => navigate('/select-profile')}>
+          <ProfileButton onClick={() => handleNavigation('/select-profile')}>
             프로필 변경
           </ProfileButton>
         </GridItem>

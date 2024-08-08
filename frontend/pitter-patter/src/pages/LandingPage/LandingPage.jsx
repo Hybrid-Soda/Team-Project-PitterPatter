@@ -1,9 +1,17 @@
-import { MainWrap, HeaderBody, MainColumn, SubTitle, Title, MainImage, Button, TextButton } from "./LandingPageStyle";
+import { MainWrap, 
+    HeaderBody, 
+    MainColumn, 
+    SubTitle, 
+    Title, 
+    MainImage, 
+    Button, 
+    TextButton } from "./LandingPageStyle";
 import { Link } from "react-router-dom";
 
 import Header from "./Header";
 
 function LandingPage() {
+
     return (
         <MainWrap>
             <HeaderBody>
