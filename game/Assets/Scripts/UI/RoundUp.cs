@@ -9,7 +9,6 @@ public class RoundUp : MonoBehaviour
     public Image startImage;
     public Image roundImage;
     public Sprite[] roundSprites;
-    public float displayDuration = 2.5f;
     public bool isRoundUp = false;
 
     private GameScene gameScene;
@@ -51,7 +50,7 @@ public class RoundUp : MonoBehaviour
         yield return new WaitForSeconds(3.5f);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.RoundUp);
         roundImage.gameObject.SetActive(true);
-        yield return new WaitForSeconds(displayDuration);
+        yield return new WaitForSeconds(2.5f);
         roundImage.gameObject.SetActive(false);
         yield return new WaitForSeconds(1f);
         isRoundUp = false;
