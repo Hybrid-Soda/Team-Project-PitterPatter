@@ -17,6 +17,11 @@ import Modal from './LoginFailModal.jsx';
 
 import { login } from "/src/pages/User/userApi.js";
 
+import { setToken } from '../../../redux/tokenSlice.js';
+import { setUser } from '../../../redux/userSlice.js';
+import { useDispatch } from 'react-redux';
+
+
 const IconX = styled.img`
   width: 1.5vw;
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
@@ -43,6 +48,7 @@ const SocialIcon = styled.img`
 
 function Login() {
   const navigator = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -86,7 +92,11 @@ function Login() {
 
         // jwt 토큰을 여기서 redux에 저장시켜야 함
         // ...
-
+        dispatch(setToken({
+          grantType,
+          accessToken,
+          refreshToken,
+        }));
         navigator("/");
       } else {
         setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');
