@@ -15,6 +15,7 @@ import {
 import PlusSquare from "../../assets/icons/PlusSquare.png";
 
 import { childApi } from '../../apiService';
+import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getItem } from '../../redux/itemSlice';
@@ -32,10 +33,14 @@ function SelectProfile() {
   };
 
   // redux: 유저 아이템 받아오기
+  const childId = useSelector((state) => state.child.childId);
+  useEffect(() => {
+    getProfile();
+  }, [childId]);
   const dispatch = useDispatch();
   const getProfile = () => {
         dispatch(getItem());
-        dispatch(getChild());
+        dispatch(getChild(childId));
   };
 
   return (

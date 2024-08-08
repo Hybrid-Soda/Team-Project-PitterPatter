@@ -19,7 +19,7 @@ export const InputWrap = styled.div`
   margin-top: 2vw;
   gap: 1vw;
   overflow-y: scroll;
-  height: 30vh;
+  height: 20vh;
 `;
 
 export const InputItem = styled.div`
