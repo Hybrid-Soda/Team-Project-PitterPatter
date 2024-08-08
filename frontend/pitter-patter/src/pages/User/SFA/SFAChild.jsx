@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import {
   LayoutBase,
   LayoutSFA,
@@ -14,15 +13,38 @@ import {
 } from './SFAStyle';
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
-import { useNavigate, Link } from 'react-router-dom';
-import ForgotPWmodal from './ForgotPWmodal';
+import { useNavigate } from 'react-router-dom';
+import ForgotSFAmodal from './ForgotSFAmodal';
 
+import { verify2fa } from "/src/pages/User/userApi.js";
+import { handleReissueCatch } from '../../../apiService';
 
 function SFAChild() {
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
-  const navigate = useNavigate();
+  // 추후 redux에서 가져와야 할 정보
+  const [accessToken, setAccessToken] = useState('access token');
+
+  useEffect(() => {
+    const verifyPassword = async () => {
+      if (password.length === 4) {
+        const isVerified = await isVerifiedSFA();
+        setPassword('');
+        if (isVerified) {
+          navigate('/child');
+        }
+      }
+    };
+
+    verifyPassword();
+  }, [password]);
+
+  const goBack = () => {
+    navigate(-1); // 뒤로가기 기능
+  };
 
   const handleKeyPress = (value) => {
     if (password.length < 4) {
@@ -34,18 +56,28 @@ function SFAChild() {
     setPassword(password.slice(0, -1));
   };
 
-  useEffect(() => {
-    if (password.length === 4) {
-      setTimeout(() => {
-        alert(`입력된 암호: ${password}`);
-        setPassword("");
-        navigate("/child");
-      }, 100);
-    }
-  }, [password]);
+  const isVerifiedSFA = async () => {
+    try {
+      const response = await verify2fa(accessToken, password);
 
-  const goBack = () => {
-    navigate(-1); // 뒤로가기 기능
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.msg;
+
+        if (exception === undefined) {
+          return true;
+        } else {
+          alert(msg);
+          return false;
+        }
+      } else {
+        alert("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        return false;
+      }
+    } catch (error) {
+      handleReissueCatch(error);
+      return false;
+    }
   };
 
   return (
@@ -87,7 +119,7 @@ function SFAChild() {
         <ForgotPassword>
           <button onClick={() => setModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {modalOpen && <ForgotPWmodal onClose={() => setModalOpen(false)} />}
+        {modalOpen && <ForgotSFAmodal onClose={() => setModalOpen(false)} />}
       </LayoutSFA>
     </LayoutBase>
   );
