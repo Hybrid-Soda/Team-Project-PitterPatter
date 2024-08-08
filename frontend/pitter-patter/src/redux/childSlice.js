@@ -5,10 +5,10 @@ import { childApi } from "../apiService";
 // 사용자 정보를 가져오는 비동기 액션 정의
 export const getChild = createAsyncThunk(
     'child/getChild',
-    async (_, thunkAPI) => {
+    async (childId, thunkAPI) => {
         try {
             const state = thunkAPI.getState();
-            const childId = state.child.id; 
+            // const childId = state.child.id; 
             const token = state.token.refreshToken;
             const response = await childApi.get(`/${childId}`, {
                 headers: {
@@ -27,7 +27,7 @@ export const getChild = createAsyncThunk(
 const childSlice = createSlice({
     name: 'child',
     initialState: {
-        id: 24,
+        id: null,
         profileImage: null,
         nickname: null,
         gender: null,

@@ -9,7 +9,7 @@ export const getUser = createAsyncThunk(
         try {
             const response = await userApi.get('', {
                 headers: {
-                    Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNiIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkyNjI1LCJpYXQiOjE3MjI5OTI2MjUsImV4cCI6MTcyMzU5NzQyNSwianRpIjoiOTJkMzdkYjEtNmQ2ZC00MzQxLTk5MTQtNWFjZmQ4MTNiZWFlIn0.53pqQTDwTGgv_l3vlRLOLlN1MEwC0qafz_lZs8Fz0jF88FMSB6-4H2xTZQeuenIkTuHGHngDKvHuy7MbbzHjOg`,
+                    Authorization: `Bearer ${token}`,
                 },
             });
             console.log('API Response:', response.data); // 응답 데이터 출력
