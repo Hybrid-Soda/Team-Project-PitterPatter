@@ -11,11 +11,9 @@ import com.pitpat.pitterpatter.entity.Child;
 import com.pitpat.pitterpatter.entity.UserEntity;
 import com.pitpat.pitterpatter.global.exception.exceptions.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,9 +60,6 @@ public class ChildServiceImpl implements ChildService {
         // 자녀 존재여부 검증 후 존재한다면 Child 할당
         Child child = validateChildExists(childId);
 
-        // TODO : user가 없는 경우에 대한 예외처리 : user도메인 개발 완료 시 추가.(ForeignKeyConstraintException)
-        userExceptionHandling(child.getUser());
-
         Child updatedChild = childUpdateDTO.toUpdateEntity(child, childUpdateDTO);
 
         childRepository.save(updatedChild);
@@ -86,11 +81,6 @@ public class ChildServiceImpl implements ChildService {
         if (children.isEmpty()) {
             throw new DataNotFoundException("해당 데이터가 존재하지 않습니다.");
         }
-    }
-
-    @Override
-    public void userExceptionHandling(UserEntity user) {
-
     }
 
     // 해당 ID의 자녀가 존재하는지 검증
