@@ -37,10 +37,10 @@ public class ChildController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> addChild(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ChildRequestDTO childRequestDTO) {
+    public ResponseEntity<Long> addChild(@AuthenticationPrincipal UserDetails userDetails, @Valid @RequestBody ChildRequestDTO childRequestDTO) {
         int userId = Integer.parseInt(userDetails.getUsername());
-        childService.addChild(userId, childRequestDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Long childId = childService.addChild(userId, childRequestDTO);
+        return new ResponseEntity<>(childId, HttpStatus.OK);
     }
 
     @GetMapping("/{childId}")

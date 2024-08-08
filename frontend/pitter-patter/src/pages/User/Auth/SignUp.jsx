@@ -50,6 +50,7 @@ function SignUp() {
   const [isValidated, setIsValidated] = useState(false);
   const [isDuplicated, setIsDuplicated] = useState(false);
   const emailInputRef = useRef(null);
+  const passwordInputRef = useRef(null);
 
   const isPasswordValid = () => {
     if (password === passwordCheck) {
@@ -97,6 +98,20 @@ function SignUp() {
   };
 
   const handleSignUp = async () => {
+    // 이메일 필수 입력
+    if (email === "" || email === undefined) {
+      alert("이메일을 입력해주세요.");
+      emailInputRef.current.focus();
+      return;
+    }
+
+    // 비밀번호 필수 입력
+    if (password === "" || password === undefined) {
+      alert("비밀번호를 입력해주세요.");
+      passwordInputRef.current.focus();
+      return;
+    }
+
     if (isDuplicated) {
       emailInputRef.current.focus(); // 이메일 형식이 올바르지 않을 때 포커스를 이메일 입력 필드로 설정
       return;
@@ -203,6 +218,7 @@ function SignUp() {
             id="password"
             placeholder="비밀번호"
             onChange={(e) => setPassword(e.target.value)}
+            ref={passwordInputRef}
           />
           <InputText
             type="password"
