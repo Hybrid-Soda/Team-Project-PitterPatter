@@ -7,6 +7,8 @@ import {
   verifyPassword
  } from "/src/pages/User/userApi.js";
 
+ import { handleReissueCatch } from '../../../apiService';
+
 const LayoutMyPage = styled.div`
   display: flex;
   flex-direction: column;
@@ -137,17 +139,7 @@ function ChangePassword() {
         alert("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else if (error.msg && error.msg === "토큰 검증 실패") {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else {
-        alert("문제가 발생했습니다. 다시 시도해주세요.");
-      }
+      handleReissueCatch(error);
     }
   };
 
@@ -164,17 +156,7 @@ function ChangePassword() {
       }
       return false;
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else if (error.msg && error.msg === "토큰 검증 실패") {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else {
-        alert("문제가 발생했습니다. 다시 시도해주세요.");
-      }
+      handleReissueCatch(error);
     }
   }
 

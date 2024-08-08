@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import ForgotSFAmodal from './ForgotSFAmodal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
+import { handleReissueCatch } from '../../../apiService';
 
 function SFA() {
   const navigate = useNavigate();
@@ -74,18 +75,8 @@ function SFA() {
         return false;
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else if (error.msg && error.msg === "토큰 검증 실패") {
-        // intercetor에서 토큰 재발급 수행
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigator("/");
-      } else {
-        alert("문제가 발생했습니다. 다시 시도해주세요.");
-        return false;
-      }
+      handleReissueCatch(error);
+      return false;
     }
   };
 

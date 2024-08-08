@@ -1,6 +1,5 @@
 // src/apiService.js
 import axios from "axios";
-import { reissueJwtToken } from "./pages/User/userApi.js";
 
 const host = "https://pitter-patter.picel.net";
 const baseURL = `${host}/api`;
@@ -26,6 +25,20 @@ export const assetsApi = axios.create({
   timeout: timeout,
 });
 
+export const handleReissueCatch = (error) => {
+  if (error.response && error.response.status === 401) {
+    // intercetor에서 토큰 재발급 수행
+    alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+    window.location.href="/";
+  } else if (error.msg && error.msg === "토큰 검증 실패") {
+    // intercetor에서 토큰 재발급 수행
+    alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+    window.location.href="/";
+  } else {
+    alert("문제가 발생했습니다. 다시 시도해주세요.");
+  }
+};
+
 const setupInterceptors = (axiosInstance) => {
   // 응답 인터셉터 설정
   axiosInstance.interceptors.response.use(
@@ -43,10 +56,9 @@ const setupInterceptors = (axiosInstance) => {
   
       // 토큰 재발급 수행
       if (status === 401) {
-        console.log("토큰 만료되어 재발급 함");
         // redux에서 값 가져오기
         const accessToken = 'access token';
-        const refreshToken = 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIzMDk3NjQ1LCJpYXQiOjE3MjMwOTc2NDUsImV4cCI6MTcyMzcwMjQ0NSwianRpIjoiZTUwZDA4MGItZjg5Ni00NmQ3LTkyYzQtNGRiNDk0MWNmM2VjIn0.W_vGUiyeABFCn2jEE5PscfWtmW8WNn_iRKfi2LdD6Woa4bCcHxVg1w5v_8tUeMTq2IC8g2snwiya_JnxLjuixw';
+        const refreshToken = 'refresh token';
   
         try {
           const { data } = await axios({
