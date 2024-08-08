@@ -17,8 +17,6 @@ public interface ChildService {
 
     void childExceptionHandling(List<ChildResponseDTO> children);
 
-    void userExceptionHandling(UserEntity user);
-
     ChildResponseDTO getChildById(Long childId);
 
     void updateChild(Long childId, ChildUpdateDTO childUpdateDTO);

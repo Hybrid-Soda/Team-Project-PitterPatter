@@ -1,9 +1,6 @@
 package com.pitpat.pitterpatter.global.exception;
 
-import com.pitpat.pitterpatter.global.exception.exceptions.DataNotFoundException;
-import com.pitpat.pitterpatter.global.exception.exceptions.DuplicateResourceException;
-import com.pitpat.pitterpatter.global.exception.exceptions.TokenExpiredException;
-import com.pitpat.pitterpatter.global.exception.exceptions.UserProblemException;
+import com.pitpat.pitterpatter.global.exception.exceptions.*;
 import io.jsonwebtoken.security.SecurityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +55,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
-    // 다른 예외 핸들러도 추가할 수 있습니다.
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<Map<String, String>> handleDuplicateResourceException(DuplicateResourceException ex) {
         Map<String, String> response = new HashMap<>();
@@ -89,5 +85,12 @@ public class GlobalExceptionHandler {
         response.put("exception", "SecurityException");
         response.put("msg", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidDateFormatException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidDateFormatException(InvalidDateFormatException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("msg", ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
