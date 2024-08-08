@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameScene : MonoBehaviour
+public class GameScene : BaseScene
 {
     public int round;
     public bool getPoint;
@@ -40,7 +40,7 @@ public class GameScene : MonoBehaviour
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
         feedbackImg.gameObject.SetActive(false);
-        GameManager.Instance.UnityCall(false);
+        Managers.Network.UnityCall(false);
     }
 
     void Update()
@@ -87,7 +87,7 @@ public class GameScene : MonoBehaviour
         getPoint = true;
         int scoreInc = CalcScore(colliders.Count, round);
         score += scoreInc;
-        GameManager.Instance.finalScore = score;
+        Managers.Network.finalScore = score;
         SetFbMsg(scoreInc);
     }
 
@@ -114,19 +114,19 @@ public class GameScene : MonoBehaviour
         switch (scoreInc)
         {
             case 10: // Perfect
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
                 feedbackImg = feedbackImgs[0];
                 break;
             case 5: // Great
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
                 feedbackImg = feedbackImgs[1];
                 break;
             case 3: // Good
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.GetScore);
+                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
                 feedbackImg = feedbackImgs[2];
                 break;
             case 0:
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.NoGetScore);
+                Managers.Sound.Play("SFX/NoGetscore", Define.Sound.SFX);
                 break;
         }
 
@@ -144,18 +144,15 @@ public class GameScene : MonoBehaviour
     {
         isEnded = true;
         clearImage.gameObject.SetActive(true);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Success);
+        Managers.Sound.Play("SFX/Sucess", Define.Sound.SFX);
         StartCoroutine(LoadScoreScene(3f));
     }
 
     private IEnumerator LoadScoreScene(float delay)
     {
-        GameManager.Instance.playTime = playTime;
-        GameManager.Instance.playTimeTxt = playTimeTxt.text;
-        GameManager.Instance.UnityCall(true);
+        Managers.Network.UnityCall(true);
         yield return new WaitForSeconds(delay);
-        SceneManager.LoadScene("Score");
+        Managers.Scene.LoadScene(Define.Scene.ScoreScene);
         clearImage.gameObject.SetActive(false);
-        AudioManager.instance.StopBgm();
     }
 }

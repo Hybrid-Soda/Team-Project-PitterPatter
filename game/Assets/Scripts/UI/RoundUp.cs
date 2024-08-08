@@ -49,7 +49,7 @@ public class RoundUp : MonoBehaviour
 
         isRoundUp = true;
         yield return new WaitForSeconds(3.5f);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.RoundUp);
+        Managers.Sound.Play("SFX/RoundUp", Define.Sound.SFX);
         roundImage.gameObject.SetActive(true);
         yield return new WaitForSeconds(displayDuration);
         roundImage.gameObject.SetActive(false);

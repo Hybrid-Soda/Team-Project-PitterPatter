@@ -25,19 +25,13 @@ public class HoverBtn : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerEnter(PointerEventData eventData)
     {
         transform.localScale = originalScale * hoverScaleFactor;
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.ToggleBtn);
-        if (buttonText != null)
-        {
-            buttonText.color = hoverColor;
-        }
+        Managers.Sound.Play("SFX/ToggleBtn", Define.Sound.SFX);
+        if (buttonText != null) buttonText.color = hoverColor;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         transform.localScale = originalScale;
-        if (buttonText != null)
-        {
-            buttonText.color = originalColor;
-        }
+        if (buttonText != null) buttonText.color = originalColor;
     }
 }
