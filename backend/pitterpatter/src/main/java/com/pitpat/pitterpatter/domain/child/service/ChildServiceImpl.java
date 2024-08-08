@@ -33,11 +33,12 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public void addChild(int userId, ChildRequestDTO childRequestDTO) {
+    public Long addChild(int userId, ChildRequestDTO childRequestDTO) {
         UserDto userDto = userService.getUserById(userId);
         UserEntity userEntity = userDto.toEntity();
         Child child = childRequestDTO.toAddEntity(userEntity, childRequestDTO);
         childRepository.save(child);
+        return child.getId();
     }
 
     @Override
