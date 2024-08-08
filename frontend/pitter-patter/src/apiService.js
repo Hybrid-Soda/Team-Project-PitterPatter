@@ -55,9 +55,7 @@ const setupInterceptors = (axiosInstance) => {
             headers: { "Authorization": `Bearer ${refreshToken}` },
           });
 
-          if (data === undefined) {
-            // 로그아웃 시키기
-            // ...
+          if (data.exception !== undefined) {
             throw new Error("토큰 검증 실패");
           }
 
@@ -76,7 +74,7 @@ const setupInterceptors = (axiosInstance) => {
         } catch (error) {
           // 로그아웃 시키기
           // ...
-          throw new Error(error);
+          new Error(error);
         }
       }
       return Promise.reject(error);
