@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import YellowWaveBackground from "/src/assets/img/Background/YellowWave.png";
-import FrameImage from "/src/assets/img/Shop/frame/frame3.png";
 
 const slideUp = keyframes`
   from {
@@ -52,7 +51,6 @@ export const Frame = styled.div`
   height: 400px;
   width: 328px;
   border-radius: 10px;
-  background-image: url(${FrameImage});
 `;
 
 export const BlankRow = styled.div`

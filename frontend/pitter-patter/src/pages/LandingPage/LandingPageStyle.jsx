@@ -42,13 +42,14 @@ export const LayoutHeaderButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin: 0 .3rem;
+  /* margin: 0 .3rem; */
+  gap: 1.5rem;
 `;
 
 export const HeaderButton = styled.img`
-  width: 3.3vw;
-  height: 3.3vw;
-  margin: 0 15%;
+  width: 3vw;
+  height: 3vw;
+  /* margin: 0 15%; */
   border-radius: 50%;
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
 `;

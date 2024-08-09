@@ -1,8 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import { childApi } from '../../../apiService';
-import axios from 'axios';
+import { hostApi } from '../../../apiService';
+import { useNavigate } from 'react-router-dom';
+import { setChild } from '../../../redux/childSlice';
+import { useDispatch } from 'react-redux';
 
 import {
   LayoutMyPage,
@@ -74,66 +77,106 @@ const CancleButton = styled.button`
 
 function ChildInfo() {
   const childId = useSelector((state) => state.child.id);
-  const token = useSelector((state) => state.token.refreshToken);
+  const token = useSelector((state) => state.token.accessToken);
+  const childData = useSelector((state) => state.child);
 
   const [profileImage, setProfileImage] = useState(SingingBanana);
   const fileInputRef = useRef(null);
 
   const [nickname, setNickname] = useState('');
-  const [birth, setbirth] = useState('');
+  const [birth, setBirth] = useState('');
   const [gender, setGender] = useState('MALE');
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (childId) {
+      setNickname(childData.nickname || '');
+      setBirth(childData.birth || '');
+      setGender(childData.gender || 'MALE');
+      setProfileImage(childData.profileImage || SingingBanana);
+    }
+  }, [childId, childData]);
 
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await hostApi.post(`/api/image/upload`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        const imageUrl = response.data.url; // 서버에서 반환된 이미지 URL
+        setProfileImage(imageUrl);
+      } catch (error) {
+        console.error('There was an error uploading the image!', error);
+      }
     }
   };
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const userProfileData = {
       nickname,
       birth,
       gender,
-      profileImage,
+      profileImage, // 업로드된 이미지의 URL을 포함
     };
-
-    if (!childId) {
-      childApi.post('', userProfileData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-        .then(response => {
-          console.log('Profile added successfully:', response.data);
-          // const childId = response.data.childId;
-        })
-        .catch(error => {
-          console.error('There was an error adding the profile!', error);
-          console.log(userProfileData)
+  
+    try {
+      if (!childId) {
+        const response = await childApi.post('', userProfileData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         });
-    } else {
-      childApi.patch(`/${childId}`, userProfileData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(response => {
-          console.log('Profile updated successfully:', response.data);
-        })
-        .catch(error => {
-          console.error('There was an error updating the profile!', error);
-        }); 
+        console.log('Profile added successfully:', response.data);
+        goBack();
+      } else {
+        const response = await childApi.patch(`/${childId}`, userProfileData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Profile updated successfully:', response.data);
+  
+        // 프로필 업데이트 후 해당 childId로 정보를 다시 가져옴
+        const childInfoResponse = await childApi.get(`/${childId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const childInfo = childInfoResponse.data;
+        console.log(childInfo);
+  
+        // Redux 상태 업데이트
+        dispatch(setChild(childInfo));
+        goHome();
+      }
+    } catch (error) {
+      if (!childId) {
+        console.error('There was an error adding the profile!', error);
+      } else {
+        console.error('There was an error updating the profile!', error);
+      }
     }
+  };
+  
+
+  const navigation = useNavigate();
+  const goBack = () => {
+    navigation(-1);
+  };
+  const goHome = () => {
+    navigation('/');
   };
 
   return (
@@ -160,7 +203,7 @@ function ChildInfo() {
         </InputItem>
         <InputItem>
           <InputTitle>생년월일</InputTitle>
-          <InputBox type="date" placeholder="생년월일" value={birth} onChange={(e) => setbirth(e.target.value)} />
+          <InputBox type="date" placeholder="생년월일" value={birth} onChange={(e) => setBirth(e.target.value)} />
         </InputItem>
         <InputItem>
           <InputTitle>성별</InputTitle>
@@ -171,7 +214,7 @@ function ChildInfo() {
         </InputItem>
       </InputWrap>
       <Profile style={{ background: 'none', height: '13vh', width: '30vw', gap: '1.5rem' }}>
-        <CancleButton>취소</CancleButton>
+        <CancleButton onClick={goBack}>취소</CancleButton>
         <SubmitButton onClick={handleSubmit}>저장</SubmitButton>
       </Profile>
     </LayoutMyPage>
