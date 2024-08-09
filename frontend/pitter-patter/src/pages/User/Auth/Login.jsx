@@ -17,9 +17,7 @@ import Modal from './LoginFailModal.jsx';
 
 import { login } from "/src/pages/User/userApi.js";
 
-import { userApi } from '../../../apiService.js';
 import { setToken } from '../../../redux/tokenSlice.js';
-import { setUser } from '../../../redux/userSlice.js';
 import { useDispatch } from 'react-redux';
 
 
@@ -98,19 +96,6 @@ function Login() {
           refreshToken,
         })
       );
-        // state에 유저 정보 저장
-        const userInfoResponse = await userApi.get('', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const userInfo = userInfoResponse.data;
-        dispatch(setUser({
-          userId: userInfo.data.userId,
-          teamName: userInfo.data.teamName,
-          email: userInfo.data.email,
-        }));
-        
         navigator("/select-profile");
       } else {
         setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');

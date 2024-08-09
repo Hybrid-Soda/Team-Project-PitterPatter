@@ -73,7 +73,6 @@ const Divider = styled.div`
 
 function ProfileModal({ isOpen, onClose }) {
   const navigate = useNavigate();
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const handleNavigation = (path) => {
     navigate(path);
