@@ -8,7 +8,9 @@ export const WebcamTest = styled.div`
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  /* max-width: 600px; */
+  width: 45vw;
+  /* height: 80vh; */
   margin: 0 auto;
 `;
 
@@ -45,14 +47,14 @@ export const CompleteButton = styled.button`
   margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
+  color: var(--font-color);
+  background-color: var(--logo-yellow-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: var(--logo-yellow-color);
   }
 `;
