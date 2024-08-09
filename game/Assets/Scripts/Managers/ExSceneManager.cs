@@ -11,7 +11,8 @@ public class ExSceneManager
     // 지정된 장면 로드
     public void LoadScene(Define.Scene type)
     {
-        Managers.Sound.Play("SFX/SceneChange", Define.Sound.SFX);
+        if (type != Define.Scene.ScoreScene)
+            Managers.Sound.Play("SFX/SceneChange", Define.Sound.SFX);
         SceneManager.LoadScene(GetSceneName(type));
     }
 

@@ -13,6 +13,6 @@ public class ScoreScene : BaseScene
 
         // UI 업데이트
         correctScoreTxt.text = string.Format("{0:n0}", Managers.Network.finalScore);
-        playTimeTxt.text = Managers.Network.playTimeTxt.text;
+        playTimeTxt.text = Managers.Network.playTimeTxt;
     }
 }
