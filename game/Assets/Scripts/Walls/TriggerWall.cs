@@ -2,48 +2,57 @@ using UnityEngine;
 
 public class TriggerWall : MonoBehaviour
 {
-    private GameScene gameScene;
-    private float speed;
-    private bool fin;
     private readonly float[] speeds = { 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f };
+    private GameScene gameScene;
+    private bool hasFinished;
+    private float speed;
 
     void Start()
     {
-        gameScene = FindObjectOfType<GameScene>();
-        SetSpeed();
-        fin = false;
+        Init();
     }
 
     void Update()
     {
-        gameObject.transform.Translate(speed * Time.deltaTime * Vector3.up); // 벽 이동
-
-        if (gameScene != null && !fin && transform.position.z <= -1)
-        {
-            if (!gameScene.getPoint)
-            {
-                if (gameScene.round < 3) {
-                    gameScene.UpdateScore(gameScene.round);
-                }
-                gameScene.colliders.Clear();
-            }
-            else
-            {
-                fin = true;
-                gameScene.getPoint = false;
-            }
-        }
-
-        if (transform.position.z < -5)
-        {
-            Destroy(gameObject);
-        }
+        // 벽 이동
+        gameObject.transform.Translate(speed * Time.deltaTime * Vector3.up);
+        // 충돌 체크
+        CheckCollision();
+        // 범위 체크
+        if (transform.position.z < -5) Destroy(gameObject);
     }
 
+    private void Init()
+    {
+        gameScene = FindObjectOfType<GameScene>();
+        SetSpeed();
+        hasFinished = false;
+    }
+
+    // 난이도에 따른 벽 속도 설정
     private void SetSpeed()
     {
-        // 난이도에 따른 벽 속도 설정
         int diffLevel = Managers.Play.diffLevel;
         speed = (diffLevel >= 1 && diffLevel <= 6) ? speeds[diffLevel - 1] : 8.0f;
+    }
+
+    // 충돌 체크
+    private void CheckCollision()
+    {
+        if (gameScene == null || hasFinished || transform.position.z > -1) return;
+
+        if (!gameScene.getPoint)
+        {
+            if (gameScene.round < 3)
+            {
+                gameScene.UpdateScore();
+            }
+            gameScene.colliders.Clear();
+        }
+        else
+        {
+            hasFinished = true;
+            gameScene.getPoint = false;
+        }
     }
 }

@@ -25,6 +25,7 @@ public class GameScene : BaseScene
     void Start()
     {
         roundUp = FindAnyObjectByType<RoundUp>();
+        Managers.Map.Init();
         Init();
     }
 
@@ -82,30 +83,21 @@ public class GameScene : BaseScene
     }
 
     // 점수 업데이트
-    public void UpdateScore(int round)
+    public void UpdateScore()
     {
         getPoint = true;
-        int scoreInc = CalcScore(colliders.Count, round);
+        int scoreInc = CalcScore(colliders.Count);
         score += scoreInc;
         Managers.Network.finalScore = score;
         SetFbMsg(scoreInc);
     }
 
     // 점수 계산
-    private int CalcScore(int count, int round)
+    private int CalcScore(int count)
     {
-        if (round == 1)
-        {
-            if (count >= 9) return 10;
-            if (count >= 6) return 5;
-            if (count >= 3) return 3;
-        }
-        else
-        {
-            if (count < 3) return 10;
-            if (count < 6) return 5;
-            if (count < 9) return 3;
-        }
+        if (count >= 9) return 10;
+        if (count >= 6) return 5;
+        if (count >= 3) return 3;
         return 0;
     }
 

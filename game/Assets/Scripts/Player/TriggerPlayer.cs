@@ -22,7 +22,7 @@ public class PlayerTrigger : MonoBehaviour
             else if (gameScene.round == 2)
             {
                 // 오브젝트가 아직 목록에 없는 경우 목록에 추가
-                gameScene.colliders.Add(other.gameObject);
+                gameScene.colliders.Add(gameObject);
             }
         }
     }

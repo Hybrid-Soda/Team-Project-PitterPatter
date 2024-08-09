@@ -47,7 +47,7 @@ public class Managers : MonoBehaviour
             if (gameObject.GetComponent<Managers>() == null)
             {
                 gameObject.AddComponent<Managers>();
-                // Map = gameObject.AddComponent<MapManager>();
+                Map = gameObject.AddComponent<MapManager>();
                 Network = gameObject.AddComponent<NetworkManager>();
             }
 

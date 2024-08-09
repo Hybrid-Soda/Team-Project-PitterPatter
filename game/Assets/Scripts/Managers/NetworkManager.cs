@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEngine.UI;
 using UnityEngine;
-
 
 public class NetworkManager : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void UnityToReact(int score, bool isGameEnd);
 
-    public int mapNum;
-    public int finalScore;
+    public Text playTimeTxt;
     public string poseData;
+    public int mapNum = 1;
+    public int finalScore;
 
     void Awake()
     {

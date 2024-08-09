@@ -6,6 +6,22 @@ using UnityEngine;
 public class StopBtn : MonoBehaviour
 {
     public GameObject stopWindow;
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (stopWindow.activeSelf)
+            {
+                OnClickContinueBtn();
+            }
+            else
+            {
+                OnClickStopBtn();
+            }
+        }
+    }
+
     public void OnClickStopBtn()
     {
         Time.timeScale = 0;
@@ -18,26 +34,5 @@ public class StopBtn : MonoBehaviour
         Time.timeScale = 1;
         Managers.Sound.ResumeBgm();
         stopWindow.SetActive(false);
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-    {
-        if (stopWindow.activeSelf)
-        {
-            // stopWindow가 활성화되어 있으면 비활성화하고 게임 재개
-            Time.timeScale = 1;
-            Managers.Sound.ResumeBgm();
-            stopWindow.SetActive(false);
-        }
-        else
-        {
-            // stopWindow가 비활성화되어 있으면 활성화하고 게임 일시정지
-            Time.timeScale = 0;
-            Managers.Sound.PauseBgm();
-            stopWindow.SetActive(true);
-        }
-    }
     }
 }
