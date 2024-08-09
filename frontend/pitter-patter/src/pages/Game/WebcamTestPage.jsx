@@ -54,22 +54,24 @@ const WebcamTestPage = ({ onTestComplete }) => {
   }
 
   return (
-    <WebcamTest>
-      {/* 웹캠 장치를 선택하는 드롭다운 메뉴 */}
-      <DeviceSelect onChange={handleDeviceChange} value={nowDeviceId}>
-        {devices.map(device => (
-          <option key={device.deviceId} value={device.deviceId}>
-            {device.label || `Camera ${device.deviceId}`}
-          </option>
-        ))}
-      </DeviceSelect>
-      {/* 비디오 미리보기를 위한 컨테이너 */}
-      <VideoContainer>
-        <VideoPreview ref={videoRef} />
-      </VideoContainer>
-      {/* 테스트 완료 버튼 */}
-      <CompleteButton onClick={onTestComplete}>완료</CompleteButton>
-    </WebcamTest>
+    <div style={{width: '100vw', height: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'absolute', bottom: 0}}>
+      <WebcamTest>
+        {/* 웹캠 장치를 선택하는 드롭다운 메뉴 */}
+        <DeviceSelect onChange={handleDeviceChange} value={nowDeviceId}>
+          {devices.map(device => (
+            <option key={device.deviceId} value={device.deviceId}>
+              {device.label || `Camera ${device.deviceId}`}
+            </option>
+          ))}
+        </DeviceSelect>
+        {/* 비디오 미리보기를 위한 컨테이너 */}
+        <VideoContainer>
+          <VideoPreview ref={videoRef} />
+        </VideoContainer>
+        {/* 테스트 완료 버튼 */}
+        <CompleteButton onClick={onTestComplete}>완료</CompleteButton>
+      </WebcamTest>
+    </div>
   )
 }
 

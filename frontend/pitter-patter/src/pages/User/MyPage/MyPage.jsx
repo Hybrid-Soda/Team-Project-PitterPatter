@@ -15,15 +15,53 @@ import UserInfo from "./UserInfo";
 import ChangePassword from "./ChangePassword"
 import DeleteUser from './DeleteUser';
 
-function MyPage() {
-  const [modalOpen, setModalOpen] = useState(false);
+import { deleteUser} from "/src/pages/User/userApi.js";
+import { handleReissueCatch } from '../../../apiService';
 
+function MyPage() {
+  const Navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState('userInfo');
+
+  // 추후 redux에서 가져와야할 정보들
+  const [accessToken, setAccessToken] = useState('access token');
+
   const handleMenuItemClick = (component) => {
     setActiveComponent(component);
   };
 
-  const Navigate = useNavigate();
+  const handleModalOpen = async () => {
+    const isDeleted = await handleDeleteUser();
+    if (isDeleted) {
+      setModalOpen(true);
+    } else {
+      setModalOpen(false);
+    }
+  };
+
+  const handleDeleteUser = async () => {
+    try {
+      const response = await deleteUser(accessToken);
+
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.exception;
+
+        if (exception === undefined) {
+          return true;
+        } else {
+          alert(msg);
+          return false;
+        }
+      } else {
+        alert("회원탈퇴에 실패했습니다.");
+        return false;
+      }
+    } catch (error) {
+      handleReissueCatch(error);
+      return false;
+    }
+  };
 
   return (
     <LayoutBase>
@@ -51,7 +89,7 @@ function MyPage() {
                 <Link to="/NewSFA">2차 비밀번호 변경</Link>
               </MenuItem>
               <button
-                onClick={() => setModalOpen(true)}
+                onClick={handleModalOpen}
                 style={{ border: 'none', background: 'none', padding: 0 }}
               >
                 <MenuItem>회원 탈퇴</MenuItem>

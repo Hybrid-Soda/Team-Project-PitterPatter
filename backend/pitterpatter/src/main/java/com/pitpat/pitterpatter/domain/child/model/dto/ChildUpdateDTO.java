@@ -3,10 +3,14 @@ package com.pitpat.pitterpatter.domain.child.model.dto;
 import com.pitpat.pitterpatter.entity.Child;
 import com.pitpat.pitterpatter.entity.UserEntity;
 import com.pitpat.pitterpatter.entity.enums.Gender;
+import com.pitpat.pitterpatter.global.validation.ValidLocalDate;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,6 +18,8 @@ import java.util.Optional;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChildUpdateDTO {
     private String profileImage;
 
@@ -22,7 +28,8 @@ public class ChildUpdateDTO {
 
     private Gender gender;
 
-    private LocalDate birth;
+    @ValidLocalDate
+    private String birth;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -33,7 +40,7 @@ public class ChildUpdateDTO {
                 .profileImage(Optional.ofNullable(childUpdateDTO.getProfileImage()).orElse(child.getProfileImage()))
                 .nickname(Optional.ofNullable(childUpdateDTO.getNickname()).orElse(child.getNickname()))
                 .gender(Optional.ofNullable(childUpdateDTO.getGender()).orElse(child.getGender()))
-                .birth(Optional.ofNullable(childUpdateDTO.getBirth()).orElse(child.getBirth()))
+                .birth(Optional.ofNullable(childUpdateDTO.getBirth()).map(LocalDate::parse).orElse(child.getBirth()))
                 .createdAt(child.getCreatedAt())
                 .updatedAt(child.getUpdatedAt())
                 .personalRecord(child.getPersonalRecord())

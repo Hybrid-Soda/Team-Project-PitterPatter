@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const ModalOverlay = styled.div`
@@ -77,14 +77,21 @@ const DateColumn = styled.span`
 function CoinModal({ onClose, pointRecords, loadMoreRecords, hasMore }) {
   const observer = useRef();
   const lastRecordRef = useRef();
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
   useEffect(() => {
+    if (loading) return; // 로딩 중이면 새로운 요청을 보내지 않음
+
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
-        loadMoreRecords();
+        setLoading(true);
+        loadMoreRecords().finally(() => setLoading(false)); // 로딩 상태 업데이트
       }
+    }, {
+      rootMargin: '100px', // 옵저버가 트리거되는 시점을 앞당김
+      threshold: 0.1, // 10%가 보이면 트리거
     });
 
     if (lastRecordRef.current) observer.current.observe(lastRecordRef.current);
@@ -92,10 +99,16 @@ function CoinModal({ onClose, pointRecords, loadMoreRecords, hasMore }) {
     return () => {
       if (observer.current) observer.current.disconnect();
     };
-  }, [lastRecordRef.current, loadMoreRecords, hasMore]);
+  }, [lastRecordRef.current, loadMoreRecords, hasMore, loading]);
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   return (
-    <ModalOverlay>
+    <ModalOverlay onClick={handleOverlayClick}>
       <ModalContent>
         <CloseButton onClick={onClose} />
         <h2>코인 정보</h2>

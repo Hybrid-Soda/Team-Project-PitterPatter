@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../LandingPage/Header";
 import {
@@ -26,13 +27,16 @@ import Beep from "/src/assets/sound/beep.mp3";
 import Shutter from "/src/assets/sound/shutter.mp3";
 
 function Snapshot() {
-  const frameRef = useRef(null);
+  // const frameRef = useRef(null);
   const [imageList, setImageList] = useState([null, null, null, null]);
   const navigate = useNavigate();
   const BlankRefs = useRef([]);
   const [isFilled, setIsFilled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVideoStream, setModalVideoStream] = useState(null);
+
+  const frameNum = useSelector((state) => state.item.frameItem);
+  const FrameImage = `/src/assets/img/Shop/frame/frame${frameNum}.png`;
 
   function getImage(index) {
     const targetRef = BlankRefs.current[index];
@@ -137,29 +141,13 @@ function Snapshot() {
     }
   }, [imageList, navigate]);
 
-  // useEffect(() => {
-  //   if (isModalOpen) {
-  //     const modalTimer = setTimeout(() => {
-  //       if (modalVideoStream) {
-  //         let tracks = modalVideoStream.getTracks();
-  //         tracks.forEach(function(track) {
-  //           track.stop();
-  //         });
-  //       }
-  //       setIsModalOpen(false);
-  //       setModalVideoStream(null);
-  //     }, 3000);
-  //     return () => clearTimeout(modalTimer);
-  //   }
-  // }, [isModalOpen, modalVideoStream]);
-
   return (
     <MainWrap>
       <Header />
       <CenterColumn>
         <Title>피터와 패터를 따라 사진을 찍어보세요 !</Title>
         <CenterRow>
-          <Frame>
+          <Frame style={{ backgroundImage: `url(${FrameImage})` }}>
             <BlankRow>
               <Blank>
                 <UserImg src={EG1} alt="example" />
@@ -177,7 +165,7 @@ function Snapshot() {
               </Blank>
             </BlankRow>
           </Frame>
-          <Frame ref={frameRef}>
+          <Frame style={{ backgroundImage: `url(${FrameImage})` }}>
             <BlankRow>
               <Blank onClick={() => getImage(0)} active ref={(el) => (BlankRefs.current[0] = el)}>
                 {(imageList[0] && <UserImg src={imageList[0]} alt="snapshot" />) || (

@@ -1,5 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import {
+  resetPasswordByUserId,
+  reissueJwtToken,
+  verifyPassword
+ } from "/src/pages/User/userApi.js";
+
+ import { handleReissueCatch } from '../../../apiService';
 
 const LayoutMyPage = styled.div`
   display: flex;
@@ -71,9 +79,86 @@ const CancleButton = styled.button`
 `
 
 function ChangePassword() {
+  const navigator = useNavigate();
+
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const newPaswordInputRef = useRef(null);
+  const confirmPasswordInputRef = useRef(null);
+  const currentPasswordInputRef = useRef(null);
+
+  // 추후 redux에서 가져와야할 정보들
+  const [accessToken, setAccessToken] = useState('access token');
+
+  const isNewPasswordValid = newPassword === confirmPassword;
+
+  const handleCancel = async () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+  }
+
+  const handleSubmit = async () => {
+    // 현재 비밀번호는 필수
+    if (currentPassword === "" || currentPassword === undefined) {
+      alert("현재 비밀번호를 입력해주세요.");
+      currentPasswordInputRef.current.focus();
+      return;
+    }
+
+    // 새 비밀번호는 필수
+    if (newPassword === "" || currentPassword === undefined) {
+      alert("새 비밀번호를 입력해주세요.");
+      newPaswordInputRef.current.focus();
+      return;
+    }
+
+    // 새 비밀번호 확인 일치는 필수
+    if (!isNewPasswordValid) {
+      alert("새 비밀번호 확인이 일치하지 않습니다.");
+      confirmPasswordInputRef.current.focus();
+      return;
+    }
+
+    // 현재 비밀번호 검증
+    const isPasswordVerify = await checkCurrentPassword();
+    if (!isPasswordVerify) {
+      alert("현재 비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    // 비밀번호 재설정
+    try {
+      const response = await resetPasswordByUserId(accessToken, newPassword);
+      
+      if (response.status === 200) {
+        const msg = response.data.msg;
+        alert(msg);
+      } else {
+        alert("비밀번호 변경에 실패했습니다.");
+      }
+    } catch (error) {
+      handleReissueCatch(error);
+    }
+  };
+
+  const checkCurrentPassword = async () => {
+    try {
+      const response = await verifyPassword(accessToken, currentPassword);
+
+      if (response.status === 200) {
+        const exception = response.data.exception;
+
+        if (exception === undefined) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      handleReissueCatch(error);
+    }
+  }
 
   return (
     <LayoutMyPage>
@@ -83,7 +168,8 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={currentPassword} 
-            onChange={(e) => setCurrentPassword(e.target.value)} 
+            onChange={(e) => setCurrentPassword(e.target.value)}
+            ref={currentPasswordInputRef}
           />
         </InputItem>
         <InputItem>
@@ -91,7 +177,8 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={newPassword} 
-            onChange={(e) => setNewPassword(e.target.value)} 
+            onChange={(e) => setNewPassword(e.target.value)}
+            ref={newPaswordInputRef}
           />
         </InputItem>        
         <InputItem>
@@ -99,18 +186,19 @@ function ChangePassword() {
           <InputBox 
             type="password" 
             value={confirmPassword} 
-            onChange={(e) => setConfirmPassword(e.target.value)} 
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            ref={confirmPasswordInputRef}
           />
         </InputItem>
         <div style={{height: '5vh'}}>
-            {newPassword !== confirmPassword && confirmPassword !== "" && (
-            <WarningMessage>새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.</WarningMessage>
+            {!isNewPasswordValid && (
+            <WarningMessage>새 비밀번호 확인이 일치하지 않습니다.</WarningMessage>
             )}
         </div>
       </InputWrap>
       <ButtonWrap>
-        <CancleButton>취소</CancleButton>
-        <SubmitButton>저장</SubmitButton>
+        <CancleButton onClick={handleCancel}>취소</CancleButton>
+        <SubmitButton onClick={handleSubmit}>저장</SubmitButton>
       </ButtonWrap>
     </LayoutMyPage>
   );

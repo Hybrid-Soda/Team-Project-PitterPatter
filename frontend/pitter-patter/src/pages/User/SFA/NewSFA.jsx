@@ -17,13 +17,16 @@ import BackSpace from "../../../assets/icons/BackSpace.png";
 import Modal from './Modal'; // 모달 컴포넌트를 import 합니다
 
 function NewSFA() {
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isFirstInput, setIsFirstInput] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const navigate = useNavigate();
+  // 추후 redux에서 가져와야 하는 정보
+  const [accessToken, setAccessToken] = useState('access token');
 
   const handleKeyPress = (value) => {
     if (isFirstInput) {
@@ -53,29 +56,55 @@ function NewSFA() {
     } else if (!isFirstInput && confirmPassword.length === 4) {
       setTimeout(() => {
         if (password === confirmPassword) {
-          setModalMessage("새 비밀번호가 설정되었습니다.");
-          setModalOpen(true);
-          // setTimeout(() => {
-          //   setPassword("");
-          //   setConfirmPassword("");
-          //   navigate("/mypage");
-          // }, 2000); // 모달창을 띄운 후 2초 뒤에 페이지를 이동하거나 비밀번호를 초기화합니다.
+          updateSFA();
         } else {
           setModalMessage("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
           setModalOpen(true);
-          // setTimeout(() => {
-          //   setPassword("");
-          //   setConfirmPassword("");
-          //   setIsFirstInput(true);
-          // }, 2000); // 모달창을 띄운 후 2초 뒤에 비밀번호를 초기화합니다.
         }
       }, 100);
     }
   }, [password, confirmPassword, isFirstInput, navigate]);
 
+  const updateSFA = async () => {
+    try {
+      const response = await updateUser(accessToken, { "twoFa": password });
+
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.msg;
+
+        if (exception === undefined) {
+          setModalMessage("새 2차 비밀번호가 설정되었습니다.");
+          setModalOpen(true);
+        } else {
+          setModalMessage(msg);
+          setModalOpen(true);
+        }
+      } else {
+        setModalMessage("2차 비밀번호를 설정하는데 실패했습니다.");
+        setModalOpen(true);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // intercetor에서 토큰 재발급 수행
+        setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        setModalOpen(true);
+        navigator("/");
+      } else if (error.msg && error.msg === "토큰 검증 실패") {
+        // intercetor에서 토큰 재발급 수행
+        setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+        setModalOpen(true);
+        navigator("/");
+      } else {
+        setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
+        setModalOpen(true);
+      }
+    }
+  };
+
   const closeModal = () => {
     setModalOpen(false);
-    if (modalMessage === "새 비밀번호가 설정되었습니다.") {
+    if (modalMessage === "새 2차 비밀번호가 설정되었습니다.") {
       navigate("/mypage");
     } else {
       setPassword("");

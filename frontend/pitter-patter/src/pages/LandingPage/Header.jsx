@@ -13,9 +13,13 @@ import MenuIcon from '../../assets/icons/Menu.png';
 import ProfileModal from './ProfileModal';
 import MenuModal from './MenuModal';
 
+import { useSelector } from'react-redux';
+
 function Header() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const childProfileImage = useSelector((state) => state.child.profileImage);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -38,8 +42,8 @@ function Header() {
           <LogoImg src={Logo} alt="Logo" />
         </Link>
         <LayoutHeaderButton>
-          <HeaderButton src={UserIcon} alt="User" onClick={toggleModal} />
-          <HeaderButton src={MenuIcon} alt="Menu" onClick={toggleMenu} />
+          <HeaderButton src={childProfileImage || UserIcon} alt="User" onClick={toggleModal} />
+          <HeaderButton src={MenuIcon} alt="Menu" onClick={toggleMenu} style={{marginRight: '1rem'}}/>
           <MenuModal isOpen={isMenuOpen} onClose={toggleMenu} />
         </LayoutHeaderButton>
       </LayoutHeader>

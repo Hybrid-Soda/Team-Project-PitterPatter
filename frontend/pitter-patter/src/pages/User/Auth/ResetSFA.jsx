@@ -1,5 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Layoutbody,
     LayoutContext,
@@ -9,15 +10,90 @@ import {
     WarningMessage,
     SubmitButton
   } from './ResetPasswordStyle';
+import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
 
+import {
+    verifyEmailTokenForReset2fa,
+    reset2faByEmailToken,
+} from "/src/pages/User/userApi.js";
+
 function ResetSFA() {
-    const email = "example@example.com"
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const newPasswordInputRef = useRef(null);
+    const confirmPasswordInputRef = useRef(null);
+
+    const emailToken = searchParams.get("token");
+    const email = searchParams.get("email");
 
     const isPasswordValid = newPassword === confirmPassword && newPassword !== "";
+
+    // 컴포넌트가 마운트될 때 호출
+    useEffect(() => {
+        const checkToken = async () => {
+            const isValid = await isVerifiedEmailToken();
+      
+            if (!isValid) {
+              navigate('/expired');
+            }
+        };
+      
+        checkToken();
+    }, []); // 빈 배열을 두 번째 인수로 전달하여 마운트 시 한 번만 실행되도록 함.
+
+    const handleResetSFA = async () => {
+        // 새 2차 비밀번호는 필수 입력 값임.
+        if (newPassword === "" || newPassword === undefined) {
+            alert("새 2차 비밀번호를 입력해주세요.");
+            newPasswordInputRef.current.focus();
+            return;
+        }
+
+        try {
+            const response = await reset2faByEmailToken(email, emailToken, newPassword);
+            if (response.status === 200) {
+                const exception = response.data.exception;
+                const msg = response.data.msg;
+
+                if (exception === undefined) {
+                    alert(msg);
+                    navigate("/");
+                } else {
+                    alert(msg);
+                    if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
+                        navigate("/expired");
+                    }
+                }
+            } else {
+                alert("2차 비밀번호 변경에 실패했습니다.");
+            }
+        } catch (error) {
+            alert("문제가 발생했습니다. 다시 시도해주세요.");
+        }
+    }
+
+    const isVerifiedEmailToken = async () => {
+        try {
+            const response = await verifyEmailTokenForReset2fa(email, emailToken);
+            if (response.status === 200) {
+                const exception = response.data.exception;
+
+                if (exception === undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (error) {
+            return false;
+        }
+    };
 
     return (
     <Layoutbody>
@@ -28,22 +104,24 @@ function ResetSFA() {
                 <span style={{marginBottom: '2vh'}}>{email}의 비밀번호를 변경합니다.</span>
                 <Password type="password" placeholder="새로운 2차 비밀번호"
                     value={newPassword} 
-                    onChange={(e) => setNewPassword(e.target.value)} 
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    ref={newPasswordInputRef}
                 />
                 <Password type="password" placeholder="새로운 2차 비밀번호를 한번 더 입력해주세요."
                     value={confirmPassword} 
-                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    ref={confirmPasswordInputRef}
                 />
                 
                 <div style={{height: '5vh'}}>
                     {newPassword !== confirmPassword && confirmPassword !== "" && (
-                    <WarningMessage>새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.</WarningMessage>
+                    <WarningMessage>비밀번호가 일치하지 않습니다.</WarningMessage>
                     )}
                 </div>
 
-                <SubmitButton isValid={isPasswordValid} onClick={() => {
-                    // axios
-                }}>변경하기</SubmitButton>
+                <SubmitButton isvalid={isPasswordValid} onClick={handleResetSFA}>
+                    변경하기
+                </SubmitButton>
             </WrapContext>
         </LayoutContext>
     </Layoutbody>
