@@ -76,38 +76,36 @@ function MenuModal({ isOpen, onClose }) {
     return null;
   }
 
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
   return (
     <>
       <BackDrop onClick={onClose} />
       <Navbar>
         <LayoutNav>
-          <Link to={isLoggedIn ? '/game/select-mode' : '/login'}>
+          <Link to='/game/select-mode'>
             <NavItemWrap>
               <NavIcon src={Game} alt="game" />
               <NavText>게임 시작하기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to={isLoggedIn ? '/shop' : '/login'}>
+          <Link to='/shop'>
             <NavItemWrap>
               <NavIcon src={Market} alt="market" />
               <NavText>상점 둘러보기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to={isLoggedIn ? '/rank' : '/login'}>
+          <Link to='/rank'>
             <NavItemWrap>
               <NavIcon src={Ranking} alt="ranking" />
               <NavText>랭킹 확인하기</NavText>
             </NavItemWrap>
           </Link>
-          <Link to={isLoggedIn ? '/attendance' : '/login'}>
+          <Link to='/attendance'>
             <NavItemWrap>
               <NavIcon src={Attendance} alt="attendance" />
               <NavText>출석 체크</NavText>
             </NavItemWrap>
           </Link>
-          <Link to={isLoggedIn ? '/sfa-child' : '/login'}>
+          <Link to='/sfa-child'>
             <NavItemWrap>
               <NavIcon src={Mypage} alt="mypage" />
               <NavText>보호자 페이지</NavText>
