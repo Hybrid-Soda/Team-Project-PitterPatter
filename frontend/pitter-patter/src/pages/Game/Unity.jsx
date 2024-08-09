@@ -68,7 +68,7 @@ const UnityComponent = ({ onGameEnd }) => {
     height: "100vh",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   };
 
@@ -76,7 +76,7 @@ const UnityComponent = ({ onGameEnd }) => {
     <div style={unityContainerStyle}>
       <Unity 
         unityProvider={unityProvider} 
-        style={{ width: '80%', height: '80%' }} 
+        style={{ width: '90%', height: '90%' }} 
       />
 
       {/* <p>{`You've scored ${score} points.`}</p>
