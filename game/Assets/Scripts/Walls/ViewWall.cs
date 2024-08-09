@@ -8,6 +8,7 @@ public class ViewWall : MonoBehaviour
     public GameObject[] wall2;
 
     private readonly float[] genSpeeds = { 9.0f, 8.0f, 7.0f, 6.0f, 5.0f, 4.0f };
+    private readonly float[] genSpeeds2 = { 7.0f, 6.0f, 5.0f, 4.0f, 3.0f, 2.0f };
     private GameScene gameScene;
     private RoundUp roundUp;
     private float genSpeed;
@@ -57,6 +58,13 @@ public class ViewWall : MonoBehaviour
     private void SetGenSpeed()
     {
         int diffLevel = Managers.Play.diffLevel;
-        genSpeed = (diffLevel >= 1 && diffLevel <= 6) ? genSpeeds[diffLevel - 1] : 8.0f;
+        if (round == 1)
+        {
+            genSpeed = (diffLevel >= 1 && diffLevel <= 6) ? genSpeeds[diffLevel - 1] : 7.0f;
+        }
+        else
+        {
+            genSpeed = (diffLevel >= 1 && diffLevel <= 6) ? genSpeeds2[diffLevel - 1] : 7.0f;
+        }
     }
 }
