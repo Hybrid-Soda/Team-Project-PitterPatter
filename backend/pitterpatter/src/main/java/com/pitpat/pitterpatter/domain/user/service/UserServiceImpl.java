@@ -251,10 +251,9 @@ public class UserServiceImpl implements UserService{
         }
         // email에 해당하는 유저의 비밀번호 변경을 하는 경우
         else if (type.equals("email")) {
-            String email = id;
             // 2. email에 해당하는 유저를 DB에서 가져옴
             // email에 해당하는 유저가 없을 경우 NoSuchElementException 발생
-            existingUser = this.getUserByEmail(email).toEntity();
+            existingUser = this.getUserByEmail(id).toEntity();
         }
         // 그 외
         else {
@@ -266,10 +265,15 @@ public class UserServiceImpl implements UserService{
             // 4. password가 유효한 경우 UserEntity에 비밀번호 업데이트
             existingUser.setPassword(this.encode(password));
 
-            // 4. DB에 저장
+            // 5. DB에 저장
             userRepository.save(existingUser);
+
+            // 6. 이메일 토큰으로 비밀번호 재설정 시, redis에서 이메일 토큰도 같이 삭제
+            if (type.equals("email")) {
+                emailTokenRepository.deleteById(id);
+            }
         }
-        // 5. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        // 7. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
             log.error("IllegalArgumentException: [비밀번호 재설정] 비밀번호 형식이 잘못되었습니다: {}", password);
             throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
@@ -292,8 +296,11 @@ public class UserServiceImpl implements UserService{
 
             // 5. DB에 저장
             userRepository.save(existingUser);
+
+            // 6. redis에서 이메일 토큰도 같이 삭제
+            emailTokenRepository.deleteById(email);
         }
-        // 5. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        // 7. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
             log.error("IllegalArgumentException: [2차 비밀번호 재설정] 2차 비밀번호 형식이 잘못되었습니다: {}", twoFa);
             throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");
