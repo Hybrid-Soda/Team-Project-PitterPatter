@@ -11685,7 +11685,6 @@ GameObject:
   - component: {fileID: 666575239}
   - component: {fileID: 666575238}
   - component: {fileID: 666575237}
-  - component: {fileID: 666575242}
   m_Layer: 5
   m_Name: toDifficultyBtn
   m_TagString: Untagged
@@ -11725,8 +11724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &666575238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11786,9 +11783,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 666575242}
-        m_TargetAssemblyTypeName: SceneManagerEx, Assembly-CSharp
-        m_MethodName: ChangeSceneBtn
+      - m_Target: {fileID: 666575237}
+        m_TargetAssemblyTypeName: Button, Assembly-CSharp
+        m_MethodName: ToDifficultyScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11836,18 +11833,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666575235}
   m_CullTransparentMesh: 1
---- !u!114 &666575242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666575235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29c693b1bb7f3134f80f372a3283ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &669971775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6600354725949294396, guid: b4da6d6d52ce807488ef323a341c7c85, type: 3}
@@ -24054,7 +24039,6 @@ GameObject:
   - component: {fileID: 1346188764}
   - component: {fileID: 1346188763}
   - component: {fileID: 1346188762}
-  - component: {fileID: 1346188767}
   m_Layer: 5
   m_Name: toMainBtn
   m_TagString: Untagged
@@ -24094,8 +24078,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1346188763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24155,9 +24137,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1346188767}
-        m_TargetAssemblyTypeName: SceneManagerEx, Assembly-CSharp
-        m_MethodName: ChangeSceneBtn
+      - m_Target: {fileID: 1346188762}
+        m_TargetAssemblyTypeName: Button, Assembly-CSharp
+        m_MethodName: ToMainScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24205,18 +24187,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1346188760}
   m_CullTransparentMesh: 1
---- !u!114 &1346188767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346188760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29c693b1bb7f3134f80f372a3283ab41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1347535121
 PrefabInstance:
   m_ObjectHideFlags: 0

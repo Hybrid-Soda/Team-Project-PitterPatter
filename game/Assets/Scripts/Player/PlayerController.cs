@@ -36,12 +36,14 @@ public class PlayerController : MonoBehaviour
         }
 
         counter++;
+
         if (counter == points.Length)
             counter = 0;
 
         StartCoroutine(WaitForNextFrame());
     }
 
+    // 받은 데이터를 전처리하여 배열로 반환
     private string[] ProcessData(string data)
     {
         if (data.Length > 1)
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
         return data.Split(',');
     }
 
+    // 데이터를 이용해 각 Body 파츠의 목표 위치 업데이트
     private void UpdatePos(string[] points)
     {
         for (int i = 0; i < 33 && i < Body.Length; i++)
@@ -65,7 +68,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 다음 프레임까지 대기하는 코루틴
+    // 다음 프레임까지 대기하는 코루틴 (대략 한 프레임)
     private IEnumerator WaitForNextFrame()
     {
         yield return new WaitForSeconds(0.01f);

@@ -18,4 +18,12 @@ public class Define
         GameScene,
         ScoreScene
     }
+    public enum Map
+    {
+        Map1,
+        Map2,
+        Map3,
+        Map4,
+        Map5
+    }
 }

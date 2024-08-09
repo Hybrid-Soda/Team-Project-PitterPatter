@@ -323,8 +323,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 177956784}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 177956788}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -395,8 +395,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &199599201
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,8 +500,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 199599204}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 199599207}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -559,8 +557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &224057252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,8 +1065,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 843217775}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 843217778}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1126,8 +1122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &915017563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1233,8 +1227,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 915017566}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 915017569}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1290,8 +1284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1011686671
 GameObject:
   m_ObjectHideFlags: 0
@@ -1619,8 +1611,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1120963433}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 1120963436}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1676,8 +1668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1224656934
 GameObject:
   m_ObjectHideFlags: 0
@@ -2693,8 +2683,8 @@ MonoBehaviour:
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2146137478}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_ObjectArgument: {fileID: 2146137481}
+          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2750,8 +2740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c86c4e542aabfe4099d4504c8075fcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverScaleFactor: 1.2
-  hoverColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

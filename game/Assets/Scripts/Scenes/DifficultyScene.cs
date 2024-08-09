@@ -7,9 +7,9 @@ public class DifficultyScene : BaseScene
     // 버튼 이름을 숫자로 파싱하여 난이도 설정
     public void SetDifficulty(Button button)
     {
-        if (int.TryParse(button.name, out int difficultyLevel))
+        if (int.TryParse(button.name, out int diffLevel))
         {
-            Managers.Play.SetDifficulty(difficultyLevel);
+            Managers.Play.SetDifficulty(diffLevel);
             Managers.Scene.LoadScene(Define.Scene.GameScene);
         }
     }

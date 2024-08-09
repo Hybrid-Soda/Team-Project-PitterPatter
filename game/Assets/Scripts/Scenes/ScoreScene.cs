@@ -11,7 +11,8 @@ public class ScoreScene : BaseScene
     {
         Managers.Sound.Play("SFX/Showscore", Define.Sound.SFX);
 
-        // 점수 텍스트 업데이트
+        // UI 업데이트
         correctScoreTxt.text = string.Format("{0:n0}", Managers.Network.finalScore);
+        playTimeTxt.text = Managers.Network.playTimeTxt.text;
     }
 }
