@@ -25,6 +25,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        log.info("CustomSuccessHandler Call");
+
         //OAuth2User
         JwtTokenDto tokenDto = jwtTokenProvider.generateToken(authentication);
 

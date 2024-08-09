@@ -30,9 +30,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.info("CustomOAuth2UserSevice Call");
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
+        log.info("CustomOAuth2UserService - oAuth2User id: " + oAuth2User.getAttributes().get("id").toString());
+
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        log.info("CustomOAuth2UserService - registrationId: " + registrationId);
 
         OAuth2Response oAuth2Response = null;
         if (registrationId.equals("kakao")) {
@@ -43,22 +48,32 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         String serial = oAuth2Response.getProvider() + oAuth2Response.getProviderId();
+
+        log.info("CustomOAuth2UserService - serial: " + serial);
+
         Optional<UserEntity> existingUser = userRepository.findBySerial(serial);
         UserDto userDto = null;
 
         // DB에 유저가 존재하지 않는 경우 새로 entity를 만들어서 DB에 저장
         if (!existingUser.isPresent()) {
+            log.info("CustomOAuth2UserService - serial값을 가진 유저가 DB에 존재하지 않음");
             userDto = saveUserEntity(oAuth2Response, serial);
+            log.info("CustomOAuth2UserService - 유저를 DB에 저장함");
         }
         // DB에 유저가 존재하는 경우
         else {
+            log.info("CustomOAuth2UserService - serial값을 가진 유저가 DB에 이미 존재함");
             userDto = UserDto.toDto(existingUser.get());
         }
+
+        log.info("CustomOAuth2UserService - userDto: " + userDto.getUserId() + "," + userDto.getSerial());
 
         return new CustomOAuth2UserDto(userDto);
     }
 
     private UserDto saveUserEntity(OAuth2Response oAuth2Response, String serial) {
+        log.info("CustomOAuth2UserService - saveUseEntity Call");
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserEntity userEntity = new UserEntity();
 
