@@ -19,7 +19,7 @@ public interface ChildService {
 
     ChildResponseDTO getChildById(Long childId);
 
-    void updateChild(Long childId, ChildUpdateDTO childUpdateDTO);
+    Long updateChild(Long childId, ChildUpdateDTO childUpdateDTO);
 
     void deleteChild(Long childId);
 }
