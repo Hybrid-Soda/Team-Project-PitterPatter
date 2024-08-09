@@ -39,7 +39,7 @@ while True:
         lmString = ''
         # 랜드마크 리스트를 문자열로 변환
         for lm in lmList:
-            lmString += f'{lm[1]},{frame.shape[0] - lm[2]},{lm[3]},'
+            lmString += f'{frame.shape[1] - lm[1]},{frame.shape[0] - lm[2]},{frame.shape[1] - lm[3]},'
         poseList.append(lmString)
 
         if len(poseList) >= 5:
