@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const Navbar = styled.div`
   display: flex;
@@ -70,6 +71,8 @@ import Mypage from '/src/assets/img/NavBar/toMypage.png';
 import Attendance from '/src/assets/img/NavBar/toAttendance.png';
 import Ranking from '/src/assets/img/NavBar/toRanking.png';
 
+import xIcon from "/src/assets/icons/X.png";
+
 function MenuModal({ isOpen, onClose }) {
   if (!isOpen) {
     return null;
@@ -77,7 +80,7 @@ function MenuModal({ isOpen, onClose }) {
 
   return (
     <>
-    <BackDrop onClick={onClose} />
+      <BackDrop onClick={onClose} />
       <Navbar>
         <LayoutNav>
           <Link to='/game/select-mode'>
@@ -103,7 +106,7 @@ function MenuModal({ isOpen, onClose }) {
               <NavIcon src={Attendance} alt="attendance" />
               <NavText>출석 체크</NavText>
             </NavItemWrap>
-          </Link> 
+          </Link>
           <Link to='/sfa-child'>
             <NavItemWrap>
               <NavIcon src={Mypage} alt="mypage" />
@@ -113,7 +116,7 @@ function MenuModal({ isOpen, onClose }) {
         </LayoutNav>
       </Navbar>
       <NavXContainer>
-        <CloseButtonImg src="/src/assets/icons/X.png" alt="close" onClick={onClose} />
+        <CloseButtonImg src={xIcon} alt="close" onClick={onClose} />
       </NavXContainer>
     </>
   );

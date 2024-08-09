@@ -28,6 +28,8 @@ import ResetSFA from './pages/User/Auth/ResetSFA';
 import NewSFA from './pages/User/SFA/NewSFA';
 import SFAChild from './pages/User/SFA/SFAChild';
 import ChildMyPage from './pages/User/MyPage/ChildMyPage';
+import Expired from "./pages/Expired";
+import ForgotPassword from './pages/User/Auth/ForgotPassword';
 
 function App() {
   return (
@@ -63,6 +65,8 @@ function App() {
         <Route path="/sfa" element={<SFA />} />
         <Route path="/sfa-child" element={<SFAChild />}></Route>
         <Route path='/newsfa' element={<NewSFA />} />
+        <Route path='/expired' element={<Expired />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
         
         <Route path="*" element={<Error />} />
         </Routes>

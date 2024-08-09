@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 import {
   LayoutMyPage,
   Profile,
@@ -10,6 +10,12 @@ import {
   InputTitle,
 } from './UserInfoStyle';
 import SingingBanana from "../../../assets/img/User/SingingBanana.png";
+
+import {
+  updateUser,
+  getUser,
+} from "/src/pages/User/userApi.js";
+import { handleReissueCatch } from '../../../apiService';
 
 const InputBox = styled.input`
   width: 15vw;
@@ -49,6 +55,81 @@ const SubmitButton = styled.button`
 `
 
 function UserInfo() {
+  const navigator = useNavigate();
+  
+  const teamNameInputRef = useRef(null);
+
+  const [teamName, setTeamName] = useState('');
+  const [email, setEmail] = useState('');
+  // 추후 redux에서 가져와야할 정보들
+  const [accessToken, setAccessToken] = useState('access token');
+
+  // 페이지가 렌더링 될 때 사용자 정보를 가져옴
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const response = await getUser(accessToken);
+        
+        if (response.status === 200) {
+          const exception = response.data.exception;
+          const msg = response.data.msg;
+          if (exception === undefined) {
+            const userInfo = response.data.data;
+            setTimeout(() => {
+              setEmail(userInfo.email);
+              setTeamName(userInfo.teamName);
+            }, 100);
+          } else {
+            alert(msg);
+            navigator("/");
+          }
+        } else {
+          alert("사용자 정보를 가져올 수 없습니다.");
+          navigator("/")
+        }
+      } catch (error) {
+        handleReissueCatch(error);
+      }
+    };
+
+    getUserData();
+  }, []);
+
+  const handleSubmit = async () => {
+    // 가족 팀 이름은 필수 입력값
+    if (teamName === '') {
+      alert("가족 팀 이름을 입력해주세요.");
+      teamNameInputRef.current.focus();
+      return;
+    }
+
+    // 가족 팀 이름 변경
+    await updateTeamName();
+  };
+
+  const updateTeamName = async () => {
+    try {
+      const response = await updateUser(accessToken, {teamName});
+      if (response.status === 200) {
+        const exception = response.data.exception;
+        const msg = response.data.msg;
+
+        if (exception === undefined) {
+          const updatedUserInfo = response.data.data;
+
+          setTimeout(() => {
+            setTeamName(updatedUserInfo.teamName);
+          }, 100)
+          alert("회원정보가 성공적으로 변경되었습니다.");
+        } else {
+          alert(msg);
+        }
+      }
+    } catch (error) {
+      handleReissueCatch(error);
+    }
+  }
+
   return (
     <LayoutMyPage>
       <Profile>
@@ -57,7 +138,7 @@ function UserInfo() {
       <InputWrap>
         <InputItem>
           <InputTitle>아이디</InputTitle>
-          <InputBox type="text" placeholder="아이디" />
+          <InputBox type="text" value={email} disabled />
         </InputItem>
         {/* <InputItem>
           <InputTitle>가입일</InputTitle>
@@ -65,11 +146,19 @@ function UserInfo() {
         </InputItem> */}
         <InputItem>
           <InputTitle>가족 팀 이름</InputTitle>
-          <InputBox type="text" placeholder="팀이름" />
+          <InputBox 
+            type="text"
+            placeholder="팀이름"
+            value={teamName}
+            onChange={(e) => {setTeamName(e.target.value)}}
+            ref={teamNameInputRef}
+          />
         </InputItem>
       </InputWrap>
       <Profile style={{background: 'none', height: '13vh'}}>
-        <SubmitButton>저장</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>
+          저장
+        </SubmitButton>
       </Profile>
     </LayoutMyPage>
   )

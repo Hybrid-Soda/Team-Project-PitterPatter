@@ -24,6 +24,8 @@ public class CustomFailureHandler extends SimpleUrlAuthenticationFailureHandler 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
+        log.info("CustomFailureHandler Call");
+
         // 실패 처리 로직
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

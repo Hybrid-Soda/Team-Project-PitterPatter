@@ -70,6 +70,31 @@ public class UserServiceImpl implements UserService{
         return jwtToken;
     }
 
+    // 비밀번호 검증
+    @Override
+    @Transactional
+    public void verifyPassword(int userId, PasswordDto passwordDto) throws NoSuchElementException {
+        log.info("UserServiceImpl - verifyPassword 호출");
+        String password = passwordDto.getPassword();
+
+        log.info("password: {}, userId: {}", "숨김", userId);
+
+        // 1. userId 기반으로 비밀번호를 가져온다
+        // 유저 정보가 DB에 없을 경우 NoSuchElementException 발생
+        UserDto userDto = this.getUserById(userId);
+
+        String savedPassword = userDto.getPassword();
+        log.info("savedPassword: {}", "숨김");
+
+        boolean isValid = passwordEncoder.matches(password, savedPassword);
+        if (!isValid) {
+            log.error("IllegalArgumentException: [비밀번호 검증] 비밀번호가 일치하지 않습니다: {}", password);
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        log.info("비밀번호가 검증됨.");
+        log.info("UserServiceImpl - verifyPassword 끝");
+    }
+
 
     // ============================= 회원가입 관련 ================================
     // email 유저 회원가입
@@ -137,11 +162,14 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public UserDto getUserById(int userId) {
+        log.info("UserServiceImpl - getUserById 호출");
+
         // 1. userId에 해당하는 유저가 DB에 있는 지 확인
         Optional<UserEntity> existingUserOptional = userRepository.findByUserId(userId);
 
         // 2. DB에 유저가 존재한다면 UserDto로 변환 후 return
         if (existingUserOptional.isPresent()) {
+            log.info("DB에 userId값을 가진 유저가 존재. 유저 정보 반환");
             return UserDto.toDto(existingUserOptional.get());
         }
         // 3. DB에 유저가 존재하지 않는다면 예외 발생
@@ -223,10 +251,9 @@ public class UserServiceImpl implements UserService{
         }
         // email에 해당하는 유저의 비밀번호 변경을 하는 경우
         else if (type.equals("email")) {
-            String email = id;
             // 2. email에 해당하는 유저를 DB에서 가져옴
             // email에 해당하는 유저가 없을 경우 NoSuchElementException 발생
-            existingUser = this.getUserByEmail(email).toEntity();
+            existingUser = this.getUserByEmail(id).toEntity();
         }
         // 그 외
         else {
@@ -238,10 +265,15 @@ public class UserServiceImpl implements UserService{
             // 4. password가 유효한 경우 UserEntity에 비밀번호 업데이트
             existingUser.setPassword(this.encode(password));
 
-            // 4. DB에 저장
+            // 5. DB에 저장
             userRepository.save(existingUser);
+
+            // 6. 이메일 토큰으로 비밀번호 재설정 시, redis에서 이메일 토큰도 같이 삭제
+            if (type.equals("email")) {
+                emailTokenRepository.deleteById(id);
+            }
         }
-        // 5. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        // 7. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
             log.error("IllegalArgumentException: [비밀번호 재설정] 비밀번호 형식이 잘못되었습니다: {}", password);
             throw new IllegalArgumentException("비밀번호 형식이 잘못되었습니다. 다시 확인해주세요.");
@@ -264,8 +296,11 @@ public class UserServiceImpl implements UserService{
 
             // 5. DB에 저장
             userRepository.save(existingUser);
+
+            // 6. redis에서 이메일 토큰도 같이 삭제
+            emailTokenRepository.deleteById(email);
         }
-        // 5. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
+        // 7. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
             log.error("IllegalArgumentException: [2차 비밀번호 재설정] 2차 비밀번호 형식이 잘못되었습니다: {}", twoFa);
             throw new IllegalArgumentException("2차 비밀번호 형식이 잘못되었습니다. 숫자 4자리를 입력해주세요.");

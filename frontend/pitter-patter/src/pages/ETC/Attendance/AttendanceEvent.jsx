@@ -1,5 +1,8 @@
-import 'react-calendar/dist/Calendar.css';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { childApi } from '../../../apiService';
+import 'react-calendar/dist/Calendar.css';
 import {
   Board,
   Stone,
@@ -18,7 +21,7 @@ const Info = styled.div`
 `;
 
 const stonePositions = [
-  { src: DoneImage, alt: "done", style: { top: '10%', left: '10%' } },
+  { src: UndoneImage, alt: "undone", style: { top: '10%', left: '10%' } },
   { src: UndoneImage, alt: "undone", style: { top: '14%', left: '30%' } },
   { src: UndoneImage, alt: "undone", style: { top: '8%', left: '50%' } },
   { src: UndoneImage, alt: "undone", style: { top: '12%', left: '66%' } },
@@ -58,20 +61,53 @@ function generatePathData(positions) {
 }
 
 function AttendanceEvent() {
+  const [dayList, setDayList] = useState([]);
+  const [stones, setStones] = useState(stonePositions);
+  const token = useSelector((state) => state.token.refreshToken);
+  const childId = 24;
+
+  const getDayList = async () => {
+    try {
+      const response = await childApi.get(`${childId}/play-record/attendance`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      setDayList(response.data);
+      console.log(response);
+    } catch (error) {
+      console.log("Error fetching frames:", error.response.data.msg);
+      alert(error.response.data.msg); // 에러 메시지 알림
+    }
+  };
+
+  useEffect(() => {
+    getDayList();
+  }, []); // 빈 배열을 의존성 배열로 설정하여 컴포넌트가 마운트될 때 한 번만 호출
+
+  useEffect(() => {
+    const updatedStones = stonePositions.map((pos, index) => ({
+      ...pos,
+      src: index < dayList.length ? DoneImage : UndoneImage,
+    }));
+    setStones(updatedStones);
+  }, [dayList]); // dayList가 변경될 때마다 업데이트
+
   return (
     <Board>
       <Info>14일 이상 출석해 엄청난 보상을 획득해 보세요!</Info>
       <SVGContainer>
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%">
           <path
-            d={generatePathData(stonePositions)}
+            d={generatePathData(stones)}
             stroke="#629d1b"
             strokeWidth="0.5"
             fill="none"
             strokeDasharray="1, 1"
           />
         </svg>
-        {stonePositions.map((pos, index) => (
+        {stones.map((pos, index) => (
           <Stone key={index} src={pos.src} alt={pos.alt} style={pos.style} />
         ))}
       </SVGContainer>

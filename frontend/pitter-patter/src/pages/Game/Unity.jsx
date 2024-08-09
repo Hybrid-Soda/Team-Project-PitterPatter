@@ -68,7 +68,7 @@ const UnityComponent = ({ onGameEnd }) => {
     height: "80%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   };
 
