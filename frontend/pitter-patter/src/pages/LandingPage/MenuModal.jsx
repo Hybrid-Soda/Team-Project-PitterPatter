@@ -71,6 +71,8 @@ import Mypage from '/src/assets/img/NavBar/toMypage.png';
 import Attendance from '/src/assets/img/NavBar/toAttendance.png';
 import Ranking from '/src/assets/img/NavBar/toRanking.png';
 
+import xIcon from "/src/assets/icons/X.png";
+
 function MenuModal({ isOpen, onClose }) {
   if (!isOpen) {
     return null;
@@ -114,7 +116,7 @@ function MenuModal({ isOpen, onClose }) {
         </LayoutNav>
       </Navbar>
       <NavXContainer>
-        <CloseButtonImg src="/src/assets/icons/X.png" alt="close" onClick={onClose} />
+        <CloseButtonImg src={xIcon} alt="close" onClick={onClose} />
       </NavXContainer>
     </>
   );

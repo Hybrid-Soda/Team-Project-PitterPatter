@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearChild } from '../../redux/childSlice';
 
 const ModalOverlay = styled.div`
   display: flex;
@@ -19,7 +20,6 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 25px;
   width: 8vw; 
-  height: 10vh;
   box-shadow: 0px 11px 39.6px 0px rgba(0, 0, 0, 0.25);
   position: absolute;
   right: 30px;
@@ -35,21 +35,6 @@ const GridItem = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-`;
-
-const ProfilePicture = styled.img`
-  width: 8vw;
-  height: 8vh;
-  border-radius: 2rem;
-  background-color: #D9D9D9;
-`;
-
-const BackDrop = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  position: fixed;
-  top: 0;
 `;
 
 const ProfileButton = styled.button`
@@ -73,9 +58,16 @@ const Divider = styled.div`
 
 function ProfileModal({ isOpen, onClose }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const childId = useSelector((state) => state.child.id);
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    dispatch(clearChild());
+    navigate('/');
   };
 
   if (!isOpen) return null;
@@ -94,6 +86,16 @@ function ProfileModal({ isOpen, onClose }) {
             프로필 변경
           </ProfileButton>
         </GridItem>
+        {childId !== null && (
+          <>
+            <Divider />
+            <GridItem>
+              <ProfileButton onClick={handleLogout}>
+                로그아웃
+              </ProfileButton>
+            </GridItem>
+          </>
+        )}
       </ModalContent>
     </ModalOverlay>
   );
