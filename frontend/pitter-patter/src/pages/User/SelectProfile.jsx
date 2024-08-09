@@ -16,6 +16,7 @@ import PlusSquare from "../../assets/icons/PlusSquare.png";
 import { useDispatch, useSelector } from 'react-redux';
 import { setChild, setChildError } from '../../redux/childSlice'; // 적절한 경로에 맞게 import 필요
 import { childApi } from '../../apiService';
+import { clearChild } from '../../redux/childSlice';
 
 function SelectProfile() {
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function SelectProfile() {
   };
 
   const goToAddProfile = () => {
+    dispatch(clearChild()); // clearChild 액션을 디스패치하여 상태를 초기화
     navigate('/child/mypage', { state: { addProfile: true } });
   };
 

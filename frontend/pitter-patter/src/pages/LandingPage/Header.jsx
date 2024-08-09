@@ -43,7 +43,7 @@ function Header() {
         </Link>
         <LayoutHeaderButton>
           <HeaderButton src={childProfileImage || UserIcon} alt="User" onClick={toggleModal} />
-          <HeaderButton src={MenuIcon} alt="Menu" onClick={toggleMenu} />
+          <HeaderButton src={MenuIcon} alt="Menu" onClick={toggleMenu} style={{marginRight: '1rem'}}/>
           <MenuModal isOpen={isMenuOpen} onClose={toggleMenu} />
         </LayoutHeaderButton>
       </LayoutHeader>

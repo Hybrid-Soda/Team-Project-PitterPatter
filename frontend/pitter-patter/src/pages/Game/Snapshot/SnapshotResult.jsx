@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { useRef } from "react";
 import html2canvas from "html2canvas";
 import {
   MainWrap,
@@ -23,15 +22,19 @@ import Save from "/src/assets/img/Snapshot/save.png";
 import Header from "../../LandingPage/Header";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useRef } from "react";
 
 function SnapshotResult() {
   const location = useLocation();
   const { imageList } = location.state;
-  const frameRef = useRef(null);
+  const frameNum = useSelector((state) => state.item.frameItem);
+  const FrameImage = `/src/assets/img/Shop/frame/frame${frameNum}.png`;
   const navigate = useNavigate();
+  const frameRef = useRef(null);  // Frame 컴포넌트를 참조하기 위한 ref
 
   const downloadFrameImage = () => {
-    const frameElement = frameRef.current;
+    const frameElement = frameRef.current; // Frame 컴포넌트의 실제 DOM 요소를 참조
     html2canvas(frameElement, { backgroundColor: 'rgba(0, 0, 0, 0)' }).then((canvas) => {
       canvas.toBlob((blob) => {
         const link = document.createElement("a");
@@ -45,7 +48,7 @@ function SnapshotResult() {
   };
 
   const goBack = () => {
-    navigate('/select-mode');
+    navigate('/game/select-mode');
   };
 
   return (
@@ -54,7 +57,7 @@ function SnapshotResult() {
       <CenterColumn>
         <Title>우와 멋진 사진이네요 !</Title>
         <CenterRow>
-          <Frame ref={frameRef}>
+          <Frame ref={frameRef} style={{ backgroundImage: `url(${FrameImage})` }}>
             <BlankRow>
               <Blank>
                 {imageList && <UserImg src={imageList[0]} alt="snapshot" />}
