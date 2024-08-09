@@ -37,10 +37,9 @@ public class GameScene : BaseScene
         isEnded = false;
         getPoint = false;
         colliders.Clear();
-        roundDuration = 20f;
+        roundDuration = 60f;
         nextRoundTime = roundDuration;
         clearImage.gameObject.SetActive(false);
-        feedbackImg.gameObject.SetActive(false);
         Managers.Network.UnityCall(false);
     }
 
@@ -64,7 +63,7 @@ public class GameScene : BaseScene
         round++;
         roundUp.IncreaseRound();
 
-        if (round == 3) roundDuration = 10f;
+        if (round == 3) roundDuration = 30f;
 
         nextRoundTime = playTime + roundDuration;
         colliders.Clear();
@@ -119,7 +118,7 @@ public class GameScene : BaseScene
                 break;
             case 0:
                 Managers.Sound.Play("SFX/NoGetscore", Define.Sound.SFX);
-                break;
+                return;
         }
 
         StartCoroutine(FbMsg());
@@ -136,6 +135,7 @@ public class GameScene : BaseScene
     {
         isEnded = true;
         clearImage.gameObject.SetActive(true);
+        Managers.Network.playTimeTxt = playTimeTxt.text;
         Managers.Sound.Play("SFX/Sucess", Define.Sound.SFX);
         StartCoroutine(LoadScoreScene(3f));
     }
