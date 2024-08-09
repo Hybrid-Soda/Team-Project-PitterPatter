@@ -8,7 +8,8 @@ export const WebcamTest = styled.div`
   background-color: #f5f5f5;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  width: 50vw;
+  max-hegiht: 30vw;
   margin: 0 auto;
 `;
 

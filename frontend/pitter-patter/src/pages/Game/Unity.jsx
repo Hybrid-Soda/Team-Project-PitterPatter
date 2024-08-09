@@ -44,10 +44,10 @@ const UnityComponent = ({ onGameEnd }) => {
   // React -> Unity
   useEffect(() => {
     if (backgroundNum) {
-      sendMessage('GameManager', 'ReceiveStaticData', backgroundNum);
+      sendMessage('@Managers', 'ReactToUnity', backgroundNum);
     }
     if (landmarks) {
-      sendMessage('GameManager', 'ReceiveData', landmarks);
+      sendMessage('@Managers', 'ReactToUnity', landmarks);
     }
   }, [sendMessage, landmarks, backgroundNum]);
 
@@ -76,7 +76,7 @@ const UnityComponent = ({ onGameEnd }) => {
     <div style={unityContainerStyle}>
       <Unity 
         unityProvider={unityProvider} 
-        style={{ width: '80%', height: '80%' }} 
+        style={{ width: '80%', height: '95%' }} 
       />
 
       {/* <p>{`You've scored ${score} points.`}</p>

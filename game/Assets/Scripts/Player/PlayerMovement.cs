@@ -27,7 +27,8 @@ public class PlayerMovement : MonoBehaviour
     private void UpdatePrimaryLandmarks(GameObject[] body)
     {
         Vector3 holePosition = (body[23].transform.position + body[24].transform.position) / 2;
-        holePosition.x -= 0.2f;
+        holePosition.x *= 2.5f;
+        holePosition.x -= 0.1f;
         holePosition.y = 0;
         landmark[23].position = holePosition;
 

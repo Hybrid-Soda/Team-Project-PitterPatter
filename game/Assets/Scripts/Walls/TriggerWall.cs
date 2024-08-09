@@ -3,6 +3,7 @@ using UnityEngine;
 public class TriggerWall : MonoBehaviour
 {
     private readonly float[] speeds = { 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f };
+    private readonly float[] speeds2 = { 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f };
     private GameScene gameScene;
     private bool hasFinished;
     private float speed;
@@ -33,7 +34,14 @@ public class TriggerWall : MonoBehaviour
     private void SetSpeed()
     {
         int diffLevel = Managers.Play.diffLevel;
-        speed = (diffLevel >= 1 && diffLevel <= 6) ? speeds[diffLevel - 1] : 8.0f;
+        if (gameScene.round == 1)
+        {
+            speed = (diffLevel >= 1 && diffLevel <= 6) ? speeds[diffLevel - 1] : 8.0f;
+        }
+        else
+        {
+            speed = (diffLevel >= 1 && diffLevel <= 6) ? speeds2[diffLevel - 1] : 8.0f;
+        }
     }
 
     // 충돌 체크
