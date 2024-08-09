@@ -56,13 +56,12 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public void updateChild(Long childId, ChildUpdateDTO childUpdateDTO) {
+    public Long updateChild(Long childId, ChildUpdateDTO childUpdateDTO) {
         // 자녀 존재여부 검증 후 존재한다면 Child 할당
         Child child = validateChildExists(childId);
-
         Child updatedChild = childUpdateDTO.toUpdateEntity(child, childUpdateDTO);
-
         childRepository.save(updatedChild);
+        return updatedChild.getId();
     }
 
     @Override
