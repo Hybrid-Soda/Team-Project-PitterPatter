@@ -50,9 +50,9 @@ public class ChildController {
     }
 
     @PatchMapping("/{childId}")
-    public ResponseEntity<Void> updateChild(@PathVariable Long childId, @Valid @RequestBody ChildUpdateDTO childUpdateDTO) {
-        childService.updateChild(childId, childUpdateDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> updateChild(@PathVariable Long childId, @Valid @RequestBody ChildUpdateDTO childUpdateDTO) {
+        Long responseChildId = childService.updateChild(childId, childUpdateDTO);
+        return new ResponseEntity<>(responseChildId, HttpStatus.OK);
     }
 
     @DeleteMapping("/{childId}")
