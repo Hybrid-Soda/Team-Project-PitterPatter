@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MainWrap } from "./GamePageStyle";
 import Header from "../LandingPage/Header";
 import IsReady from "../Game/IsReady";
@@ -7,57 +7,95 @@ import Unity from "./Unity";
 import { getWallpaper } from "./gameApi.js";
 import AttModal from "./AttModal";
 import { useSelector } from "react-redux";
-import { assetsApi } from "../../apiService.js";
+import { assetsApi, childApi } from "../../apiService.js";
+import Loader from "../Components/loader.jsx";
 
 function GamePage() {
   const [modalOpen, setModalOpen] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false);
   const [attModalOpen, setAttModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
   const handleTestComplete = () => {
     setTestCompleted(true);
+    setIsLoading(true); // 로딩 시작
+    setTimeout(() => setIsLoading(false), 2000); // 2초 후 로딩 끝
   };
 
   const closeModal = () => {
     setModalOpen(false);
   };
 
-  const token = useSelector((state) => state.token.accessToken)
+  const token = useSelector((state) => state.token.accessToken);
+  const childId = useSelector((state) => state.child.id);
+
   const openAttModal = async () => {
     try {
-      const response = await assetsApi.post('/point', {
-        amount: 2, // 예: 100 코인 지급
-        source: '게임 플레이 보상',
-        childId: childId, // 보내고자 하는 데이터
+      const firstResponse = await childApi.post(`/${childId}`, {
+        score: 0,
+        playtime: 0,
+        burnedCalorie: 0,
       }, {
         headers: {
-          Authorization: `Bearer ${token}`, // 필요한 경우 인증 헤더 추가
+          Authorization: `Bearer ${token}`,
         },
       });
-  
-      console.log('코인 지급 성공:', response.data);
+
+      console.log('첫 번째 요청 성공:', firstResponse.data);
+
+      if (firstResponse.data.result === true) {
+        const secondResponse = await assetsApi.post('/point', {
+          amount: 12,
+          source: '게임 플레이 보상',
+          childId: childId,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('두 번째 포인트 지급 성공:', secondResponse.data);
+      } else {
+        const secondResponse = await assetsApi.post('/point', {
+          amount: 2,
+          source: '게임 플레이 보상',
+          childId: childId,
+        }, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log('두 번째 포인트 지급 성공:', secondResponse.data);
+      }
+
       setAttModalOpen(true);
     } catch (error) {
-      console.error('코인 지급 실패:', error);
-      // 에러 처리 로직 추가 가능
+      console.error('요청 실패:', error);
     }
-  };  
+  };
 
   const closeAttModal = () => {
     setAttModalOpen(false);
   };
 
-  const childId = useSelector((state) => state.child.id);
-
   useEffect(() => {
     setModalOpen(true); // 페이지 접근 시 모달 창 열기
     getWallpaper(childId); // childId를 넣으면 그 아이가 착용하고 있는 벽의 이미지 주소가 return됨
-  }, []);
+  }, [childId]);
 
   return (
     <MainWrap>
       <Header />
-      {testCompleted ? <Unity onGameEnd={openAttModal} /> : <WebcamTestPage onTestComplete={handleTestComplete} />}
+      {testCompleted ? (
+        isLoading ? (
+          <Loader /> // 로딩 중일 때 Loader 컴포넌트 표시
+        ) : (
+          <Unity onGameEnd={openAttModal} />
+        )
+      ) : (
+        <WebcamTestPage onTestComplete={handleTestComplete} />
+      )}
       {modalOpen && <IsReady onClose={closeModal} />}
       {attModalOpen && <AttModal onClose={closeAttModal} />}
     </MainWrap>

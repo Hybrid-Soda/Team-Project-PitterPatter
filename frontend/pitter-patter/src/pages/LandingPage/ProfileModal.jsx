@@ -24,7 +24,7 @@ const ModalContent = styled.div`
   box-shadow: 0px 11px 39.6px 0px rgba(0, 0, 0, 0.25);
   position: absolute;
   right: 30px;
-  top: 70px;
+  top: 75px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,6 +41,7 @@ const GridItem = styled.div`
 const ProfileButton = styled.button`
   width: 8vw;
   height: 3.5vh;
+  font-size: 1rem;
   font-weight: bold;
 
   &:hover {

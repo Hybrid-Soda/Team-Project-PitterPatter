@@ -23,29 +23,36 @@ import {
 import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal';
 
+import ConfirmModal from '../Components/modal';
+import Loader from '../Components/loader';
+
 function SnapshotShop() {
   const Navigator = useNavigate();
 
   const [frames, setFrames] = useState([]);
   const [points, setPoints] = useState(0);
-  const [pointRecords, setPointRecords] = useState([]); // 추가
-  const [page, setPage] = useState(1); // 페이지 번호 추가
-  const [onFrame, setOnFrame] = useState(null)
+  const [pointRecords, setPointRecords] = useState([]);
+  const [page, setPage] = useState(1);
+  const [onFrame, setOnFrame] = useState(null);
   const [selectedFrame, setSelectedFrame] = useState(0);
-  const itemsPerPage = 20; // 페이지당 아이템 수
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const itemsPerPage = 20;
 
   const childId = useSelector((state) => state.child.id);
 
   const [currentIdx, setCurrentIdx] = useState(0);
   const buttonRef = useRef(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 추가
-  const token = useSelector((state) => state.token.accessToken)
-  const jwtToken = `Bearer ${token}`
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const token = useSelector((state) => state.token.accessToken);
+  const jwtToken = `Bearer ${token}`;
 
   useEffect(() => {
     getFrames(childId);
     getPoints(childId);
-  }, []);
+  }, [childId]);
 
   const getFrames = async (childId) => {
     try {
@@ -54,16 +61,18 @@ function SnapshotShop() {
           child_id: childId,
         },
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
 
-      const frames = response.data
-        .filter(item => item.itemType === 'FRAME')
+      const frames = response.data.filter(item => item.itemType === 'FRAME');
       setFrames(frames);
+      setIsLoading(false); // 프레임 로드 완료 후 로딩 상태 false로 설정
     } catch (error) {
       console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      setErrorMessage(error.response.data.msg);
+      setIsConfirmModalOpen(true);
+      setIsLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
     }
   };
 
@@ -99,8 +108,8 @@ function SnapshotShop() {
     try {
       await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
 
       setFrames(prevFrames =>
@@ -110,7 +119,8 @@ function SnapshotShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      setErrorMessage(error.response.data.msg);
+      setIsConfirmModalOpen(true);
     }
   };
 
@@ -119,20 +129,21 @@ function SnapshotShop() {
   };
 
   const save = async () => {
-    if (onFrame && !onFrame.on) { // on이 true가 아닌 경우에만 요청을 보냄
+    if (onFrame && !onFrame.on) {
       try {
         await assetsApi.patch(`/item-property/${childId}/on/${onFrame.id}`, {}, {
           headers: {
-            Authorization: `${jwtToken}`
-          }
+            Authorization: `${jwtToken}`,
+          },
         });
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
-        alert(error.response.data.msg); // 에러 메시지 알림
+        setErrorMessage(error.response.data.msg);
+        setIsConfirmModalOpen(true);
       }
     } else {
-      Navigator(-1); // on이 true인 경우 그냥 돌아가기
+      Navigator(-1);
     }
   };
 
@@ -144,17 +155,21 @@ function SnapshotShop() {
     setIsModalOpen(false);
   };
 
+  const handleConfirmModalClose = () => {
+    setIsConfirmModalOpen(false);
+  };
+
   const getPoints = async (childId) => {
     try {
       const response = await assetsApi.get(`/point/${childId}`, {
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
       setPoints(response.data.point);
     } catch (error) {
       console.log("Error fetching points:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      alert(error.response.data.msg);
     }
   };
 
@@ -166,14 +181,14 @@ function SnapshotShop() {
           per_page: itemsPerPage,
         },
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
       setPointRecords(prevRecords => [...prevRecords, ...response.data]);
       setPage(page);
     } catch (error) {
       console.log("Error fetching point records:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      alert(error.response.data.msg);
     }
   };
 
@@ -191,10 +206,15 @@ function SnapshotShop() {
     toggleFrame(index);
   };
 
+  // 로딩 중이라면 Loader 컴포넌트를 표시
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <Wallpaper>
       <GuideText>
-          저장될 사진의 프레임을 골라보세요!
+        저장될 사진의 프레임을 골라보세요!
       </GuideText>
       <LayoutCoin onClick={openModal}>
         <CoinImg src={Coin} alt="" />
@@ -248,7 +268,13 @@ function SnapshotShop() {
       >
         {frames[currentIdx]?.has ? (frames[currentIdx]?.on ? "장착됨" : "장착") : "구매"}
       </ActionButton>
-      {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />} {/* 모달에 pointRecords 전달 */}
+      {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />}
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          title={errorMessage}
+          onClose={handleConfirmModalClose}
+        />
+      )}
     </Wallpaper>
   );
 }
