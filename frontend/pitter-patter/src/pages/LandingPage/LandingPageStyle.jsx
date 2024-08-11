@@ -65,6 +65,7 @@ export const MainColumn = styled.div`
   background-size: 100vw;
   background-position: center;
   background-repeat: no-repeat;
+  padding-top: 5%;
 `;
 
 export const SubTitle = styled.div`
