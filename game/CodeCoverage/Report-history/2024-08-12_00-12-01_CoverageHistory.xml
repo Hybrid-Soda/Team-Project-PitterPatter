@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<coverage version="1.0" date="2024-08-12_00-12-01" tag="">
+  <assembly name="Assembly-CSharp-Editor">
+    <class name="Example" coveredlines="0" coverablelines="30" totallines="54" coveredbranches="0" totalbranches="0" />
+    <class name="UnityChan.CopyMaterialParameter" coveredlines="0" coverablelines="59" totallines="96" coveredbranches="0" totalbranches="0" />
+    <class name="UnityChan.RemoveUnusedShaderKeywordsFromUTS2Material" coveredlines="0" coverablelines="74" totallines="118" coveredbranches="0" totalbranches="0" />
+    <class name="UnityChan.UTS2GUI" coveredlines="0" coverablelines="1564" totallines="1944" coveredbranches="0" totalbranches="0" />
+  </assembly>
+  <assembly name="Scenes">
+    <class name="BaseRound" coveredlines="0" coverablelines="22" totallines="43" coveredbranches="0" totalbranches="0" />
+    <class name="BaseScene" coveredlines="9" coverablelines="14" totallines="31" coveredbranches="0" totalbranches="0" />
+    <class name="BlinkText" coveredlines="1" coverablelines="5" totallines="13" coveredbranches="0" totalbranches="0" />
+    <class name="Button" coveredlines="0" coverablelines="20" totallines="39" coveredbranches="0" totalbranches="0" />
+    <class name="CoroutineManager" coveredlines="0" coverablelines="6" totallines="16" coveredbranches="0" totalbranches="0" />
+    <class name="DifficultyScene" coveredlines="0" coverablelines="7" totallines="16" coveredbranches="0" totalbranches="0" />
+    <class name="ExSceneManager" coveredlines="0" coverablelines="11" totallines="28" coveredbranches="0" totalbranches="0" />
+    <class name="GameScene" coveredlines="0" coverablelines="25" totallines="59" coveredbranches="0" totalbranches="0" />
+    <class name="GameScore" coveredlines="0" coverablelines="33" totallines="58" coveredbranches="0" totalbranches="0" />
+    <class name="MainScene" coveredlines="3" coverablelines="6" totallines="15" coveredbranches="0" totalbranches="0" />
+    <class name="Managers" coveredlines="33" coverablelines="35" totallines="64" coveredbranches="0" totalbranches="0" />
+    <class name="MapManager" coveredlines="0" coverablelines="7" totallines="21" coveredbranches="0" totalbranches="0" />
+    <class name="NetworkManager" coveredlines="4" coverablelines="12" totallines="36" coveredbranches="0" totalbranches="0" />
+    <class name="PlayerController" coveredlines="0" coverablelines="41" totallines="76" coveredbranches="0" totalbranches="0" />
+    <class name="PlayerMovement" coveredlines="0" coverablelines="49" totallines="79" coveredbranches="0" totalbranches="0" />
+    <class name="PlayerTrigger" coveredlines="0" coverablelines="17" totallines="31" coveredbranches="0" totalbranches="0" />
+    <class name="PlayManager" coveredlines="1" coverablelines="2" totallines="10" coveredbranches="0" totalbranches="0" />
+    <class name="ResourceManager" coveredlines="5" coverablelines="23" totallines="43" coveredbranches="0" totalbranches="0" />
+    <class name="Round1" coveredlines="0" coverablelines="23" totallines="84" coveredbranches="0" totalbranches="0" />
+    <class name="Round2" coveredlines="0" coverablelines="10" totallines="84" coveredbranches="0" totalbranches="0" />
+    <class name="Round3" coveredlines="0" coverablelines="20" totallines="84" coveredbranches="0" totalbranches="0" />
+    <class name="ScoreScene" coveredlines="0" coverablelines="5" totallines="18" coveredbranches="0" totalbranches="0" />
+    <class name="SoundManager" coveredlines="48" coverablelines="77" totallines="137" coveredbranches="0" totalbranches="0" />
+    <class name="StopBtn" coveredlines="0" coverablelines="22" totallines="38" coveredbranches="0" totalbranches="0" />
+    <class name="VolumeController" coveredlines="0" coverablelines="7" totallines="20" coveredbranches="0" totalbranches="0" />
+    <class name="WallGenerator" coveredlines="0" coverablelines="30" totallines="52" coveredbranches="0" totalbranches="0" />
+    <class name="WallTrigger" coveredlines="0" coverablelines="18" totallines="38" coveredbranches="0" totalbranches="0" />
+  </assembly>
+  <assembly name="Tests">
+    <class name="MainSceneTests" coveredlines="10" coverablelines="13" totallines="38" coveredbranches="0" totalbranches="0" />
+    <class name="RoundSystemTests" coveredlines="0" coverablelines="34" totallines="118" coveredbranches="0" totalbranches="0" />
+  </assembly>
+</coverage>

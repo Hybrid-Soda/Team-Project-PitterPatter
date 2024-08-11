@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CoverageSession xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="0.0.0.0">
+  <Summary numSequencePoints="23" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="1" />
+  <Modules>
+    <Module>
+      <Summary numSequencePoints="23" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="1" />
+      <ModuleTime>0001-01-01T00:00:00</ModuleTime>
+      <ModuleName>Scenes</ModuleName>
+      <Files>
+        <File uid="5" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Game/BaseRound.cs" />
+        <File uid="6" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Game/GameRound.cs" />
+        <File uid="7" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Game/GameScore.cs" />
+        <File uid="8" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/CoroutineManager.cs" />
+        <File uid="9" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/ExSceneManager.cs" />
+        <File uid="10" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/Managers.cs" />
+        <File uid="11" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/MapManager.cs" />
+        <File uid="12" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/NetworkManager.cs" />
+        <File uid="13" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/PlayManager.cs" />
+        <File uid="14" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/ResourceManager.cs" />
+        <File uid="15" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Managers/SoundManager.cs" />
+        <File uid="16" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Player/PlayerController.cs" />
+        <File uid="17" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Player/PlayerMovement.cs" />
+        <File uid="18" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Player/PlayerTrigger.cs" />
+        <File uid="19" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Scenes/BaseScene.cs" />
+        <File uid="20" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Scenes/DifficultyScene.cs" />
+        <File uid="21" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Scenes/GameScene.cs" />
+        <File uid="22" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Scenes/MainScene.cs" />
+        <File uid="23" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Scenes/ScoreScene.cs" />
+        <File uid="24" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/UI/BlinkText.cs" />
+        <File uid="25" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/UI/Button.cs" />
+        <File uid="26" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/UI/StopBtn.cs" />
+        <File uid="27" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/UI/VolumeController.cs" />
+        <File uid="28" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Walls/WallGenerator.cs" />
+        <File uid="29" fullPath="C:/Users/limkt/Desktop/S11P12E204/game/Assets/Scripts/Walls/WallTrigger.cs" />
+      </Files>
+      <Classes>
+        <Class>
+          <Summary numSequencePoints="23" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="1" />
+          <FullName>ResourceManager</FullName>
+          <Methods>
+            <Method visited="false" cyclomaticComplexity="0" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="0" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
+              <Summary numSequencePoints="23" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="0" minCyclomaticComplexity="0" maxCrapScore="0" minCrapScore="0" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
+              <MetadataToken>100663350</MetadataToken>
+              <Name>T ResourceManager::Load[T](System.String)</Name>
+              <FileRef uid="14" />
+              <SequencePoints>
+                <SequencePoint vc="0" uspid="4718" ordinal="0" offset="0" sl="12" sc="0" el="12" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4719" ordinal="0" offset="1" sl="13" sc="0" el="13" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4720" ordinal="0" offset="33" sl="14" sc="0" el="14" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4721" ordinal="0" offset="34" sl="15" sc="0" el="15" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4722" ordinal="0" offset="36" sl="16" sc="0" el="16" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4723" ordinal="0" offset="45" sl="18" sc="0" el="18" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4724" ordinal="0" offset="56" sl="18" sc="0" el="18" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4725" ordinal="0" offset="66" sl="21" sc="0" el="21" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4726" ordinal="0" offset="84" sl="22" sc="0" el="22" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4727" ordinal="0" offset="85" sl="23" sc="0" el="23" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4728" ordinal="0" offset="99" sl="25" sc="0" el="25" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4729" ordinal="0" offset="113" sl="26" sc="0" el="26" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4730" ordinal="0" offset="129" sl="27" sc="0" el="27" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4731" ordinal="0" offset="132" sl="30" sc="0" el="30" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4732" ordinal="0" offset="133" sl="31" sc="0" el="31" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4733" ordinal="0" offset="141" sl="32" sc="0" el="32" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4734" ordinal="0" offset="155" sl="33" sc="0" el="33" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4735" ordinal="0" offset="156" sl="34" sc="0" el="34" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4736" ordinal="0" offset="171" sl="35" sc="0" el="35" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4737" ordinal="0" offset="187" sl="37" sc="0" el="37" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4738" ordinal="0" offset="188" sl="38" sc="0" el="38" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4739" ordinal="0" offset="189" sl="40" sc="0" el="40" ec="0" bec="0" bev="0" fileid="14" />
+                <SequencePoint vc="0" uspid="4740" ordinal="0" offset="199" sl="41" sc="0" el="41" ec="0" bec="0" bev="0" fileid="14" />
+              </SequencePoints>
+              <BranchPoints />
+            </Method>
+          </Methods>
+        </Class>
+      </Classes>
+    </Module>
+  </Modules>
+</CoverageSession>
