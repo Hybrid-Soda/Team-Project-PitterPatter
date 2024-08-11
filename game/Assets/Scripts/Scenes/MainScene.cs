@@ -8,6 +8,13 @@ public class MainScene : BaseScene
     void Update()
     {
         if (Input.anyKeyDown)
-            Managers.Scene.LoadScene(Define.Scene.DifficultyScene);
+        {
+            LoadNextScene();
+        }
+    }
+
+    public void LoadNextScene()
+    {
+        Managers.Scene.LoadScene(Define.Scene.DifficultyScene);
     }
 }

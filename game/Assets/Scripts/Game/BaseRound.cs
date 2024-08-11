@@ -7,6 +7,7 @@ public abstract class BaseRound
 {
     protected float roundTime;
 
+    // 라운드 진입 메서드
     public virtual void Enter(GameScene GM)
     {
         GM.round++;
@@ -14,8 +15,10 @@ public abstract class BaseRound
         Managers.Coroutine.Run(ShowRoundImage(GM));
     }
 
+    // 업데이트 메서드 (상속받은 클래스에서 구현)
     public abstract void Update(GameScene GM);
 
+    // 라운드 이미지 표시 코루틴
     private IEnumerator ShowRoundImage(GameScene GM)
     {
         GM.isRoundUp = true;
