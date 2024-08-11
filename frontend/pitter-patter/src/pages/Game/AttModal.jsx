@@ -54,7 +54,7 @@ function AttModal({ onClose }) {
     <ModalOverlay>
       <ModalContent>
         <ModalImg src={Coin} alt="Coin" />
-        <h2>출석 보상이 지급되었습니다.</h2>
+        <h2>게임 보상이 지급되었습니다.</h2>
         <div style={{display: 'flex', width: '100%', justifyContent: 'center', gap: '1rem', marginTop: '1rem'}}>
           <CloseButton onClick={onClose} style={{ backgroundColor: 'var(--background)', boxShadow: '0px 5px 0px 0px lightgray' }}>계속 하기</CloseButton>
           <CloseButton onClick={goAttendance}>확인하러 가기</CloseButton>
