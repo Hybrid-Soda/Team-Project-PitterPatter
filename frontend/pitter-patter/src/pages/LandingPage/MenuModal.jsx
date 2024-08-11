@@ -31,6 +31,10 @@ const NavItemWrap = styled.div`
   padding: 15px;
   width: 15vw;
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+
+  &:hover {
+    opacity: .5;
+  }
 `;
 
 const NavIcon = styled.img`
