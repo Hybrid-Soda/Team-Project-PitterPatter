@@ -1,8 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearChild } from '../../redux/childSlice';
+import Modal from '../Components/modal';
 
 const ModalOverlay = styled.div`
   display: flex;
@@ -65,9 +66,20 @@ function ProfileModal({ isOpen, onClose }) {
     navigate(path);
   };
 
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleLogout = () => {
     dispatch(clearChild());
-    navigate('/');
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate('/'); // 모달을 닫을 때 리다이렉트
   };
 
   if (!isOpen) return null;
@@ -94,9 +106,25 @@ function ProfileModal({ isOpen, onClose }) {
                 로그아웃
               </ProfileButton>
             </GridItem>
+
+          </>
+        )}
+        {childId === null && (
+          <>
+            <Divider />
+            <GridItem>
+              <ProfileButton onClick={handleLogin}>
+                로그인
+              </ProfileButton>
+            </GridItem>
           </>
         )}
       </ModalContent>
+      {isModalOpen && (
+        <Modal title="로그아웃" onClose={closeModal}>
+          <p>로그아웃 되었습니다.</p>
+        </Modal>
+      )}
     </ModalOverlay>
   );
 }

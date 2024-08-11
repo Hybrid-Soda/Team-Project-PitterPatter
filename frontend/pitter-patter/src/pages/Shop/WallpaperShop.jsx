@@ -14,9 +14,10 @@ import {
   CoinImg,
   CoinNumber,
 } from "./WallpaperShopStyle";
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { assetsApi } from '../../apiService';
+import { useSelector } from "react-redux";
 
 import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal'; // 추가
@@ -30,10 +31,10 @@ function WallpaperShop() {
   const [pointRecords, setPointRecords] = useState([]); // 추가
   const [page, setPage] = useState(1); // 페이지 번호 추가
   const itemsPerPage = 20; // 페이지당 아이템 수
-  const jwtToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkzNjU3LCJpYXQiOjE3MjI5OTM2NTcsImV4cCI6MTcyMzU5ODQ1NywianRpIjoiYTI3ODNkYWYtMGQ3ZC00Zjg5LWEwNzQtZDExMzkxMGQ2MjE4In0.UwVTKI1xMvVxSmn3NWqLKG5XzNDXdd5dOkvQY-_aPVwPr3MsHCh00yHJiXEXLMghXDRtQqFNm2eveoCOdv7gdA'
+  const token = useSelector((state) => state.token.accessToken)
+  const jwtToken = `Bearer ${token}`
 
-  // const childId = useSelector((state) => state.child.id);
-  const childId = 24;
+  const childId = useSelector((state) => state.child.id);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -62,7 +63,7 @@ function WallpaperShop() {
       setWallpapers(response.data.filter(item => item.itemType === 'BACKGROUND'));
     } catch (error) {
       console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 
@@ -76,7 +77,7 @@ function WallpaperShop() {
       setPoints(response.data.point);
     } catch (error) {
       console.log("Error fetching points:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 
@@ -95,7 +96,7 @@ function WallpaperShop() {
       setPage(page);
     } catch (error) {
       console.log("Error fetching point records:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 
@@ -136,7 +137,7 @@ function WallpaperShop() {
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
-        alert(error.response.data.msg);
+        // alert(error.response.data.msg);
       }
     } else {
       Navigator(-1); // on이 true인 경우 그냥 돌아가기
@@ -158,7 +159,7 @@ function WallpaperShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 

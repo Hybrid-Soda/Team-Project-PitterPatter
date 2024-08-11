@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MainWrap } from "./GamePageStyle";
 import Header from "../LandingPage/Header";
 import IsReady from "../Game/IsReady";
@@ -6,6 +6,8 @@ import WebcamTestPage from "../Game/WebcamTestPage";
 import Unity from "./Unity";
 import { getWallpaper } from "./gameApi.js";
 import AttModal from "./AttModal";
+import { useSelector } from "react-redux";
+import { assetsApi } from "../../apiService.js";
 
 function GamePage() {
   const [modalOpen, setModalOpen] = useState(true);
@@ -20,15 +22,32 @@ function GamePage() {
     setModalOpen(false);
   };
 
-  const openAttModal = () => {
-    setAttModalOpen(true);
-  };
+  const token = useSelector((state) => state.token.accessToken)
+  const openAttModal = async () => {
+    try {
+      const response = await assetsApi.post('/point', {
+        amount: 2, // 예: 100 코인 지급
+        source: '게임 플레이 보상',
+        childId: childId, // 보내고자 하는 데이터
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`, // 필요한 경우 인증 헤더 추가
+        },
+      });
+  
+      console.log('코인 지급 성공:', response.data);
+      setAttModalOpen(true);
+    } catch (error) {
+      console.error('코인 지급 실패:', error);
+      // 에러 처리 로직 추가 가능
+    }
+  };  
 
   const closeAttModal = () => {
     setAttModalOpen(false);
   };
 
-  const childId = 5;
+  const childId = useSelector((state) => state.child.id);
 
   useEffect(() => {
     setModalOpen(true); // 페이지 접근 시 모달 창 열기
