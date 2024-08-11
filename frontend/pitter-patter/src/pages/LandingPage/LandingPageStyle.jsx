@@ -93,6 +93,16 @@ export const Button = styled.button`
   box-shadow: 0 5px 0 0vw var(--logo-yellow-color);
   font-size: 1.2vw;
   font-weight: bold;
+
+  &:hover {
+    box-shadow: 0 4px 0 0 var(--logo-yellow-color);
+    transform: translateY(1px);
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: 0 0 0 0 var(--logo-yellow-color);
+    transform: translateY(2px);
+  }
 `;
 
 export const TextButton = styled.div`

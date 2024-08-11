@@ -13,9 +13,9 @@ import {
 import { Link } from 'react-router-dom';
 import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
-import naver from "../../../assets/img/logo/naver.png";
+import Modal from '../../Components/modal';
 
-import { signUp, checkDuplicateEmail, kakaoLogin } from "/src/pages/User/userApi.js";
+import { signUp, checkDuplicateEmail } from "/src/pages/User/userApi.js";
 
 const IconX = styled.img`
   width: 1.5vw;
@@ -28,6 +28,7 @@ const InputText = styled.input`
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1vw;
+  width: 13vw;
 `;
 
 const CenterText = styled.span`
@@ -41,6 +42,20 @@ const SocialIcon = styled.img`
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
 `;
 
+const Popover = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 10px;
+  margin-top: 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 14vw;
+`;
+
 function SignUp() {
   const navigator = useNavigate();
 
@@ -49,17 +64,19 @@ function SignUp() {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [isValidated, setIsValidated] = useState(false);
   const [isDuplicated, setIsDuplicated] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(''); 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false); // 팝오버 상태 추가
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
-  // email이 변경될 때 마다 호출
   useEffect(() => {
     setIsValidated(isEmailValid(email) || email === '');
   }, [email]);
 
   const isEmailValid = (email) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(email);
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
   };
 
   const isPasswordValid = () => {
@@ -71,14 +88,13 @@ function SignUp() {
   };
 
   const isEmailDuplicate = async () => {
-    // 이메일 필수 입력
     if (email === "" || email === undefined) {
-      alert("이메일을 입력해주세요.");
+      setModalMessage("이메일을 입력해주세요.");
+      setIsModalOpen(true);
       emailInputRef.current.focus();
       return;
     }
 
-    // 이메일 형식 체크
     if (!isValidated) {
       emailInputRef.current.focus();
       return;
@@ -95,28 +111,31 @@ function SignUp() {
           setIsDuplicated(false);
         }
 
-        alert(msg);
+        setModalMessage(msg);
+        setIsModalOpen(true);
       } else {
         setIsDuplicated(true);
-        alert('이메일 중복 확인에 실패했습니다.');
+        setModalMessage('이메일 중복 확인에 실패했습니다.');
+        setIsModalOpen(true);
       }
     } catch (error) {
       setIsDuplicated(true);
-      alert('문제가 발생했습니다. 다시 시도해주세요.');
+      setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
+      setIsModalOpen(true);
     }
   };
 
   const handleSignUp = async () => {
-    // 이메일 필수 입력
     if (email === "" || email === undefined) {
-      alert("이메일을 입력해주세요.");
+      setModalMessage("이메일을 입력해주세요.");
+      setIsModalOpen(true);
       emailInputRef.current.focus();
       return;
     }
 
-    // 비밀번호 필수 입력
     if (password === "" || password === undefined) {
-      alert("비밀번호를 입력해주세요.");
+      setModalMessage("비밀번호를 입력해주세요.");
+      setIsModalOpen(true);
       passwordInputRef.current.focus();
       return;
     }
@@ -127,12 +146,14 @@ function SignUp() {
     }
 
     if (isDuplicated) {
-      alert('이메일 중복 확인을 해주세요.');
+      setModalMessage('이메일 중복 확인을 해주세요.');
+      setIsModalOpen(true);
       return;
     }
 
     if (isPasswordValid() !== "") {
-      alert('비밀번호 확인이 일치하지 않습니다.');
+      setModalMessage('비밀번호 확인이 일치하지 않습니다.');
+      setIsModalOpen(true);
       return;
     }
 
@@ -143,18 +164,21 @@ function SignUp() {
 
     try {
       const response = await signUp(data);
-      
       const msg = response.data.msg;
       if (response.status === 201) {
-        alert('회원가입이 완료되었습니다.');
+        setModalMessage('회원가입이 완료되었습니다.');
+        setIsModalOpen(true);
         navigator('/login');
       } else if (response.status === 200) {
-        alert(msg);
+        setModalMessage(msg);
+        setIsModalOpen(true);
       } else {
-        alert('회원가입에 실패했습니다.');
+        setModalMessage('회원가입에 실패했습니다.');
+        setIsModalOpen(true);
       }
     } catch (error) {
-      alert('문제가 발생했습니다. 다시 시도해주세요.');
+      setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
+      setIsModalOpen(true);
     }
   }
 
@@ -163,39 +187,17 @@ function SignUp() {
     setIsDuplicated(true);
   }
 
-  // test 중.
-  const test = async () => {
-    window.location.href = "https://pitter-patter.picel.net/oauth2/authorization/kakao";
-    // try {
-    //   const response = await kakaoLogin();
-    //   const msg = response.data.msg;
-
-    //   if (response.status === 200) {
-    //     alert(msg);
-    //   } else {
-    //     alert("카카오 로그인에 실패했습니다.");
-    //   }
-    // } catch (error) {
-    //   alert('네트워크 오류가 발생했습니다. 다시 시도해 주세요.');
-    //   handleError(error);
-    // }
+  const closeModal = () => {
+    setIsModalOpen(false); 
   }
 
-  const handleError = (error) => {
-    // 오류 처리
-    if (error.response) {
-     // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-     console.error('Error Response Status:', error.response.status);
-     console.error('Error Response Data:', error.response.data);
-     console.error('Error Response Headers:', error.response.headers);
-   } else if (error.request) {
-     // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-     console.error('Error Request:', error.request);
-   } else {
-     // 요청 설정에서 발생한 오류
-     console.error('Error Message:', error.message);
-   }
- }
+  const handlePasswordFocus = () => {
+    setIsPopoverOpen(true); // 포커스 시 팝오버 열기
+  };
+
+  const handlePasswordBlur = () => {
+    setIsPopoverOpen(false); // 포커스 해제 시 팝오버 닫기
+  };
 
   return (
     <LayoutBase>
@@ -207,7 +209,7 @@ function SignUp() {
           <MainText>회원 가입</MainText>
         </div>
         <div style={{ marginBottom: '2vw' }}></div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0vw' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0vw', position: 'relative' }}>
           <InputText
             type="text"
             id="email"
@@ -221,13 +223,22 @@ function SignUp() {
           <ButtonCheckId id="button-check-id" onClick={isEmailDuplicate}>
             중복 확인
           </ButtonCheckId>
-          <InputText
-            type="password"
-            id="password"
-            placeholder="비밀번호"
-            onChange={(e) => setPassword(e.target.value)}
-            ref={passwordInputRef}
-          />
+          <div style={{ position: 'relative' }}>
+            <InputText
+              type="password"
+              id="password"
+              placeholder="비밀번호"
+              onFocus={handlePasswordFocus} // 포커스 시 팝오버 열기
+              onBlur={handlePasswordBlur} // 포커스 해제 시 팝오버 닫기
+              onChange={(e) => setPassword(e.target.value)}
+              ref={passwordInputRef}
+            />
+            {isPopoverOpen && (
+              <Popover>
+                비밀번호는 8자 이상이어야 하며, <br />영문 대소문자, 숫자, 특수문자를 <br />포함해야 합니다.
+              </Popover>
+            )}
+          </div>
           <InputText
             type="password"
             id="password-check"
@@ -249,10 +260,15 @@ function SignUp() {
             <CenterText>또는</CenterText>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-            <SocialIcon src={kakao} alt="kakao" onClick={test}/>
-            {/* <SocialIcon src={naver} alt="naver" /> */}
+            <SocialIcon src={kakao} alt="kakao" />
           </div>
         </div>
+
+        {isModalOpen && (
+          <Modal title="알림" onClose={closeModal}>
+            {modalMessage}
+          </Modal>
+        )}
       </LayoutSignup>
     </LayoutBase>
   );

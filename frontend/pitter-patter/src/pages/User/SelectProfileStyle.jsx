@@ -31,10 +31,11 @@ export const ProfileList = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding-top: 5vw;
+  padding-top: 4vw;
+  margin-bottom: 6vh;
   width: 60vw;
-  height: 30vh;
-  overflow-y: auto;
+  height: 28vh;
+  overflow-x: scroll;
 `;
 
 export const Profile = styled.div`
@@ -45,10 +46,11 @@ export const Profile = styled.div`
 `;
 
 export const ProfileImage = styled.div`
-  width: 10vw;
-  height: 10vw;
+  width: 8vw;
+  height: 8vw;
   border-radius: 50%;
-  background-color: grey;
+  /* background-color: grey; */
+  border: .3rem solid var(--box-yellow-color);
   display: flex;
   justify-content: center;
   align-items: center;
