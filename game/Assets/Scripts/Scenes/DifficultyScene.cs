@@ -9,7 +9,7 @@ public class DifficultyScene : BaseScene
     {
         if (int.TryParse(button.name, out int diffLevel))
         {
-            Managers.Play.SetDifficulty(diffLevel);
+            Managers.Play.DiffLevel = diffLevel;
             Managers.Scene.LoadScene(Define.Scene.GameScene);
         }
     }
