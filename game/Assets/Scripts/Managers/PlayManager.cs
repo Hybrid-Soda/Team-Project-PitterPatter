@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class PlayManager
 {
-    public int diffLevel = 1;
+    int _diffLevel = 3;
 
-    public void SetDifficulty(int level)
-    {
-        diffLevel = level;
-    }
+    public int DiffLevel { get { return _diffLevel; } set { _diffLevel = value; } }
 }
