@@ -10,10 +10,13 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
   useEffect(() => {
     const loadMediapipeModules = async () => {
       try {
-        const poseModule = await import("@mediapipe/pose");
-        const cameraModule = await import("@mediapipe/camera_utils");
-        const Pose = poseModule.Pose;
-        const Camera = cameraModule.Camera;
+        // const poseModule = await import("mediapipePose");
+        // const cameraModule = await import("@mediapipe/camera_utils");
+        // // console.log(poseModule);
+        // console.log(cameraModule);
+        // const Camera = cameraModule.Camera;
+        // console.log(Pose);
+        // console.log(Camera);
 
         const pose = new Pose({
           locateFile: (file) =>
