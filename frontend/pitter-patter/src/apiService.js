@@ -1,5 +1,8 @@
 // src/apiService.js
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken, clearToken } from "./redux/tokenSlice";
+import store from "./redux/store";
 
 const host = "https://pitter-patter.picel.net";
 const baseURL = `${host}/api`;
@@ -44,7 +47,7 @@ export const handleReissueCatch = (error) => {
   }
 };
 
-const setupInterceptors = (axiosInstance) => {
+const setupInterceptors = (axiosInstance) => { 
   // 응답 인터셉터 설정
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -58,12 +61,12 @@ const setupInterceptors = (axiosInstance) => {
       } = error;
   
       const originalRequest = config;
-  
+      
       // 토큰 재발급 수행
       if (status === 401) {
         // redux에서 값 가져오기
-        const accessToken = 'access token';
-        const refreshToken = 'refresh token';
+        const state = store.getState(); // store에서 상태를 가져옵니다.
+        const { refreshToken, accessToken } = state.token;
   
         try {
           const { data } = await axios({
@@ -75,22 +78,22 @@ const setupInterceptors = (axiosInstance) => {
           if (data.exception !== undefined) {
             throw new Error("토큰 검증 실패");
           }
-
-          const newAccessToken = data.data.accessToken;
-          const newRefreshToken = data.data.refreshToken;
           
-          // redux에 새로 받아온 토큰 값 저장
-          // ...
+          console.log(data);
+          store.dispatch(setToken(data.data)); // 새로운 토큰을 store에 저장
+          const newAccessToken = data.data.accessToken;
 
           originalRequest.headers = {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + newAccessToken,
+            Authorization: `Bearer ${newAccessToken}`
           };
 
           return await axios(originalRequest);
         } catch (error) {
           // 로그아웃 시키기
-          // ...
+          dispatch(clearToken());
+          // 모달
+          window.location.href="/login";
           new Error(error);
         }
       }
