@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    private int mapNum;
-
     // 맵 매니저 초기화
     public void Init()
     {

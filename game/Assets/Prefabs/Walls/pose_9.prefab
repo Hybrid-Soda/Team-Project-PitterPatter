@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 7850601531793379748}
   - component: {fileID: 7850601531793379803}
   - component: {fileID: 7850601531793379802}
-  - component: {fileID: -3926750899032701628}
+  - component: {fileID: 7387895483326360939}
   m_Layer: 0
   m_Name: pose_9
   m_TagString: Untagged
@@ -867,7 +867,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-3926750899032701628
+--- !u!114 &7387895483326360939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
