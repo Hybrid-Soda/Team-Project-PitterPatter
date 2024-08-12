@@ -16,7 +16,7 @@ export default defineConfig({
   //     '@utils': path.resolve(__dirname, 'src/utils'),
   //   },
   // },
-  optimizeDeps: {
-    exclude: ['@mediapipe/pose', '@mediapipe/camera_utils'],
-  },
+  // optimizeDeps: {
+  //   exclude: ['@mediapipe/pose', '@mediapipe/camera_utils'],
+  // },
 })
