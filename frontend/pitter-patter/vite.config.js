@@ -7,16 +7,14 @@ export default defineConfig({
   plugins: [react()],
   // resolve: {
   //   alias: {
-  //     '@': path.resolve(dirname, 'src'),
-  //     '@assets': path.resolve(dirname, 'src/assets'),
-  //     '@components': path.resolve(dirname, 'src/components'),
-  //     '@redux': path.resolve(dirname, 'src/redux'),
-  //     '@styles': path.resolve(dirname, 'src/styles'),
-  //     '@api': path.resolve(dirname, 'src/api'),
+  //     '@': path.resolve(__dirname, 'src'),
+  //     '@assets': path.resolve(__dirname, 'src/assets'),
+  //     '@components': path.resolve(__dirname, 'src/components'),
+  //     '@redux': path.resolve(__dirname, 'src/redux'),
+  //     '@styles': path.resolve(__dirname, 'src/styles'),
+  //     '@api': path.resolve(__dirname, 'src/api'),
   //     '@utils': path.resolve(__dirname, 'src/utils'),
   //   },
   // },
-  // optimizeDeps: {
-  //   exclude: ['@mediapipe/pose', '@mediapipe/camera_utils'],
-  // },
 })
+ 
