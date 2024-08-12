@@ -1,10 +1,21 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      external: ["@mediapipe/pose, @mediapipe/camera_utils"],
+      output: {
+        globals: {
+          "@mediapipe/pose": "mediapipePose",
+          "@mediapipe/camera_utils": "mediapipeCamera",
+        },
+      },
+    },
+  },
   // resolve: {
   //   alias: {
   //     '@': path.resolve(__dirname, 'src'),
@@ -16,5 +27,4 @@ export default defineConfig({
   //     '@utils': path.resolve(__dirname, 'src/utils'),
   //   },
   // },
-})
- 
+});

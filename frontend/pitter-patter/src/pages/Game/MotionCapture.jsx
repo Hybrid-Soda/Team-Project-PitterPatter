@@ -10,19 +10,9 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
   useEffect(() => {
     const loadMediapipeModules = async () => {
       try {
-        const poseModule = await import("@mediapipe/pose");
-        const cameraModule = await import("@mediapipe/camera_utils");
-        const Pose = poseModule.Pose;
-        const Camera = cameraModule.Camera;
-
-        if (typeof Pose !== "function") {
-          console.error("Mediapipe Pose 객체를 불러오지 못했습니다.");
-          return;
-        }
-
         const pose = new Pose({
           locateFile: (file) =>
-            `https://ssafy-common.b-cdn.net/mediapipe/pose/${file}`,
+            `/mediapipe/pose/${file}`,
         });
 
         pose.setOptions({
