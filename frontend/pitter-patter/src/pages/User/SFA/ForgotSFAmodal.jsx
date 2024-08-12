@@ -10,6 +10,7 @@ import {
     SubmitButton,
     NoButton,
 } from './ForgotSFAmodalStyle';
+import Loader from "../../Components/loader.jsx";
 
 import { sendReset2faEmail } from "/src/pages/User/userApi.js";
 
@@ -18,6 +19,7 @@ function ForgotSFAModal({ onClose }) {
     
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
     const emailInputRef = useRef(null);
 
     // email이 변경될 때 마다 호출
@@ -45,16 +47,22 @@ function ForgotSFAModal({ onClose }) {
         }
 
         try {
+            setTimeout(() => {
+                setIsLoading(true);
+              }, 100);
             const respone = await sendReset2faEmail(email);
             
             if (respone.status === 200) {
+                setIsLoading(false);
                 const msg = respone.data.msg;
                 alert(msg);
                 onClose();
             } else {
+                setIsLoading(false);
                 alert("메일 발송에 실패했습니다.");
             }
         } catch (error) {
+            setIsLoading(false);
             if (error.response && error.response.status === 400) {
                 alert("메일 발송에 실패했습니다.");
             }
@@ -66,6 +74,7 @@ function ForgotSFAModal({ onClose }) {
 
     return(
         <LayoutBase onClick={onClose}>
+            {isLoading ? <Loader /> : 
             <LayoutModal onClick={(e) => e.stopPropagation()}>
                 <LayoutTitle>이메일을 입력해주세요.</LayoutTitle>
                 <LayoutContext>아래 주소로 2차 비밀번호 변경 링크를 보내드립니다.</LayoutContext>
@@ -81,6 +90,7 @@ function ForgotSFAModal({ onClose }) {
                     <NoButton onClick={onClose}>취소</NoButton>
                 </LayoutInput>
             </LayoutModal>
+            }
         </LayoutBase>
     );
 }

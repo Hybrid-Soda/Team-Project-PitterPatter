@@ -10,6 +10,7 @@ import {
   LoginText,
   ValidationText,
 } from './SignUpStyle';
+import Loader from "../../Components/loader.jsx";
 import { Link } from 'react-router-dom';
 import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
@@ -62,6 +63,7 @@ function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const [isValidated, setIsValidated] = useState(false);
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -101,8 +103,12 @@ function SignUp() {
     }
 
     try {
+      setTimeout(() => {
+        setIsLoading(true);
+      }, 100);
       const response = await checkDuplicateEmail(email);
       if (response.status === 200) {
+        setIsLoading(false);
         const exception = response.data.exception;
         const msg = response.data.msg;
         setIsDuplicated(true);
@@ -114,11 +120,13 @@ function SignUp() {
         setModalMessage(msg);
         setIsModalOpen(true);
       } else {
+        setIsLoading(false);
         setIsDuplicated(true);
         setModalMessage('이메일 중복 확인에 실패했습니다.');
         setIsModalOpen(true);
       }
     } catch (error) {
+      setIsLoading(false);
       setIsDuplicated(true);
       setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
       setIsModalOpen(true);
@@ -163,20 +171,27 @@ function SignUp() {
     };
 
     try {
+      setTimeout(() => {
+        setIsLoading(true);
+      }, 100);
       const response = await signUp(data);
       const msg = response.data.msg;
       if (response.status === 201) {
+        setIsLoading(false);
         setModalMessage('회원가입이 완료되었습니다.');
         setIsModalOpen(true);
         navigator('/login');
       } else if (response.status === 200) {
+        setIsLoading(false);
         setModalMessage(msg);
         setIsModalOpen(true);
       } else {
+        setIsLoading(false);
         setModalMessage('회원가입에 실패했습니다.');
         setIsModalOpen(true);
       }
     } catch (error) {
+      setIsLoading(false);
       setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
       setIsModalOpen(true);
     }
@@ -201,6 +216,7 @@ function SignUp() {
 
   return (
     <LayoutBase>
+      {isLoading ? <Loader /> : 
       <LayoutSignup>
         <div style={{ display: 'flex', justifyContent: 'flex-start', width: '90%' }}>
           <Link to='/'><IconX src={X} alt="X" /></Link>
@@ -270,6 +286,7 @@ function SignUp() {
           </Modal>
         )}
       </LayoutSignup>
+      }
     </LayoutBase>
   );
 }

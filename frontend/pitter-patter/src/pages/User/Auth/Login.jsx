@@ -9,6 +9,7 @@ import {
   ForgotPassword,
   SignUp,
 } from './LoginStyle.jsx';
+import Loader from "../../Components/loader.jsx";
 import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
 import Modal from './LoginFailModal.jsx'; 
@@ -49,6 +50,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
@@ -79,8 +81,12 @@ function Login() {
     }
 
     try {
+      setTimeout(() => {
+        setIsLoading(true);
+      }, 100);
       const response = await login({ email, password });
       if (response.status === 200) {
+        setIsLoading(false);
         // jwt 토큰을 여기서 받아옴
         const data = response.data.data;
         const accessToken = data.accessToken;
@@ -96,10 +102,12 @@ function Login() {
       );
         navigator("/select-profile");
       } else {
+        setIsLoading(false);
         setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');
         setModalOpen(true);
       }
     } catch (error) {
+      setIsLoading(false);
       const msg = error.response.data.msg;
       if (msg === "자격 증명에 실패하였습니다.") {
         setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");

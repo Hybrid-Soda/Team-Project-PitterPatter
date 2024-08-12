@@ -10,6 +10,7 @@ import {
     WarningMessage,
     SubmitButton
   } from './ResetPasswordStyle';
+import Loader from "../../Components/loader.jsx";
 import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
 
@@ -24,6 +25,7 @@ function ResetSFA() {
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
     const newPasswordInputRef = useRef(null);
     const confirmPasswordInputRef = useRef(null);
 
@@ -54,8 +56,12 @@ function ResetSFA() {
         }
 
         try {
+            setTimeout(() => {
+                setIsLoading(true);
+              }, 100);
             const response = await reset2faByEmailToken(email, emailToken, newPassword);
             if (response.status === 200) {
+                setIsLoading(false);
                 const exception = response.data.exception;
                 const msg = response.data.msg;
 
@@ -69,17 +75,23 @@ function ResetSFA() {
                     }
                 }
             } else {
+                setIsLoading(false);
                 alert("2차 비밀번호 변경에 실패했습니다.");
             }
         } catch (error) {
+            setIsLoading(false);
             alert("문제가 발생했습니다. 다시 시도해주세요.");
         }
     }
 
     const isVerifiedEmailToken = async () => {
         try {
+            setTimeout(() => {
+                setIsLoading(true);
+              }, 100);
             const response = await verifyEmailTokenForReset2fa(email, emailToken);
             if (response.status === 200) {
+                setIsLoading(false);
                 const exception = response.data.exception;
 
                 if (exception === undefined) {
@@ -88,9 +100,11 @@ function ResetSFA() {
                     return false;
                 }
             } else {
+                setIsLoading(false);
                 return false;
             }
         } catch (error) {
+            setIsLoading(false);
             return false;
         }
     };
@@ -98,6 +112,7 @@ function ResetSFA() {
     return (
     <Layoutbody>
         <Header />
+        {isLoading ? <Loader /> : 
         <LayoutContext>
             <WrapContext>   
                 <Title>2차 비밀번호 변경하기</Title>
@@ -124,6 +139,7 @@ function ResetSFA() {
                 </SubmitButton>
             </WrapContext>
         </LayoutContext>
+        }
     </Layoutbody>
     )
 }
