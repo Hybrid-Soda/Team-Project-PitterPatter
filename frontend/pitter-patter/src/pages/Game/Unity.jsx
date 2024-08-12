@@ -10,10 +10,10 @@ const UnityComponent = ({ onGameEnd }) => {
 
   // Provide Unity
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
-      loaderUrl: "Build/Build.loader.js",
-      dataUrl: "Build/Build.data.unityweb",
-      frameworkUrl: "Build/Build.framework.js.unityweb",
-      codeUrl: "Build/Build.wasm.unityweb",
+    loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
+    dataUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.data",
+    frameworkUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.framework.js",
+    codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm",
   });
 
   const handleGameEnd = useCallback((score, isGameEnd) => {
