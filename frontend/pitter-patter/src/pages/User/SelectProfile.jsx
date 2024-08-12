@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setChild, setChildError } from '../../redux/childSlice'; // 적절한 경로에 맞게 import 필요
 import { childApi } from '../../apiService';
 import { clearChild } from '../../redux/childSlice';
+import { clearItem, setItem } from '../../redux/itemSlice';
 import Modal from '../Components/modal'; // Modal 임포트
 
 function SelectProfile() {
@@ -34,6 +35,7 @@ function SelectProfile() {
 
   const goToAddProfile = () => {
     dispatch(clearChild()); // clearChild 액션을 디스패치하여 상태를 초기화
+    dispatch(clearItem());
     navigate('/child/mypage', { state: { addProfile: true } });
   };
 
@@ -48,7 +50,9 @@ function SelectProfile() {
       setChildList(response.data);
 
     } catch (error) {
-      console.log("Error fetching frames:", error.response.data.msg);
+      if (error.reponse.data && error.response.data.msg === "해당 데이터가 존재하지 않습니다.") {
+        return;
+      }
       setModalMessage(error.response.data.msg); // 에러 메시지 설정
       setIsModalOpen(true); // 모달 열기
     }
@@ -67,6 +71,7 @@ function SelectProfile() {
       });
 
       dispatch(setChild(response.data));
+      dispatch(setItem());
       console.log('set')
     } catch (error) {
       console.error('Error fetching child data:', error.response?.data || error.message);

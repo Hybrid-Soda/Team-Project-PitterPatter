@@ -10,6 +10,8 @@ import {
     WarningMessage,
     SubmitButton
   } from './ResetPasswordStyle';
+import Modal from '../../Components/modal';
+import Loader from "../../Components/loader.jsx";
 import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
 
@@ -24,6 +26,9 @@ function ResetSFA() {
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [modalMessage, setModalMessage] = useState(''); 
+    const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
     const newPasswordInputRef = useRef(null);
     const confirmPasswordInputRef = useRef(null);
 
@@ -48,38 +53,53 @@ function ResetSFA() {
     const handleResetSFA = async () => {
         // 새 2차 비밀번호는 필수 입력 값임.
         if (newPassword === "" || newPassword === undefined) {
-            alert("새 2차 비밀번호를 입력해주세요.");
+            setModalMessage("새 2차 비밀번호를 입력해주세요.");
+		    setIsModalOpen(true)
             newPasswordInputRef.current.focus();
             return;
         }
 
         try {
+            setTimeout(() => {
+                setIsLoading(true);
+              }, 100);
             const response = await reset2faByEmailToken(email, emailToken, newPassword);
             if (response.status === 200) {
+                setIsLoading(false);
                 const exception = response.data.exception;
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    alert(msg);
+                    setModalMessage(msg);
+		            setIsModalOpen(true)
                     navigate("/");
                 } else {
-                    alert(msg);
+                    setModalMessage(msg);
+		            setIsModalOpen(true)
                     if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
                         navigate("/expired");
                     }
                 }
             } else {
-                alert("2차 비밀번호 변경에 실패했습니다.");
+                setIsLoading(false);
+                setModalMessage("2차 비밀번호 변경에 실패했습니다.");
+		        setIsModalOpen(true)
             }
         } catch (error) {
-            alert("문제가 발생했습니다. 다시 시도해주세요.");
+            setIsLoading(false);
+            setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
+		    setIsModalOpen(true)
         }
     }
 
     const isVerifiedEmailToken = async () => {
         try {
+            setTimeout(() => {
+                setIsLoading(true);
+              }, 100);
             const response = await verifyEmailTokenForReset2fa(email, emailToken);
             if (response.status === 200) {
+                setIsLoading(false);
                 const exception = response.data.exception;
 
                 if (exception === undefined) {
@@ -88,16 +108,23 @@ function ResetSFA() {
                     return false;
                 }
             } else {
+                setIsLoading(false);
                 return false;
             }
         } catch (error) {
+            setIsLoading(false);
             return false;
         }
     };
 
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
+
     return (
     <Layoutbody>
         <Header />
+        {isLoading ? <Loader /> : 
         <LayoutContext>
             <WrapContext>   
                 <Title>2차 비밀번호 변경하기</Title>
@@ -123,7 +150,13 @@ function ResetSFA() {
                     변경하기
                 </SubmitButton>
             </WrapContext>
+            {isModalOpen && (
+                <Modal title="알림" onClose={closeModal}>
+                    {modalMessage}
+                </Modal>
+            )}
         </LayoutContext>
+        }
     </Layoutbody>
     )
 }

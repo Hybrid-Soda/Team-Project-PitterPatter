@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   LayoutMyPage,
   Profile,
@@ -54,15 +55,14 @@ const SubmitButton = styled.button`
     transition: all .1s;
 `
 
-function UserInfo() {
+function UserInfo({ onMessage }) {
   const navigator = useNavigate();
   
   const teamNameInputRef = useRef(null);
 
   const [teamName, setTeamName] = useState('');
   const [email, setEmail] = useState('');
-  // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   // 페이지가 렌더링 될 때 사용자 정보를 가져옴
   useEffect(() => {
@@ -80,11 +80,11 @@ function UserInfo() {
               setTeamName(userInfo.teamName);
             }, 100);
           } else {
-            alert(msg);
+            onMessage(msg);
             navigator("/");
           }
         } else {
-          alert("사용자 정보를 가져올 수 없습니다.");
+          onMessage("사용자 정보를 가져올 수 없습니다.");
           navigator("/")
         }
       } catch (error) {
@@ -98,7 +98,7 @@ function UserInfo() {
   const handleSubmit = async () => {
     // 가족 팀 이름은 필수 입력값
     if (teamName === '') {
-      alert("가족 팀 이름을 입력해주세요.");
+      onMessage("가족 팀 이름을 입력해주세요.")
       teamNameInputRef.current.focus();
       return;
     }
@@ -120,9 +120,9 @@ function UserInfo() {
           setTimeout(() => {
             setTeamName(updatedUserInfo.teamName);
           }, 100)
-          alert("회원정보가 성공적으로 변경되었습니다.");
+          onMessage("회원정보가 성공적으로 변경되었습니다.");
         } else {
-          alert(msg);
+          onMessage(msg);
         }
       }
     } catch (error) {

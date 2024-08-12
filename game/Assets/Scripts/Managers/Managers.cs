@@ -10,6 +10,7 @@ public class Managers : MonoBehaviour
     // 개별 매니저 클래스들에 대한 참조
     MapManager _map;
     NetworkManager _network;
+    CoroutineManager _coroutine;
     PlayManager _play = new PlayManager();
     SoundManager _sound = new SoundManager();
     ExSceneManager _scene = new ExSceneManager();
@@ -18,6 +19,7 @@ public class Managers : MonoBehaviour
     // 각 매니저 클래스에 대한 정적 프로퍼티 제공 (외부 접근)
     public static MapManager Map { get; private set; }
     public static NetworkManager Network { get; private set; }
+    public static CoroutineManager Coroutine { get; private set; }
     public static PlayManager Play { get { return Instance._play; } }
     public static SoundManager Sound { get { return Instance._sound; } }
     public static ExSceneManager Scene { get { return Instance._scene; } }
@@ -49,6 +51,7 @@ public class Managers : MonoBehaviour
                 gameObject.AddComponent<Managers>();
                 Map = gameObject.AddComponent<MapManager>();
                 Network = gameObject.AddComponent<NetworkManager>();
+                Coroutine = gameObject.AddComponent<CoroutineManager>();
             }
 
             // 오브젝트가 씬 전환 시 파괴되지 않도록 설정 및 Managers 컴포넌트 인스턴스 설정

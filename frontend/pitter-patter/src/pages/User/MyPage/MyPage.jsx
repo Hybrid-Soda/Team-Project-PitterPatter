@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   LayoutBase,
   LayoutMyPage,
@@ -10,32 +11,40 @@ import {
   MenuItem,
   MainWrap,
 } from './MyPageStyle';
+import Modal from '../../Components/modal';
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import UserInfo from "./UserInfo";
 import ChangePassword from "./ChangePassword"
 import DeleteUser from './DeleteUser';
+import { useDispatch } from 'react-redux';
+import { clearChild } from '../../../redux/childSlice';
+import { clearToken } from '../../../redux/tokenSlice';
 
 import { deleteUser} from "/src/pages/User/userApi.js";
 import { handleReissueCatch } from '../../../apiService';
 
 function MyPage() {
   const Navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState('userInfo');
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(''); 
 
-  // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   const handleMenuItemClick = (component) => {
     setActiveComponent(component);
   };
 
   const handleModalOpen = async () => {
-    const isDeleted = await handleDeleteUser();
+    const isDeleted = await handleDeleteUser(dispatch);
     if (isDeleted) {
-      setModalOpen(true);
+      dispatch(clearChild());
+      dispatch(clearToken());
+      setForgotModalOpen(true);
     } else {
-      setModalOpen(false);
+      setForgotModalOpen(false);
     }
   };
 
@@ -50,11 +59,11 @@ function MyPage() {
         if (exception === undefined) {
           return true;
         } else {
-          alert(msg);
+          handleMessage(msg);
           return false;
         }
       } else {
-        alert("회원탈퇴에 실패했습니다.");
+        handleMessage("회원탈퇴에 실패했습니다.");
         return false;
       }
     } catch (error) {
@@ -63,13 +72,21 @@ function MyPage() {
     }
   };
 
+  const handleMessage = (msg) => {
+    setModalMessage(msg);
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+
   return (
     <LayoutBase>
-      {/* <DeleteUser /> */}
       <LayoutMyPage>
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%'}}>
           <MenuWrap>
-            <button onClick={() => Navigate(-1)}>
+            <button onClick={() => Navigate('/select-profile')}>
               <MenuIcon src={ArrowLeft} alt="ArrowLeft" />
             </button>
             <MenuItemWrap>
@@ -95,13 +112,18 @@ function MyPage() {
                 <MenuItem>회원 탈퇴</MenuItem>
               </button>
               </MenuItemWrap>
-              {modalOpen && <DeleteUser onClose={() => setModalOpen(false)} />}
+              {forgotModalOpen && <DeleteUser onClose={() => setForgotModalOpen(false)} />}
           </MenuWrap>
           <MainWrap>
-            {activeComponent === 'userInfo' && <UserInfo />}
-            {(activeComponent === 'changePassword' || activeComponent === 'changePassword2') && <ChangePassword />}
+            {activeComponent === 'userInfo' && <UserInfo onMessage={handleMessage} />}
+            {(activeComponent === 'changePassword' || activeComponent === 'changePassword2') && <ChangePassword onMessage={handleMessage} />}
           </MainWrap>
         </div>
+        {isModalOpen && (
+          <Modal title="알림" onClose={closeModal}>
+            {modalMessage}
+          </Modal>
+        )}
       </LayoutMyPage>
     </LayoutBase>
   );

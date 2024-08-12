@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   LayoutBase,
   LayoutSFA,
@@ -14,6 +15,7 @@ import {
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
 import { useNavigate } from 'react-router-dom';
+import Modal from './Modal';
 import ForgotSFAmodal from './ForgotSFAmodal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
@@ -23,10 +25,11 @@ function SFA() {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(''); 
 
-  // 추후 redux에서 가져와야 할 정보
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   useEffect(() => {
     const verifyPassword = async () => {
@@ -67,11 +70,11 @@ function SFA() {
         if (exception === undefined) {
           return true;
         } else {
-          alert(msg);
+          handleMessage(msg);
           return false;
         }
       } else {
-        alert("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
         return false;
       }
     } catch (error) {
@@ -79,6 +82,15 @@ function SFA() {
       return false;
     }
   };
+
+  const handleMessage = (msg) => {
+    setModalMessage(msg);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   return (
     <LayoutBase>
@@ -117,9 +129,10 @@ function SFA() {
           </NumpadRow>
         </NumpadWrap>
         <ForgotPassword>
-          <button onClick={() => setModalOpen(true)}>비밀번호를 잊으셨나요?</button>
+          <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {modalOpen && <ForgotSFAmodal onClose={() => setModalOpen(false)} />}
+        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
+        {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
       </LayoutSFA>
     </LayoutBase>
   );
