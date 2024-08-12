@@ -2,9 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import userdelete from "../../../assets/img/User/userdelete.png";
-import { useDispatch } from 'react-redux';
-import { clearChild } from '../../../redux/childSlice';
-import { clearToken } from '../../../redux/tokenSlice';
 
 import { 
     LayoutBase, 
@@ -38,19 +35,13 @@ const SubmitButton = styled.button`
     padding: .5rem 1.5rem;
 `
 
-function DeleteUser({ onClose }) {
-    const dispatch = useDispatch();
-    const deleteUser = () => {
-        dispatch(clearChild());
-        dispatch(clearToken());
-    }
-    
+function DeleteUser({ onClose }) {    
     return(
         <LayoutBase style={{ top:'0', left: '0', zIndex: 10 }} onClick={onClose}>
             <LayoutModal onClick={(e) => e.stopPropagation()}>
                 <DeleteUserImage src={userdelete} alt="userdelete" />
                 <LayoutTitle style={{ marginBottom: '1rem' }}>탈퇴가 완료되었습니다.</LayoutTitle>
-                <Link to='/' style={{ height: '10%' }}><SubmitButton onClick={deleteUser}>메인으로</SubmitButton></Link>
+                <Link to='/' style={{ height: '10%' }}><SubmitButton>메인으로</SubmitButton></Link>
             </LayoutModal>
         </LayoutBase>
     );

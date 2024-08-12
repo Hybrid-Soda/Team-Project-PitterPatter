@@ -16,12 +16,16 @@ import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import UserInfo from "./UserInfo";
 import ChangePassword from "./ChangePassword"
 import DeleteUser from './DeleteUser';
+import { useDispatch } from 'react-redux';
+import { clearChild } from '../../../redux/childSlice';
+import { clearToken } from '../../../redux/tokenSlice';
 
 import { deleteUser} from "/src/pages/User/userApi.js";
 import { handleReissueCatch } from '../../../apiService';
 
 function MyPage() {
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState('userInfo');
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -34,8 +38,10 @@ function MyPage() {
   };
 
   const handleModalOpen = async () => {
-    const isDeleted = await handleDeleteUser();
+    const isDeleted = await handleDeleteUser(dispatch);
     if (isDeleted) {
+      dispatch(clearChild());
+      dispatch(clearToken());
       setForgotModalOpen(true);
     } else {
       setForgotModalOpen(false);
