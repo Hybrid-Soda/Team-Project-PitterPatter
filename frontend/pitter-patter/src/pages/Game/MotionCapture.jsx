@@ -17,7 +17,7 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
 
     // Mediapipe Pose 초기화, 옵션, 콜백 함수 설정
     const pose = new Pose({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`
+      locateFile: (file) => `https://ssafy-common.b-cdn.net/@mediapipe/pose/${file}`
     })
     pose.setOptions({
       modelComplexity: 1,
