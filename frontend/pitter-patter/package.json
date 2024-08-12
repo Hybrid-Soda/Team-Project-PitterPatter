@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mediapipe/camera_utils": "^0.3.1675466862",
-    "@mediapipe/pose": "^0.5.1675469404",
+    "@mediapipe/pose": "^0.3.1621277220",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "html2canvas": "^1.4.1",

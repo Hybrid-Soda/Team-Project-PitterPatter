@@ -35,7 +35,7 @@ const SubmitButton = styled.button`
     padding: .5rem 1.5rem;
 `
 
-function DeleteUser({ onClose }) {
+function DeleteUser({ onClose }) {    
     return(
         <LayoutBase style={{ top:'0', left: '0', zIndex: 10 }} onClick={onClose}>
             <LayoutModal onClick={(e) => e.stopPropagation()}>

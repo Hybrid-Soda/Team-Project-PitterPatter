@@ -110,7 +110,6 @@ function SignUp() {
         if (exception === undefined) {
           setIsDuplicated(false);
         }
-
         setModalMessage(msg);
         setIsModalOpen(true);
       } else {

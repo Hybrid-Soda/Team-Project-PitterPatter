@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useSelector } from 'react-redux';
 import { childPlaytimeGet } from './../Child/childApi.js';
 import { 
   LayoutActivityPage, 
@@ -12,10 +13,11 @@ import {
 
 function ChildActivityTable() {
   const [data, setData] = useState([]);
-  const childId = 1; // 테스트용 childId 변수 선언
+  const childId = useSelector((state) => state.child.id);
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDQwNjcsImlhdCI6MTcyMjg0NDA2NywiZXhwIjoxNzIyODQ3MDY3LCJqdGkiOiIyOTVlNGQ0My1jNTdiLTQzOGYtYmZhMi1iYTgxY2ZjODhiZjkifQ.26imCUiKUgvhsMFLfMWALQ2BWiDnNz3nZidUCLW4waEbI5WbSVNFoePMoz0p7KGX4I8V9buste_pbowZnrpbQg";
+  const token = useSelector((state) => state.token.accessToken);
+  const nickname = useSelector((state) => state.child.nickname);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +77,7 @@ function ChildActivityTable() {
       </LayoutActivityPage>
       <GraphFooter>
         <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)}분 입니다.</p>
-        <p>### 님의 나이에서 해당 BMI는 ### 입니다. </p>
+        <p>운동장 # 바퀴를 뛴 만큼의 운동을 하셨습니다.</p>
       </GraphFooter>
     </ContentBody>
   );

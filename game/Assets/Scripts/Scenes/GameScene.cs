@@ -6,145 +6,54 @@ using UnityEngine.SceneManagement;
 
 public class GameScene : BaseScene
 {
-    public int round;
-    public bool getPoint;
+    public BaseRound nowRound;
+
+    public int round = 0;
+    public int score = 0;
+    public float playTime;
+    public float nextTime;
+    public bool isRoundUp;
+
     public Text scoreTxt;
     public Text playTimeTxt;
+    public Image countImage;
+    public Image roundImage;
     public Image clearImage;
-    public Image feedbackImg;
-    public List<Image> feedbackImgs;
-    public List<GameObject> colliders = new();
+    public Image scoreImage;
 
-    private int score;
-    private bool isEnded;
-    private float playTime;
-    private float roundDuration;
-    private float nextRoundTime;
-    private RoundUp roundUp;
+    public Sprite[] countSprites;
+    public Sprite[] roundSprites;
+    public Sprite[] scoreSprites;
+    public List<GameObject> colliders = new();
 
     void Start()
     {
-        roundUp = FindAnyObjectByType<RoundUp>();
         Managers.Map.Init();
-        Init();
-    }
-
-    private void Init()
-    {
-        round = 1;
-        score = 0;
-        playTime = 0;
-        isEnded = false;
-        getPoint = false;
-        colliders.Clear();
-        roundDuration = 60f;
-        nextRoundTime = roundDuration;
-        clearImage.gameObject.SetActive(false);
-        Managers.Network.UnityCall(false);
+        UpdateRound(new Round1());
     }
 
     void Update()
     {
-        if (roundUp.isRoundUp == false)
+        if (!isRoundUp)
         {
             playTime += Time.deltaTime;
+        }
             UpdateUI();
-        }
-
-        if (!isEnded && playTime >= nextRoundTime)
-        {
-            if (round == 3) EndGame();
-            else StartNewRound();
-        }
+            nowRound.Update(this);
     }
 
-    private void StartNewRound()
+    public void UpdateRound(BaseRound newRound)
     {
-        round++;
-        roundUp.IncreaseRound();
-
-        if (round == 3) roundDuration = 30f;
-
-        nextRoundTime = playTime + roundDuration;
-        colliders.Clear();
-        getPoint = false;
+        nowRound = newRound;
+        nowRound.Enter(this);
     }
 
     private void UpdateUI()
     {
-        scoreTxt.text = score.ToString("n0");
-
-        int hour = (int)(playTime / 3600);
-        int min = (int)(playTime % 3600 / 60);
+        int min = (int)(playTime / 60);
         int second = (int)(playTime % 60);
-
-        playTimeTxt.text = $"{hour:00}:{min:00}:{second:00}";
-    }
-
-    // 점수 업데이트
-    public void UpdateScore()
-    {
-        getPoint = true;
-        int scoreInc = CalcScore(colliders.Count);
-        score += scoreInc;
-        Managers.Network.finalScore = score;
-        SetFbMsg(scoreInc);
-    }
-
-    // 점수 계산
-    private int CalcScore(int count)
-    {
-        if (count >= 9) return 10;
-        if (count >= 6) return 5;
-        if (count >= 3) return 3;
-        return 0;
-    }
-
-    private void SetFbMsg(int scoreInc)
-    {
-        switch (scoreInc)
-        {
-            case 10: // Perfect
-                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
-                feedbackImg = feedbackImgs[0];
-                break;
-            case 5: // Great
-                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
-                feedbackImg = feedbackImgs[1];
-                break;
-            case 3: // Good
-                Managers.Sound.Play("SFX/Getscore", Define.Sound.SFX);
-                feedbackImg = feedbackImgs[2];
-                break;
-            case 0:
-                Managers.Sound.Play("SFX/NoGetscore", Define.Sound.SFX);
-                return;
-        }
-
-        StartCoroutine(FbMsg());
-    }
-
-    private IEnumerator FbMsg()
-    {
-        feedbackImg.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1.5f);
-        feedbackImg.gameObject.SetActive(false);
-    }
-
-    private void EndGame()
-    {
-        isEnded = true;
-        clearImage.gameObject.SetActive(true);
-        Managers.Network.playTimeTxt = playTimeTxt.text;
-        Managers.Sound.Play("SFX/Sucess", Define.Sound.SFX);
-        StartCoroutine(LoadScoreScene(3f));
-    }
-
-    private IEnumerator LoadScoreScene(float delay)
-    {
-        Managers.Network.UnityCall(true);
-        yield return new WaitForSeconds(delay);
-        Managers.Scene.LoadScene(Define.Scene.ScoreScene);
-        clearImage.gameObject.SetActive(false);
+        
+        scoreTxt.text = score.ToString("n0");
+        playTimeTxt.text = $"{min:00}:{second:00}";
     }
 }
