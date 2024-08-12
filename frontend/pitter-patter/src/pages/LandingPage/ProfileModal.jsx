@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearChild } from '../../redux/childSlice';
+import { clearToken } from '../../redux/tokenSlice';
 import Modal from '../Components/modal';
 
 const ModalOverlay = styled.div`
@@ -74,6 +75,7 @@ function ProfileModal({ isOpen, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogout = () => {
+    dispatch(clearToken());
     dispatch(clearChild());
     setIsModalOpen(true);
   };
