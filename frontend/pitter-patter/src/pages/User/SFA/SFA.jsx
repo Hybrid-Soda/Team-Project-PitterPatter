@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import {
   LayoutBase,
   LayoutSFA,
@@ -25,8 +26,7 @@ function SFA() {
   const [password, setPassword] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
 
-  // 추후 redux에서 가져와야 할 정보
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   useEffect(() => {
     const verifyPassword = async () => {

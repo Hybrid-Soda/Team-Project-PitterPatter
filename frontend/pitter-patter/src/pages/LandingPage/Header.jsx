@@ -42,7 +42,7 @@ function Header() {
           <LogoImg src={Logo} alt="Logo" />
         </Link>
         <LayoutHeaderButton>
-          <HeaderButton src={childProfileImage || UserIcon} alt="User" onClick={toggleModal} />
+          <HeaderButton src={childProfileImage || UserIcon} alt="User" onClick={toggleModal} style={{border: '.1rem solid lightgray'}}/>
           <HeaderButton src={MenuIcon} alt="Menu" onClick={toggleMenu} style={{marginRight: '1rem'}}/>
           <MenuModal isOpen={isMenuOpen} onClose={toggleMenu} />
         </LayoutHeaderButton>

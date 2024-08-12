@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   LayoutBase,
   LayoutLogin,
@@ -12,11 +11,8 @@ import {
 } from './LoginStyle.jsx';
 import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
-import naver from "../../../assets/img/logo/naver.png"; 
 import Modal from './LoginFailModal.jsx'; 
-
 import { login } from "/src/pages/User/userApi.js";
-
 import { setToken } from '../../../redux/tokenSlice.js';
 import { useDispatch } from 'react-redux';
 
@@ -56,7 +52,9 @@ function Login() {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault(); // 폼 제출 기본 동작을 막음
+
     // 아이디 필수 입력
     if (email === "" || email === undefined) {
       setModalMessage("아이디를 입력해주세요.");
@@ -123,11 +121,9 @@ function Login() {
     setModalOpen(false);
   };
 
- // 추후 구현
- const test = async () => {
-  alert("카카오 소셜 로그인 클릭");
-}
-
+  const test = async () => {
+    alert("카카오 소셜 로그인 클릭");
+  }
 
   return (
     <LayoutBase>
@@ -139,7 +135,7 @@ function Login() {
           <MainText>로그인</MainText>
         </div>
         <div style={{ marginBottom: '1vw' }}></div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '.5vw' }}>
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '.5vw' }}>
           <InputText
             type="text"
             id="id"
@@ -159,19 +155,18 @@ function Login() {
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', width: '100%' }}>
             <ForgotPassword href="/forgot-password">비밀번호를 잊으셨나요?</ForgotPassword>
           </div>
-          <ButtonLogin onClick={handleLogin}>로그인</ButtonLogin>
+          <ButtonLogin type="submit">로그인</ButtonLogin>
           <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', width: '100%' }}>
             <SignUp>
               계정이 없으신가요? <a href="/signup">회원가입</a>
             </SignUp>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-            <CenterText>또는</CenterText>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
-            <SocialIcon src={kakao} alt="kakao" onClick={test}/>
-            {/* <SocialIcon src={naver} alt="naver" /> */}
-          </div>
+        </form>
+        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          <CenterText>또는</CenterText>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
+          <SocialIcon src={kakao} alt="kakao" onClick={test}/>
         </div>
       </LayoutLogin>
       {modalOpen && <Modal message={modalMessage} onClose={closeModal} />}
