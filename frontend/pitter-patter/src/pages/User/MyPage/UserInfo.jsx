@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   LayoutMyPage,
   Profile,
@@ -61,8 +62,7 @@ function UserInfo() {
 
   const [teamName, setTeamName] = useState('');
   const [email, setEmail] = useState('');
-  // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   // 페이지가 렌더링 될 때 사용자 정보를 가져옴
   useEffect(() => {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   LayoutBase,
@@ -15,6 +16,7 @@ import {
 import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
 import Modal from './Modal'; // 모달 컴포넌트를 import 합니다
+import { updateUser } from "../userApi";
 
 function NewSFA() {
   const navigate = useNavigate();
@@ -25,8 +27,7 @@ function NewSFA() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  // 추후 redux에서 가져와야 하는 정보
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   const handleKeyPress = (value) => {
     if (isFirstInput) {
@@ -96,6 +97,7 @@ function NewSFA() {
         setModalOpen(true);
         navigator("/");
       } else {
+        console.log(error);
         setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
         setModalOpen(true);
       }
