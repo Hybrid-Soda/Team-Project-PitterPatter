@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { childPhysicalInfoListGet, childPhysicalInfoRegist, childPhysicalInfoUpdate } from './../Child/childApi.js';  // API 함수 임포트
 import { ContentBody, PhysicalInfoInput, PhysicalInfoHistory, PhysicalInfoHistoryInnerDiv, ImgDiv, InputDiv, InputInnerDiv, AddBtnDiv } from './ChildPhysicalInfoStyle';
 
@@ -20,8 +21,9 @@ function ChildPhysicalInfo() {
     const [editHeight, setEditHeight] = useState('');
     const [editWeight, setEditWeight] = useState('');
 
-    const childId = 1; // 테스트용 childId 변수 선언
-    const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI4NDQwNjcsImlhdCI6MTcyMjg0NDA2NywiZXhwIjoxNzIyODQ3MDY3LCJqdGkiOiIyOTVlNGQ0My1jNTdiLTQzOGYtYmZhMi1iYTgxY2ZjODhiZjkifQ.26imCUiKUgvhsMFLfMWALQ2BWiDnNz3nZidUCLW4waEbI5WbSVNFoePMoz0p7KGX4I8V9buste_pbowZnrpbQg";
+    const childId = useSelector((state) => state.child.id);
+    const token = useSelector((state) => state.token.accessToken);
+    const profileImage = useSelector((state) => state.child.profileImage);
 
     // 페이지 로딩 시 데이터 가져오기
     useEffect(() => {
@@ -107,7 +109,7 @@ function ChildPhysicalInfo() {
       <ContentBody>
         <PhysicalInfoInput>
             <ImgDiv>
-                <img src='/src/assets/img/Game/vs.png' alt="Attendance Background" />
+                <img src={profileImage} alt="profile-image" />
             </ImgDiv>
             <InputDiv>
                 <InputInnerDiv>

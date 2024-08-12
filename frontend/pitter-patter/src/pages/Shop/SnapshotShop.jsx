@@ -26,6 +26,9 @@ import CoinModal from './CoinModal';
 import ConfirmModal from '../Components/modal';
 import Loader from '../Components/loader';
 
+import LeftButton from "/src/assets/icons/ChevronLeft.png";
+import RightButton from "/src/assets/icons/ChevronRight.png";
+
 function SnapshotShop() {
   const Navigator = useNavigate();
 
@@ -48,6 +51,7 @@ function SnapshotShop() {
 
   const token = useSelector((state) => state.token.accessToken);
   const jwtToken = `Bearer ${token}`;
+
 
   useEffect(() => {
     getFrames(childId);
@@ -169,7 +173,7 @@ function SnapshotShop() {
       setPoints(response.data.point);
     } catch (error) {
       console.log("Error fetching points:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 
@@ -230,7 +234,7 @@ function SnapshotShop() {
       </ActionRow>
       <CurrentWrap>
         <TransparentButton onClick={handleLeft} style={{ left: '100px' }}>
-          <ButtonIcon src="/src/assets/icons/ChevronLeft.png" />
+          <ButtonIcon src={LeftButton} />
         </TransparentButton>
         <CarouselWrap count={frames.length}>
           {frames.map((frame, index) => (
@@ -252,7 +256,7 @@ function SnapshotShop() {
           ))}
         </CarouselWrap>
         <TransparentButton onClick={handleRight} style={{ right: '100px' }}>
-          <ButtonIcon src="/src/assets/icons/ChevronRight.png" />
+          <ButtonIcon src={RightButton} />
         </TransparentButton>
       </CurrentWrap>
       <ActionButton highlight="true" ref={buttonRef}

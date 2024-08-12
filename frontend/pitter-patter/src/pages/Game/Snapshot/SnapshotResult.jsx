@@ -28,8 +28,7 @@ import { useRef } from "react";
 function SnapshotResult() {
   const location = useLocation();
   const { imageList } = location.state;
-  const frameNum = useSelector((state) => state.item.frameItem);
-  const FrameImage = `/src/assets/img/Shop/frame/frame${frameNum}.png`;
+  const FrameImage = useSelector((state) => state.item.frameItem);
   const navigate = useNavigate();
   const frameRef = useRef(null);  // Frame 컴포넌트를 참조하기 위한 ref
 
