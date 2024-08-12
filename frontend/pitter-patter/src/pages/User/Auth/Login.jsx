@@ -135,6 +135,7 @@ function Login() {
 
   return (
     <LayoutBase>
+      {isLoading ? <Loader /> : 
       <LayoutLogin>
         <div style={{ display: 'flex', justifyContent: 'flex-start', width: '80%' }}>
           <Link to='/'><IconX src={X} alt="X" /></Link>
@@ -177,6 +178,7 @@ function Login() {
           <SocialIcon src={kakao} alt="kakao" onClick={test}/>
         </div>
       </LayoutLogin>
+      }
       {modalOpen && <Modal message={modalMessage} onClose={closeModal} />}
     </LayoutBase>
   );

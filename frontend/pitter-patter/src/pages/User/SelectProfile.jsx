@@ -48,7 +48,9 @@ function SelectProfile() {
       setChildList(response.data);
 
     } catch (error) {
-      console.log("Error fetching frames:", error.response.data.msg);
+      if (error.reponse.data && error.response.data.msg === "해당 데이터가 존재하지 않습니다.") {
+        return;
+      }
       setModalMessage(error.response.data.msg); // 에러 메시지 설정
       setIsModalOpen(true); // 모달 열기
     }
