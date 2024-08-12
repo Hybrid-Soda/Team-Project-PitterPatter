@@ -63,8 +63,13 @@ function ProfileModal({ isOpen, onClose }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const childId = useSelector((state) => state.child.id);
+  const token = useSelector((state) => state.token.accessToken);
 
   const handleNavigation = (path) => {
+    if (token === null) {
+      navigate('/login');
+      return
+    }
     navigate(path);
   };
 
