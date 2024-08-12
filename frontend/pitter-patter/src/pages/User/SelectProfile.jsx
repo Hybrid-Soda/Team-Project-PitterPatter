@@ -17,11 +17,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setChild, setChildError } from '../../redux/childSlice'; // 적절한 경로에 맞게 import 필요
 import { childApi } from '../../apiService';
 import { clearChild } from '../../redux/childSlice';
+import Modal from '../Components/modal'; // Modal 임포트
 
 function SelectProfile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token.accessToken);
+
+  const [childList, setChildList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+  const [modalMessage, setModalMessage] = useState(''); // 모달에 표시할 메시지 상태 추가
 
   const goMypage = () => {
     navigate('/SFA');
@@ -31,8 +36,6 @@ function SelectProfile() {
     dispatch(clearChild()); // clearChild 액션을 디스패치하여 상태를 초기화
     navigate('/child/mypage', { state: { addProfile: true } });
   };
-
-  const [childList, setChildList] = useState([]);
 
   const getChildList = async () => {
     try {
@@ -45,8 +48,11 @@ function SelectProfile() {
       setChildList(response.data);
 
     } catch (error) {
-      console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      if (error.reponse.data && error.response.data.msg === "해당 데이터가 존재하지 않습니다.") {
+        return;
+      }
+      setModalMessage(error.response.data.msg); // 에러 메시지 설정
+      setIsModalOpen(true); // 모달 열기
     }
   };
 
@@ -66,8 +72,14 @@ function SelectProfile() {
       console.log('set')
     } catch (error) {
       console.error('Error fetching child data:', error.response?.data || error.message);
-      dispatch(setChildError(error.response?.data || 'Unknown error'));
+      dispatch(setChildError(error.response?.data || '오류'));
+      setModalMessage(error.response?.data.msg || '오류'); // 에러 메시지 설정
+      setIsModalOpen(true); // 모달 열기
     }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // 모달 닫기
   };
 
   return (
@@ -99,6 +111,11 @@ function SelectProfile() {
           </LayoutMypage>
         </div>
       </LayoutProfileWrap>
+
+      {isModalOpen && (
+        <Modal title={modalMessage} onClose={closeModal}>
+        </Modal>
+      )}
     </LayoutBase>
   );
 }
