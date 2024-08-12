@@ -25,13 +25,14 @@ const ModalContent = styled.div`
 
 const ModalTitle = styled.h2`
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
 `;
 
 const CloseButton = styled(Link)`
@@ -41,12 +42,12 @@ const CloseButton = styled(Link)`
   border: none;
   border-radius: 5px;
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
 `;
 
 const ModalContext = styled.p`
     font-size: 1.2rem;
-    margin: 1rem 0;
+    margin: 2rem 0;
 `;
 
 const NumberInput = styled.input`
@@ -78,8 +79,8 @@ const InputGroup = styled.div`
 `;
 
 const ConfirmButton = styled.button`
-    background-color: #FFE65C;
-    color: black;
+    background-color: var(--logo-blue-color);
+    color: white;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -88,13 +89,13 @@ const ConfirmButton = styled.button`
 `;
 
 const CreateRoomButton = styled.button`
-    background-color: #FFE65C;
-    color: black;
+    background-color: var(--logo-blue-color);
+    color: white;
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
     cursor: url(/src/assets/cursor/pointer.png), pointer !important;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     font-size: 1rem;
 `;
 
