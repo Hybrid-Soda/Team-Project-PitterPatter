@@ -10,6 +10,11 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
   let camera = null;
 
   useEffect(() => {
+    if (typeof Pose !== "function") {
+      console.error("Mediapipe Pose 객체를 불러오지 못했습니다.");
+      return;
+    }
+
     // Mediapipe Pose 초기화, 옵션, 콜백 함수 설정
     const pose = new Pose({
       locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`

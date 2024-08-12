@@ -11,9 +11,9 @@ const UnityComponent = ({ onGameEnd }) => {
   // Provide Unity
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
       loaderUrl: "Build/Build.loader.js",
-      dataUrl: "Build/Build.data.unityweb",
-      frameworkUrl: "Build/Build.framework.js.unityweb",
-      codeUrl: "Build/Build.wasm.unityweb",
+      dataUrl: "Build/Build.data",
+      frameworkUrl: "Build/Build.framework.js",
+      codeUrl: "Build/Build.wasm",
   });
 
   const handleGameEnd = useCallback((score, isGameEnd) => {
@@ -54,9 +54,13 @@ const UnityComponent = ({ onGameEnd }) => {
   // 컴포넌트 Unmount 시 유니티 종료
   useEffect(() => {
     return () => {
-      unload()
-    }
-  }, [unload])
+      if (typeof unload === "function") {
+        unload();
+      } else {
+        console.error("unload 함수가 존재하지 않습니다.");
+      }
+    };
+  }, [unload]);
 
   // Update landmarks
   const UpdateLandmark = (newLandmarks) => {
