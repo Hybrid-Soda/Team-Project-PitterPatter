@@ -6,6 +6,8 @@ import com.pitpat.pitterpatter.entity.enums.SocialType;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Builder
@@ -23,6 +25,7 @@ public class UserDto {
     private String teamName;
     private String email;
     private String password;
+    private List<Child> children = new ArrayList<>();
     // only social user
     private String serial;
     // only social user
@@ -38,6 +41,7 @@ public class UserDto {
                 .teamName(user.getTeamName())
                 .email(user.getEmail())
                 .password(user.getPassword())
+//                .children(user.getChildren())
                 .serial(user.getSerial())
                 .type(user.getType())
                 .build();
@@ -53,6 +57,7 @@ public class UserDto {
                 .teamName(teamName)
                 .email(email)
                 .password(password)
+//                .children(children)
                 .serial(serial)
                 .type(type)
                 .build();
