@@ -10,6 +10,7 @@ import {
     WarningMessage,
     SubmitButton
   } from './ResetPasswordStyle';
+import Modal from '../../Components/modal';
 import Loader from "../../Components/loader.jsx";
 import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
@@ -25,6 +26,8 @@ function ResetPassword() {
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [modalMessage, setModalMessage] = useState(''); 
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
     const newPasswordInputRef = useRef(null);
     const confirmPasswordInputRef = useRef(null);
@@ -50,7 +53,8 @@ function ResetPassword() {
     const handleResetPassword = async () => {
         // 새 비밀번호 필수 입력
         if (newPassword === "" || newPassword === undefined) {
-            alert("새 비밀번호를 입력해주세요.");
+            setModalMessage("새 비밀번호를 입력해주세요.");
+            setIsModalOpen(true);
             newPasswordInputRef.current.focus();
             return;
         }
@@ -67,21 +71,25 @@ function ResetPassword() {
 
                 if (exception === undefined) {
                     // 비밀번호 변경 시 로그아웃 되도록 추가
-                    alert(msg);
+                    setModalMessage(msg);
+		            setIsModalOpen(true);
                     navigate("/login");
                 } else {
-                    alert(msg);
+                    setModalMessage(msg);
+		            setIsModalOpen(true);
                     if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
                         navigate("/expired");
                     }
                 }
             } else {
                 setIsLoading(false);
-                alert("비밀번호 변경에 실패했습니다.");
+                setModalMessage("비밀번호 변경에 실패했습니다.");
+                setIsModalOpen(true);
             }
         } catch (error) {
             setIsLoading(false);
-            alert("문제가 발생했습니다. 다시 시도해주세요.");
+            setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
+            setIsModalOpen(true);
         }
     };
 
@@ -109,6 +117,10 @@ function ResetPassword() {
             return false;
         }
     };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    }
 
     return (
     <Layoutbody>
@@ -150,6 +162,11 @@ function ResetPassword() {
                     변경하기
                 </SubmitButton>
             </WrapContext>
+            {isModalOpen && (
+                <Modal title="알림" onClose={closeModal}>
+                    {modalMessage}
+                </Modal>
+            )}
         </LayoutContext>
         }
     </Layoutbody>

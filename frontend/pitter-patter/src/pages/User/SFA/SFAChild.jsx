@@ -16,6 +16,7 @@ import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
 import { useNavigate } from 'react-router-dom';
 import ForgotSFAmodal from './ForgotSFAmodal';
+import Modal from './Modal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
 import { handleReissueCatch } from '../../../apiService';
@@ -24,7 +25,9 @@ function SFAChild() {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(''); 
 
   const {accessToken } = useSelector((state) => state.token);
 
@@ -67,11 +70,11 @@ function SFAChild() {
         if (exception === undefined) {
           return true;
         } else {
-          alert(msg);
+          handleMessage(msg);
           return false;
         }
       } else {
-        alert("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
         return false;
       }
     } catch (error) {
@@ -79,6 +82,15 @@ function SFAChild() {
       return false;
     }
   };
+
+  const handleMessage = (msg) => {
+    setModalMessage(msg);
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
 
   return (
     <LayoutBase>
@@ -117,9 +129,10 @@ function SFAChild() {
           </NumpadRow>
         </NumpadWrap>
         <ForgotPassword>
-          <button onClick={() => setModalOpen(true)}>비밀번호를 잊으셨나요?</button>
+          <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {modalOpen && <ForgotSFAmodal onClose={() => setModalOpen(false)} />}
+        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
+        {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
       </LayoutSFA>
     </LayoutBase>
   );
