@@ -25,6 +25,11 @@ export const assetsApi = axios.create({
   timeout: timeout,
 });
 
+export const gameApi = axios.create({
+  baseURL: `${baseURL}/game`,
+  timeout: timeout,
+});
+
 export const handleReissueCatch = (error) => {
   if (error.response && error.response.status === 401) {
     // intercetor에서 토큰 재발급 수행

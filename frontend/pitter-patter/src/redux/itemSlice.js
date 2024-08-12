@@ -27,7 +27,7 @@ export const getItem = createAsyncThunk(
 export const itemSlice = createSlice({
     name: 'item',
     initialState: {
-        frameItem: 1,
+        frameItem: "https://ssafy-common.b-cdn.net/background_1.png",
         backgroundItem: 1,
         status: 'idle',
         error: null,
@@ -41,7 +41,7 @@ export const itemSlice = createSlice({
             .addCase(getItem.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 console.log(action.payload);
-                state.frameItem = action.payload[0] ? action.payload[0].id : 1;
+                state.frameItem = action.payload[0] ? action.payload[0].photo : 1;
                 state.backgroundItem = action.payload[1]? action.payload[1].id : 1;
             })
             .addCase(getItem.rejected, (state, action) => {

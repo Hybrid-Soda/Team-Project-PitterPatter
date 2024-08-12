@@ -35,8 +35,7 @@ function Snapshot() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVideoStream, setModalVideoStream] = useState(null);
 
-  const frameNum = useSelector((state) => state.item.frameItem);
-  const FrameImage = `/src/assets/img/Shop/frame/frame${frameNum}.png`;
+  const FrameImage = useSelector((state) => state.item.frameItem);
 
   function getImage(index) {
     const targetRef = BlankRefs.current[index];
