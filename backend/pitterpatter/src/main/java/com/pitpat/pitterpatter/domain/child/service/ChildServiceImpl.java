@@ -1,5 +1,6 @@
 package com.pitpat.pitterpatter.domain.child.service;
 
+import com.pitpat.pitterpatter.domain.assets.service.childitem.ChildItemService;
 import com.pitpat.pitterpatter.domain.child.model.dto.ChildRequestDTO;
 import com.pitpat.pitterpatter.domain.child.model.dto.ChildResponseDTO;
 import com.pitpat.pitterpatter.domain.child.model.dto.ChildUpdateDTO;
@@ -20,6 +21,7 @@ import java.util.List;
 public class ChildServiceImpl implements ChildService {
 
     private final ChildRepository childRepository;
+    private final ChildItemService childItemService;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -36,6 +38,10 @@ public class ChildServiceImpl implements ChildService {
         UserEntity userEntity = userDto.toEntity();
         Child child = childRequestDTO.toAddEntity(userEntity, childRequestDTO);
         childRepository.save(child);
+        childItemService.buyItem(child.getId(), 1L);
+        childItemService.buyItem(child.getId(), 2L);
+        childItemService.toggleItem(child.getId(), 1L);
+        childItemService.toggleItem(child.getId(), 2L);
         return child.getId();
     }
 

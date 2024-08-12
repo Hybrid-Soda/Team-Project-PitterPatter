@@ -15,11 +15,6 @@ const MotionCapture = ({ onLandmarksUpdate }) => {
         const Pose = poseModule.Pose;
         const Camera = cameraModule.Camera;
 
-        if (typeof Pose !== "function") {
-          console.error("Mediapipe Pose 객체를 불러오지 못했습니다.");
-          return;
-        }
-
         const pose = new Pose({
           locateFile: (file) =>
             `https://ssafy-common.b-cdn.net/mediapipe/pose/${file}`,
