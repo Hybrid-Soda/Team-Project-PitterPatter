@@ -319,12 +319,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 177956788}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -496,12 +496,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 199599207}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1061,12 +1061,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 843217778}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1223,12 +1223,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 915017569}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1607,12 +1607,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1120963436}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2679,12 +2679,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 594054139}
-        m_TargetAssemblyTypeName: DifficultyScene, Assembly-CSharp
+        m_TargetAssemblyTypeName: DifficultyScene, Scenes
         m_MethodName: SetDifficulty
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2146137481}
-          m_ObjectArgumentAssemblyTypeName: Button, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: Button, Scenes
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
