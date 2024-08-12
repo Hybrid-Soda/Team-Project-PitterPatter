@@ -14,26 +14,29 @@ import {
   CoinImg,
   CoinNumber,
 } from "./WallpaperShopStyle";
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { assetsApi } from '../../apiService';
+import { useSelector } from "react-redux";
 
 import Coin from "/src/assets/icons/Coin.png";
-import CoinModal from './CoinModal'; // 추가
+import CoinModal from './CoinModal'; 
+import Loader from "../Components/loader";
 
 function WallpaperShop() {
   const Navigator = useNavigate();
   const [wallpapers, setWallpapers] = useState([]);
   const [onWallpaper, setOnWallpaper] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // 추가
-  const [points, setPoints] = useState(0); // 추가
-  const [pointRecords, setPointRecords] = useState([]); // 추가
-  const [page, setPage] = useState(1); // 페이지 번호 추가
-  const itemsPerPage = 20; // 페이지당 아이템 수
-  const jwtToken = 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxNyIsImlzcyI6ImNvbS5waXRwYXQucGl0dGVycGF0dGVyIiwibmJmIjoxNzIyOTkzNjU3LCJpYXQiOjE3MjI5OTM2NTcsImV4cCI6MTcyMzU5ODQ1NywianRpIjoiYTI3ODNkYWYtMGQ3ZC00Zjg5LWEwNzQtZDExMzkxMGQ2MjE4In0.UwVTKI1xMvVxSmn3NWqLKG5XzNDXdd5dOkvQY-_aPVwPr3MsHCh00yHJiXEXLMghXDRtQqFNm2eveoCOdv7gdA'
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [pointRecords, setPointRecords] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const itemsPerPage = 20;
+  const token = useSelector((state) => state.token.accessToken);
+  const jwtToken = `Bearer ${token}`;
 
-  // const childId = useSelector((state) => state.child.id);
-  const childId = 24;
+  const childId = useSelector((state) => state.child.id);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -44,25 +47,26 @@ function WallpaperShop() {
   };
 
   useEffect(() => {
-    getFrames(childId);
+    loadWallpapers(childId);
     getPoints(childId);
-    getPointRecords(childId, 1); // 첫 페이지 로드
-  }, []);
+    getPointRecords(childId, 1);
+  }, [childId]);
 
-  const getFrames = async (childId) => {
+  const loadWallpapers = async (childId) => {
     try {
       const response = await assetsApi.get("/item", {
         params: {
           child_id: childId,
         },
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
       setWallpapers(response.data.filter(item => item.itemType === 'BACKGROUND'));
+      setIsLoading(false); // 배경 이미지 로드 완료 후 로딩 상태 false로 설정
     } catch (error) {
-      console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg);
+      console.log("Error fetching wallpapers:", error.response.data.msg);
+      setIsLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
     }
   };
 
@@ -70,13 +74,12 @@ function WallpaperShop() {
     try {
       const response = await assetsApi.get(`/point/${childId}`, {
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
       setPoints(response.data.point);
     } catch (error) {
       console.log("Error fetching points:", error.response.data.msg);
-      alert(error.response.data.msg);
     }
   };
 
@@ -88,14 +91,13 @@ function WallpaperShop() {
           per_page: itemsPerPage,
         },
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
       setPointRecords(prevRecords => [...prevRecords, ...response.data]);
       setPage(page);
     } catch (error) {
       console.log("Error fetching point records:", error.response.data.msg);
-      alert(error.response.data.msg);
     }
   };
 
@@ -126,20 +128,19 @@ function WallpaperShop() {
   };
 
   const save = async () => {
-    if (onWallpaper && !onWallpaper.on) { // on이 true가 아닌 경우에만 요청을 보냄
+    if (onWallpaper && !onWallpaper.on) { 
       try {
         await assetsApi.patch(`/item-property/${childId}/on/${onWallpaper.id}`, {}, {
           headers: {
-            Authorization: `${jwtToken}`
-          }
+            Authorization: `${jwtToken}`,
+          },
         });
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
-        alert(error.response.data.msg);
       }
     } else {
-      Navigator(-1); // on이 true인 경우 그냥 돌아가기
+      Navigator(-1);
     }
   };
 
@@ -147,8 +148,8 @@ function WallpaperShop() {
     try {
       await assetsApi.post(`/item-property/${childId}/${itemId}`, {}, {
         headers: {
-          Authorization: `${jwtToken}`
-        }
+          Authorization: `${jwtToken}`,
+        },
       });
 
       setWallpapers(prevWallpapers =>
@@ -158,7 +159,6 @@ function WallpaperShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
-      alert(error.response.data.msg);
     }
   };
 
@@ -175,6 +175,11 @@ function WallpaperShop() {
     setOnWallpaper(wallpapers[index]);
     toggleWallpaper(index);
   };
+
+  // 로딩 중이라면 Loader 컴포넌트를 표시
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Wallpaper style={{ backgroundImage: `url(${wallpapers[currentIdx]?.photo})` }}>
@@ -226,7 +231,7 @@ function WallpaperShop() {
           </TransparentButton>
         </RowWrap>
       </ToolBar>
-      {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />} {/* 모달에 pointRecords 전달 */}
+      {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />} 
     </Wallpaper>
   );
 }

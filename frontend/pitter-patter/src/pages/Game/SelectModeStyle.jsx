@@ -58,7 +58,7 @@ export const GameImage = styled.img`
 export const ItemName = styled.div`
   margin-top: 6vh;
   margin-bottom: 3vh;
-  font-size: 1.2vw;
+  font-size: 1.5vw;
   font-weight: 700;
   color: ${(props) => props.color || "#000"};
 `;
