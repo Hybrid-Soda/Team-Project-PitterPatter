@@ -106,8 +106,8 @@ function BMIGraph() {
         </LayoutGraphList>
       </LayoutActivityPage>
       <GraphFooter>
-        <p>현재 BMI는 {data.length !== 0 ? data[data.length - 1].bmi : '###'} 입니다. </p>
-        <p>{nickname} 님의 나이에서 해당 BMI는 {data.length !== 0 ? <span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span> : '###'} 입니다. </p>
+        <p>{data.length !== 0 ? `현재 BMI는 ${data[data.length - 1].bmi}입니다.` : '키와 몸무게를 먼저 등록해주세요.'} </p>
+        <p>{data.length !== 0 ? `${nickname} 님의 나이에서 해당 BMI는 ${<span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span>}입니다.` : ''} </p>
       </GraphFooter>
     </ContentBody>
   );
