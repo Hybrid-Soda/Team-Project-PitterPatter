@@ -46,7 +46,7 @@ public class PointRecordService {
     // 어린이 계정별 포인트 레코드 조회
     public List<FindPointRecordDto> findPointRecordsByChild(Long childId) {
         List<PointRecord> pointRecords = pointRecordRepository.findRecordsByChild(childId);
-        if (pointRecords.isEmpty()) {
+        if (pointRecords.equals(null)) {
             throw new EntityNotFoundException("요청한 데이터가 존재하지 않습니다.");
         }
         return pointRecords.stream()
