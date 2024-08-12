@@ -1,5 +1,10 @@
 // src/apiService.js
 import axios from "axios";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken, clearToken } from "./redux/tokenSlice";
+import store from "./redux/store";
+import Modal from "./pages/Components/modal";
 
 const host = "https://pitter-patter.picel.net";
 const baseURL = `${host}/api`;
@@ -25,6 +30,11 @@ export const assetsApi = axios.create({
   timeout: timeout,
 });
 
+export const gameApi = axios.create({
+  baseURL: `${baseURL}/game`,
+  timeout: timeout,
+});
+
 export const handleReissueCatch = (error) => {
   if (error.response && error.response.status === 401) {
     // intercetor에서 토큰 재발급 수행
@@ -39,7 +49,11 @@ export const handleReissueCatch = (error) => {
   }
 };
 
-const setupInterceptors = (axiosInstance) => {
+const closeModal = () => {
+  setModalOpen(false);
+};
+
+const setupInterceptors = (axiosInstance) => { 
   // 응답 인터셉터 설정
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -53,12 +67,98 @@ const setupInterceptors = (axiosInstance) => {
       } = error;
   
       const originalRequest = config;
-  
+      const state = store.getState(); // store에서 상태를 가져옵니다.
+      const { refreshToken, accessToken } = state.token;
+
+      const createModal = (message) => {
+        // 모달 컨테이너 생성
+        const modalContainer = document.createElement('div');
+        modalContainer.style.position = 'fixed';
+        modalContainer.style.top = 0;
+        modalContainer.style.left = 0;
+        modalContainer.style.right = 0;
+        modalContainer.style.bottom = 0;
+        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modalContainer.style.display = 'flex';
+        modalContainer.style.justifyContent = 'center';
+        modalContainer.style.alignItems = 'center';
+        modalContainer.style.zIndex = 9999;
+      
+        // 모달 내용 생성
+        const modalContent = document.createElement('div');
+        modalContent.style.backgroundColor = 'white';
+        modalContent.style.padding = '2rem';
+        modalContent.style.borderRadius = '2rem';
+        modalContent.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        modalContent.style.maxWidth = '500px';
+        modalContent.style.width = '100%';
+        modalContent.style.textAlign = 'center';
+      
+        // 메시지 추가
+        const modalMessage = document.createElement('p');
+        modalMessage.innerText = message;
+        modalMessage.style.fontSize = '1.5rem';
+        modalContent.appendChild(modalMessage);
+      
+        // 닫기 버튼 추가
+        const closeButton = document.createElement('button');
+        closeButton.innerText = '확인';
+        closeButton.style.marginTop = '1rem';
+        closeButton.style.padding = '0.5rem 1rem';
+        closeButton.style.borderRadius = '10rem';
+        closeButton.style.border = 'none';
+        closeButton.style.backgroundColor = 'var(--box-yellow-color)';
+        closeButton.style.boxShadow = '0 5px 0 0 var(--logo-yellow-color)';
+        closeButton.style.color = 'black';
+        closeButton.style.cursor = 'pointer';
+        closeButton.style.fontSize = '1rem';
+
+        // hover 이벤트 추가
+        closeButton.addEventListener('mouseover', () => {
+          closeButton.style.boxShadow = '0 4px 0 0 var(--logo-yellow-color)';
+          closeButton.style.transform = 'translateY(1px)';
+        });
+
+        closeButton.addEventListener('mouseout', () => {
+          closeButton.style.boxShadow = '';
+          closeButton.style.transform = '';
+        });
+
+        // active 이벤트 추가
+        closeButton.addEventListener('mousedown', () => {
+          closeButton.style.boxShadow = '0 0 0 0 var(--logo-yellow-color)';
+          closeButton.style.transform = 'translateY(2px)';
+        });
+
+        closeButton.addEventListener('mouseup', () => {
+          closeButton.style.boxShadow = '0 4px 0 0 var(--logo-yellow-color)';
+          closeButton.style.transform = 'translateY(1px)';
+        });
+      
+        closeButton.onclick = () => {
+          document.body.removeChild(modalContainer);
+          window.location.href = '/login';
+        };
+      
+        modalContent.appendChild(closeButton);
+        modalContainer.appendChild(modalContent);
+      
+        // 모달을 body에 추가
+        document.body.appendChild(modalContainer);
+      };
+
+      if (refreshToken === null) {
+      // alert("로그인이 필요한 서비스입니다.")
+      createModal("로그인이 필요한 서비스입니다.");
+      setInterval(() => {
+      window.location.href = "/login";
+      }, 3000);
+        return;
+      }
+      
       // 토큰 재발급 수행
       if (status === 401) {
         // redux에서 값 가져오기
-        const accessToken = 'access token';
-        const refreshToken = 'refresh token';
   
         try {
           const { data } = await axios({
@@ -70,22 +170,22 @@ const setupInterceptors = (axiosInstance) => {
           if (data.exception !== undefined) {
             throw new Error("토큰 검증 실패");
           }
-
-          const newAccessToken = data.data.accessToken;
-          const newRefreshToken = data.data.refreshToken;
           
-          // redux에 새로 받아온 토큰 값 저장
-          // ...
+          console.log(data);
+          store.dispatch(setToken(data.data)); // 새로운 토큰을 store에 저장
+          const newAccessToken = data.data.accessToken;
 
           originalRequest.headers = {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + newAccessToken,
+            Authorization: `Bearer ${newAccessToken}`
           };
 
           return await axios(originalRequest);
         } catch (error) {
           // 로그아웃 시키기
-          // ...
+          dispatch(clearToken());
+          // 모달
+          window.location.href="/login";
           new Error(error);
         }
       }

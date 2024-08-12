@@ -5,6 +5,7 @@ import ChildActivityTable from './ChildActivityTable';
 import ChildPhysicalInfo from './ChildPhysicalInfo';
 import BMIGraph from './BMIGraph';
 import { Body, ChildBody, ChildBackground, ContextBackground, ContextItem, ChildMenu, ChildMenuItem, Backspace } from './ChildPageStyle';
+import Backarrow from "/src/assets/icons/backArrow.png";
 
 function ChildPage() {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ function ChildPage() {
         <ChildBackground>
           <ChildMenu>
             <Backspace to="/">
-              <img src="src/assets/icons/backArrow.png" alt="" />
+              <img src={Backarrow} alt="" />
             </Backspace>
             <ChildMenuItem $isActive={activeMenu === '신체 정보 입력하기'} onClick={() => setActiveMenu('신체 정보 입력하기')}>
               신체 정보 입력하기

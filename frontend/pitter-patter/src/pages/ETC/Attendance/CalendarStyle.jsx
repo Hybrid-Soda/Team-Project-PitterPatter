@@ -26,9 +26,9 @@ export const CalendarWrapper = styled.div`
     border-radius: 0;
 
     &.attendance-day {
-      background-image: url(${StarIcon});
-      background-repeat: no-repeat;
-      background-position: center center;
+      background-image: url(${StarIcon}) !important;
+      background-repeat: no-repeat !important;
+      background-position: center center !important;
       background-size: contain;
       display: flex;
       justify-content: center;
@@ -37,7 +37,7 @@ export const CalendarWrapper = styled.div`
     }
 
     &.react-calendar__tile--active {
-        background: none;
+        background: transparent;
         color: inherit; /* 글자색 변경 방지 */
         outline: none; /* 선택된 테두리 변경 방지 */
     }
@@ -55,6 +55,7 @@ export const CalendarWrapper = styled.div`
   .react-calendar__navigation button {
     min-width: 44px;
     background: none;
+    font-size: 2rem;
   }
 
   .react-calendar__navigation {
