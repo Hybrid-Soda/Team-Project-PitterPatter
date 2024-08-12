@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   LayoutBase,
   LayoutMyPage,
@@ -23,8 +24,7 @@ function MyPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState('userInfo');
 
-  // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   const handleMenuItemClick = (component) => {
     setActiveComponent(component);

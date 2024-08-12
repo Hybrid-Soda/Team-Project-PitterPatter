@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -88,8 +89,7 @@ function ChangePassword() {
   const confirmPasswordInputRef = useRef(null);
   const currentPasswordInputRef = useRef(null);
 
-  // 추후 redux에서 가져와야할 정보들
-  const [accessToken, setAccessToken] = useState('access token');
+  const {accessToken } = useSelector((state) => state.token);
 
   const isNewPasswordValid = newPassword === confirmPassword;
 
