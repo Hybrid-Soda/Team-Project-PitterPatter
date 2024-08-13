@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pitter-patter-cert
+  namespace: pitter-patter
+spec:
+  secretName: pitter-patter-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: shell_script_will_replace_this_domain
+  dnsNames:
+  - shell_script_will_replace_this_domain
