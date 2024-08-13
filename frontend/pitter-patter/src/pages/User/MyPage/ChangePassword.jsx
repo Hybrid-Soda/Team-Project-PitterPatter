@@ -4,10 +4,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
   resetPasswordByUserId,
-  reissueJwtToken,
   verifyPassword
  } from "/src/pages/User/userApi.js";
-
  import { handleReissueCatch } from '../../../apiService';
 
 const LayoutMyPage = styled.div`
@@ -24,7 +22,7 @@ const InputWrap = styled.div`
   align-items: flex-end;
   gap: 1vw;
   /* background-color: red; */
-  margin-top: 50%;
+  margin-top: 35%;
 `;
 
 const InputItem = styled.div`
@@ -58,9 +56,9 @@ const WarningMessage = styled.div`
 const ButtonWrap = styled.div`
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     position: relative;
-    margin-top: 20%;
+    margin-top: 10%;
     gap: 1vw;
 `
 
@@ -79,7 +77,7 @@ const CancleButton = styled.button`
     /* padding-bottom: .3rem; */
 `
 
-function ChangePassword() {
+function ChangePassword({ onMessage }) {
   const navigator = useNavigate();
 
   const [currentPassword, setCurrentPassword] = useState("");
@@ -102,21 +100,21 @@ function ChangePassword() {
   const handleSubmit = async () => {
     // 현재 비밀번호는 필수
     if (currentPassword === "" || currentPassword === undefined) {
-      alert("현재 비밀번호를 입력해주세요.");
+      onMessage("현재 비밀번호를 입력해주세요.");
       currentPasswordInputRef.current.focus();
       return;
     }
 
     // 새 비밀번호는 필수
     if (newPassword === "" || currentPassword === undefined) {
-      alert("새 비밀번호를 입력해주세요.");
+      onMessage("새 비밀번호를 입력해주세요.");
       newPaswordInputRef.current.focus();
       return;
     }
 
     // 새 비밀번호 확인 일치는 필수
     if (!isNewPasswordValid) {
-      alert("새 비밀번호 확인이 일치하지 않습니다.");
+      onMessage("새 비밀번호 확인이 일치하지 않습니다.");
       confirmPasswordInputRef.current.focus();
       return;
     }
@@ -124,7 +122,7 @@ function ChangePassword() {
     // 현재 비밀번호 검증
     const isPasswordVerify = await checkCurrentPassword();
     if (!isPasswordVerify) {
-      alert("현재 비밀번호가 일치하지 않습니다.");
+      onMessage("현재 비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -134,9 +132,10 @@ function ChangePassword() {
       
       if (response.status === 200) {
         const msg = response.data.msg;
-        alert(msg);
+        onMessage(msg);
+        handleCancel();
       } else {
-        alert("비밀번호 변경에 실패했습니다.");
+        onMessage("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
       handleReissueCatch(error);

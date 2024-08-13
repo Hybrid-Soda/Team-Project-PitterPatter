@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mediapipe/camera_utils": "^0.3.1675466862",
-    "@mediapipe/pose": "^0.5.1675469404",
+    "@mediapipe/pose": "^0.3.1621277220",
     "@reduxjs/toolkit": "^2.2.6",
     "axios": "^1.7.2",
     "html2canvas": "^1.4.1",
@@ -24,6 +24,8 @@
     "react-unity-webgl": "^9.5.2",
     "recharts": "^2.12.7",
     "redux-persist": "^6.0.0",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "styled-components": "^6.1.12"
   },
   "devDependencies": {

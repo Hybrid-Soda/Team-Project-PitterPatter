@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { rankingListGet } from '../../Child/childApi.js';
 import styled from 'styled-components';
 import {
@@ -17,27 +18,19 @@ import Trophy from '/src/assets/img/Rank/Trophy.png';
 import firstMedal from '/src/assets/img/Rank/1st.png';
 import secondMedal from '/src/assets/img/Rank/2nd.png';
 import thirdMedal from '/src/assets/img/Rank/3rd.png';
+import Loader from '../../Components/loader.jsx';
 
 const MedalIMG = styled.img`
   width: 2rem;
 `;
 
-const CollapseContent = styled.div`
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-top: 1rem;
-  height: ${(isCollapsed) => isCollapsed ? `1rem` : `0`};
-  transition: ease-in-out .3s;
-`;
-
 function Rank() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);  // 로딩 상태 관리
   const [data, setData] = useState([]);
   const [childIdx, setChildIdx] = useState(-1);
 
-  const childId = 11; // 테스트용 childId 변수 선언
-  const token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaXNzIjoiY29tLnBpdHBhdC5waXR0ZXJwYXR0ZXIiLCJuYmYiOjE3MjI5MjA0NDIsImlhdCI6MTcyMjkyMDQ0MiwiZXhwIjoxNzIyOTIxMzQyLCJqdGkiOiIyMDY3MTI5Zi04ZTAxLTQ1MjAtOTg5Yi0zNjY1ZWRkNGVlMGEifQ.PjXkywsjZ682B6MU4OOD4HT0zFRBln9YDUTg7kchkPd7Nqri0xd-KG8DWlPE7joRNjSkpSD30rsgfqau1GPWfw";
+  const childId = useSelector((state) => state.child.id);
+  const token = useSelector((state) => state.token.accessToken);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +51,8 @@ function Rank() {
         setData(formattedData);
       } catch (error) {
         console.error('다음과 같은 문제가 발생 했습니다:', error);
+      } finally {
+        setIsLoading(false);  // 데이터 로드가 완료되면 로딩 상태를 false로 설정
       }
     };
     fetchData();
@@ -164,52 +159,52 @@ function Rank() {
       );
     }
   };
-  
-  
-  
 
   return (
     <div>
       <Header />
-      <OuterBox>
-        <RankBarOverlay>
-          <RankBarWrap style={{ left: "41vw" }} delay={0}>
-            {/* trophy 사진 대신 유저 프로필 사진 넣어야 함 */}
-            <ProfileImg src={data.length > 0 ? data[0].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
-            <RankBar style={{ height: "69vh" }}>
-              <RankName>
-                <MedalIMG src={firstMedal} alt="" />
-                {data.length > 0 ? data[0].nickname : ""}
-              </RankName>
-            </RankBar>
-          </RankBarWrap>
-          <RankBarWrap style={{ left: "11vw" }} delay={0.3}>
-            <ProfileImg src={data.length > 1 ? data[1].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
-            <RankBar style={{ height: "62vh" }}>
-              <RankName>
-                <MedalIMG src={secondMedal} alt="" />
-                {data.length > 1 ? data[1].nickname : ""}
-              </RankName>
-            </RankBar>
-          </RankBarWrap>
-          <RankBarWrap style={{ left: "71vw" }} delay={0.5}>
-            <ProfileImg src={data.length > 2 ? data[2].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
-            <RankBar style={{ height: "58vh" }}>
-              <RankName>
-                <MedalIMG src={thirdMedal} alt="" />
-                {data.length > 2 ? data[2].nickname : ""}
-              </RankName>
-            </RankBar>
-          </RankBarWrap>
-        </RankBarOverlay>
+      {isLoading ? (
+        <Loader />  // 로딩 중일 때 로더를 표시
+      ) : (
+        <OuterBox>
+          <RankBarOverlay>
+            <RankBarWrap style={{ left: "41vw" }} delay={0}>
+              <ProfileImg src={data.length > 0 ? data[0].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
+              <RankBar style={{ height: "69vh" }}>
+                <RankName>
+                  <MedalIMG src={firstMedal} alt="" />
+                  {data.length > 0 ? data[0].nickname : ""}
+                </RankName>
+              </RankBar>
+            </RankBarWrap>
+            <RankBarWrap style={{ left: "11vw" }} delay={0.3}>
+              <ProfileImg src={data.length > 1 ? data[1].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
+              <RankBar style={{ height: "62vh" }}>
+                <RankName>
+                  <MedalIMG src={secondMedal} alt="" />
+                  {data.length > 1 ? data[1].nickname : ""}
+                </RankName>
+              </RankBar>
+            </RankBarWrap>
+            <RankBarWrap style={{ left: "71vw" }} delay={0.5}>
+              <ProfileImg src={data.length > 2 ? data[2].profileImage : Trophy} alt="Trophy" onError={handleImageError} />
+              <RankBar style={{ height: "58vh" }}>
+                <RankName>
+                  <MedalIMG src={thirdMedal} alt="" />
+                  {data.length > 2 ? data[2].nickname : ""}
+                </RankName>
+              </RankBar>
+            </RankBarWrap>
+          </RankBarOverlay>
           {childIdx >= 0 ? (
             renderRankWraps(childIdx)
           ) : (
             <InnerBox>
-              <h2>자녀의 기록이 존재하지 않습니다.</h2>
+              <h2>게임 기록이 아직 없어요. 플레이해서 랭킹을 확인해보세요!</h2>
             </InnerBox>
           )}
-      </OuterBox>
+        </OuterBox>
+      )}
     </div>
   );
 }

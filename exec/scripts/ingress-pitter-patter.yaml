@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pitter-patter-ingress
+  namespace: pitter-patter
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    acme.cert-manager.io/http01-ingress-class: "traefik"
+    traefik.ingress.kubernetes.io/router.middlewares: "pitter-patter-cors@kubernetescrd"
+spec:
+  rules:
+  - host: shell_script_will_replace_this_domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: backend
+            port:
+              number: 8080
+  tls:
+    - hosts:
+      - shell_script_will_replace_this_domain
+      secretName: pitter-patter-tls

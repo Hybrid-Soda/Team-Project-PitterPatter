@@ -1,5 +1,6 @@
-// src/apiService.js
 import axios from "axios";
+import { setToken, clearToken } from "./redux/tokenSlice";
+import store from "./redux/store";
 
 const host = "https://pitter-patter.picel.net";
 const baseURL = `${host}/api`;
@@ -8,7 +9,7 @@ const timeout = 5000;
 export const hostApi = axios.create({
   baseURL: host,
   timeout: timeout,
-})
+});
 
 export const userApi = axios.create({
   baseURL: `${baseURL}/user`,
@@ -25,17 +26,22 @@ export const assetsApi = axios.create({
   timeout: timeout,
 });
 
+export const gameApi = axios.create({
+  baseURL: `${baseURL}/game`,
+  timeout: timeout,
+});
+
 export const handleReissueCatch = (error) => {
   if (error.response && error.response.status === 401) {
-    // intercetor에서 토큰 재발급 수행
+    // interceptor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    window.location.href="/";
+    window.location.href = "/";
   } else if (error.msg && error.msg === "토큰 검증 실패") {
-    // intercetor에서 토큰 재발급 수행
+    // interceptor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    window.location.href="/";
+    window.location.href = "/";
   } else {
-    alert("문제가 발생했습니다. 다시 시도해주세요.");
+    // alert("문제가 발생했습니다. 다시 시도해주세요.");
   }
 };
 
@@ -51,42 +57,40 @@ const setupInterceptors = (axiosInstance) => {
         config,
         response: { status },
       } = error;
-  
+
       const originalRequest = config;
-  
+      const state = store.getState(); // store에서 상태를 가져옵니다.
+      const { refreshToken, accessToken } = state.token;
+
       // 토큰 재발급 수행
       if (status === 401) {
-        // redux에서 값 가져오기
-        const accessToken = 'access token';
-        const refreshToken = 'refresh token';
-  
         try {
           const { data } = await axios({
-            method: 'patch',
+            method: "patch",
             url: `https://pitter-patter.picel.net/api/user/reissue`,
-            headers: { "Authorization": `Bearer ${refreshToken}` },
+            headers: { Authorization: `Bearer ${refreshToken}` },
           });
 
           if (data.exception !== undefined) {
             throw new Error("토큰 검증 실패");
           }
 
+          // 새로운 토큰을 store에 저장
+          store.dispatch(setToken(data.data));
           const newAccessToken = data.data.accessToken;
-          const newRefreshToken = data.data.refreshToken;
-          
-          // redux에 새로 받아온 토큰 값 저장
-          // ...
 
           originalRequest.headers = {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + newAccessToken,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${newAccessToken}`,
           };
 
           return await axios(originalRequest);
         } catch (error) {
           // 로그아웃 시키기
-          // ...
-          new Error(error);
+          store.dispatch(clearToken()); // 여기서 store.dispatch를 사용해야 합니다.
+          // 모달
+          window.location.href = "/login";
+          throw new Error(error); // 새로운 Error 객체를 던짐
         }
       }
       return Promise.reject(error);
@@ -97,17 +101,17 @@ const setupInterceptors = (axiosInstance) => {
 const handleError = (error) => {
   // 오류 처리
   if (error.response) {
-   // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-   console.error('Error Response Status:', error.response.status);
-   console.error('Error Response Data:', error.response.data);
-   console.error('Error Response Headers:', error.response.headers);
- } else if (error.request) {
-   // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-   console.error('Error Request:', error.request);
- } else {
-   // 요청 설정에서 발생한 오류
-   console.error('Error Message:', error.message);
- }
+    // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
+    console.error("Error Response Status:", error.response.status);
+    console.error("Error Response Data:", error.response.data);
+    console.error("Error Response Headers:", error.response.headers);
+  } else if (error.request) {
+    // 요청은 성공적으로 전송되었지만 응답을 받지 못함
+    console.error("Error Request:", error.request);
+  } else {
+    // 요청 설정에서 발생한 오류
+    console.error("Error Message:", error.message);
+  }
 };
 
 // 각 Axios 인스턴스에 인터셉터 적용

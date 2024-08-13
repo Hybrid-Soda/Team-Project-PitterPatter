@@ -22,6 +22,7 @@ public class GameScore
 
         GM.score += addScore;
         Managers.Network.finalScore = GM.score;
+        Managers.Network.UnityCall(false, false);
         GM.colliders.Clear();
 
         return addScore;

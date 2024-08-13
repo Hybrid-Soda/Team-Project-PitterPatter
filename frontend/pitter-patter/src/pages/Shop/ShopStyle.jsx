@@ -7,7 +7,7 @@ export const Wallpaper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-image: url("/src/assets/img/Background/YellowWave.png");
+  /* background-image: url("/src/assets/img/Background/YellowWave.png"); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

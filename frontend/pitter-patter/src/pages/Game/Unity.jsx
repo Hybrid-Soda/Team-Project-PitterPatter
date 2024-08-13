@@ -1,39 +1,37 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
+import { useSelector } from "react-redux";
 
-const UnityComponent = ({ onGameEnd }) => {
+const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
-  const [landmarks, setLandmarks] = useState("")
-  const [score, setScore] = useState()
-  const backgroundNum = 3
+  const [landmarks, setLandmarks] = useState("");
+  const backgroundNum = useSelector((state) => state.item.backgroundNum);
 
-  // Provide Unity
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
-      loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
-      dataUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.data",
-      frameworkUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.framework.js",
-      codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm",
+    loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
+    dataUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.data",
+    frameworkUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.framework.js",
+    codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm",
   });
 
-  const handleGameEnd = useCallback((score, isGameEnd) => {
+  const handleGameEnd = useCallback((score, isGameEnd, isLoading) => {
+    setIsLoading(isLoading);
     setIsGameEnd(isGameEnd);
-    setScore(score);
-  }, []);
+    setScore(score); // score 값을 업데이트하여 GamePage에 전달
+  }, [setIsLoading, setScore]);
 
   const [hasGameEnded, setHasGameEnded] = useState(false);
 
-  // 게임 로직 중에 isGameEnd가 true가 되는 시점을 감지하여 호출
   useEffect(() => {
     if (isGameEnd && !hasGameEnded) {
-      onGameEnd();
-      setHasGameEnded(true); // 한 번 호출되면 상태를 변경하여 다시 호출되지 않도록 함
+      onGameEnd(); // 게임이 끝났을 때 openAttModal 호출
+      setHasGameEnded(true);
     } else if (!isGameEnd) {
-      setHasGameEnded(false); // isGameEnd가 false로 변경되면 상태를 리셋
+      setHasGameEnded(false);
     }
   }, [isGameEnd, hasGameEnded, onGameEnd]);
 
-  // Unity -> React
   useEffect(() => {
     addEventListener("UnityToReact", handleGameEnd);
     return () => {
@@ -41,7 +39,6 @@ const UnityComponent = ({ onGameEnd }) => {
     };
   }, [addEventListener, removeEventListener, handleGameEnd]);
 
-  // React -> Unity
   useEffect(() => {
     if (backgroundNum) {
       sendMessage('@Managers', 'ReactToUnity', backgroundNum);
@@ -51,7 +48,13 @@ const UnityComponent = ({ onGameEnd }) => {
     }
   }, [sendMessage, landmarks, backgroundNum]);
 
-  // 컴포넌트 Unmount 시 유니티 종료
+  useEffect(() => {
+    setIsLoading(true);
+    return () => {
+      setIsLoading(false);
+    };
+  }, [setIsLoading]);
+
   useEffect(() => {
     return () => {
       if (typeof unload === "function") {
@@ -62,29 +65,16 @@ const UnityComponent = ({ onGameEnd }) => {
     };
   }, [unload]);
 
-  // Update landmarks
   const UpdateLandmark = (newLandmarks) => {
     setLandmarks(newLandmarks);
   };
 
-  const unityContainerStyle = {
-    width: "100%",
-    height: "80%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  };
-
   return (
-    <div style={unityContainerStyle}>
-      <Unity 
-        unityProvider={unityProvider} 
-        style={{ width: '75%', height: '95%' }} 
+    <div style={{ display: isLoading ? "none" : "block" }}>
+      <Unity
+        unityProvider={unityProvider}
+        style={{ height: '80vh', width: 'auto', aspectRatio: '16/9', margin: '0 auto' }}
       />
-
-      {/* <p>{`You've scored ${score} points.`}</p>
-      <p>{`isGameEnd = ${isGameEnd}`}</p> */}
       <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );

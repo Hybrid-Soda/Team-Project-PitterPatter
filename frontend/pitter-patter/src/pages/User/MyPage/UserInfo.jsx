@@ -55,7 +55,7 @@ const SubmitButton = styled.button`
     transition: all .1s;
 `
 
-function UserInfo() {
+function UserInfo({ onMessage }) {
   const navigator = useNavigate();
   
   const teamNameInputRef = useRef(null);
@@ -80,12 +80,10 @@ function UserInfo() {
               setTeamName(userInfo.teamName);
             }, 100);
           } else {
-            alert(msg);
-            navigator("/");
+            onMessage(msg);
           }
         } else {
-          alert("사용자 정보를 가져올 수 없습니다.");
-          navigator("/")
+          onMessage("사용자 정보를 가져올 수 없습니다.");
         }
       } catch (error) {
         handleReissueCatch(error);
@@ -98,7 +96,7 @@ function UserInfo() {
   const handleSubmit = async () => {
     // 가족 팀 이름은 필수 입력값
     if (teamName === '') {
-      alert("가족 팀 이름을 입력해주세요.");
+      onMessage("가족 팀 이름을 입력해주세요.")
       teamNameInputRef.current.focus();
       return;
     }
@@ -120,9 +118,9 @@ function UserInfo() {
           setTimeout(() => {
             setTeamName(updatedUserInfo.teamName);
           }, 100)
-          alert("회원정보가 성공적으로 변경되었습니다.");
+          onMessage("회원정보가 성공적으로 변경되었습니다.");
         } else {
-          alert(msg);
+          onMessage(msg);
         }
       }
     } catch (error) {
@@ -140,10 +138,6 @@ function UserInfo() {
           <InputTitle>아이디</InputTitle>
           <InputBox type="text" value={email} disabled />
         </InputItem>
-        {/* <InputItem>
-          <InputTitle>가입일</InputTitle>
-          <InputBox type="date" placeholder="created-at" />
-        </InputItem> */}
         <InputItem>
           <InputTitle>가족 팀 이름</InputTitle>
           <InputBox 

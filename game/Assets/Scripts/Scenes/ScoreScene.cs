@@ -9,6 +9,7 @@ public class ScoreScene : BaseScene
 
     void Start()
     {
+        Managers.Network.UnityCall(true, false);
         Managers.Sound.Play("SFX/Showscore", Define.Sound.SFX);
 
         // UI 업데이트

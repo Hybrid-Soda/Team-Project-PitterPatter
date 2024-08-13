@@ -49,17 +49,37 @@ const LoadingContainer = styled.div`
   text-align: center;
 `;
 
+// TIP 스타일 정의
+const TipText = styled.p`
+  margin-top: 40px;
+  padding: 0 20px;
+  font-size: 1.2vw;
+  color: #555; // 일반 텍스트 색상
+  &::before {
+    content: "TIP: ";
+    color: var(--logo-pink-color); // TIP 텍스트 색상
+  }
+`;
+
 const Loader = () => {
   return (
     <LoadingContainer>
-      <LoadingSpan style={{color: 'var(--logo-pink-color)'}}>L</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-pink-color)'}}>O</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-yellow-color)'}}>A</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-yellow-color)'}}>D</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-green-color)'}}>I</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-green-color)'}}>N</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-blue-color)'}}>G</LoadingSpan>
-      <LoadingSpan style={{color: 'var(--logo-blue-color)'}}>...</LoadingSpan>
+      <div>
+        <LoadingSpan style={{color: 'var(--logo-pink-color)'}}>L</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-pink-color)'}}>O</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-yellow-color)'}}>A</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-yellow-color)'}}>D</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-green-color)'}}>I</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-green-color)'}}>N</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-blue-color)'}}>G</LoadingSpan>
+        <LoadingSpan style={{color: 'var(--logo-blue-color)'}}>...</LoadingSpan>
+        <TipText>
+          게임이 느리면 크롬의 설정-시스템-그래픽 가속을 켜보세요.
+        </TipText>
+        <TipText>
+          모션인식이 작동하지 않는다면, 주소창에 <strong>chrome://flags</strong>를 입력한 후 "모두 재설정"을 클릭하여 설정을 초기화해보세요.
+        </TipText>
+      </div>
     </LoadingContainer>
   );
 };

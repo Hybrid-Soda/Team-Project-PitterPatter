@@ -14,8 +14,8 @@ import Loader from "../../Components/loader.jsx";
 
 import { sendReset2faEmail } from "/src/pages/User/userApi.js";
 
-function ForgotSFAModal({ onClose }) {
-    const navigate = useNavigate();
+function ForgotSFAModal({ onClose, onMessage }) {
+    const navigator = useNavigate();
     
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState(false);
@@ -35,13 +35,13 @@ function ForgotSFAModal({ onClose }) {
     const handleSubmit = async () => {
         // 이메일은 필수 입력값임
         if (email === '') {
-            alert("이메일을 입력해주세요.");
+            onMessage("이메일을 입력해주세요.");
             emailInputRef.current.focus();
             return;
         }
 
         if (!emailValid) {
-            alert("이메일 형식이 올바르지 않습니다.");
+            onMessage("이메일 형식이 올바르지 않습니다.");
             emailInputRef.current.focus();
             return;
         }
@@ -55,19 +55,19 @@ function ForgotSFAModal({ onClose }) {
             if (respone.status === 200) {
                 setIsLoading(false);
                 const msg = respone.data.msg;
-                alert(msg);
+                onMessage(msg);
                 onClose();
             } else {
                 setIsLoading(false);
-                alert("메일 발송에 실패했습니다.");
+                onMessage("메일 발송에 실패했습니다.");
             }
         } catch (error) {
             setIsLoading(false);
             if (error.response && error.response.status === 400) {
-                alert("메일 발송에 실패했습니다.");
+                onMessage("메일 발송에 실패했습니다.");
             }
             else {
-                alert("문제가 발생했습니다. 다시 시도해주세요.");
+                onMessage("문제가 발생했습니다. 다시 시도해주세요.");
             }
         }
     }

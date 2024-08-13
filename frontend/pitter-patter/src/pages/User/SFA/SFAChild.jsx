@@ -16,17 +16,37 @@ import ArrowLeft from "../../../assets/icons/ArrowLeft.png";
 import BackSpace from "../../../assets/icons/BackSpace.png";
 import { useNavigate } from 'react-router-dom';
 import ForgotSFAmodal from './ForgotSFAmodal';
+import Modal from './Modal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
 import { handleReissueCatch } from '../../../apiService';
 
 function SFAChild() {
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
   const [password, setPassword] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [forgotModalOpen, setForgotModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [modalMessage, setModalMessage] = useState(''); 
+  const [isInitialPassword, setIsInitialPassword] = useState(false); // 초기 비밀번호 여부를 판단하기 위한 상태 변수 추가
 
   const {accessToken } = useSelector((state) => state.token);
+
+  // 페이지 로드 시 "0000" 비밀번호로 검증
+  useEffect(() => {
+    const checkInitialPassword = async () => {
+      try {
+        const response = await verify2fa(accessToken, "0000");
+        if (response.status === 200 && response.data.exception === undefined) {
+          handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+        }
+      } catch (error) {
+        // 오류 처리 (필요에 따라 추가)
+      }
+    };
+
+    checkInitialPassword();
+  }, []);
 
   useEffect(() => {
     const verifyPassword = async () => {
@@ -34,7 +54,7 @@ function SFAChild() {
         const isVerified = await isVerifiedSFA();
         setPassword('');
         if (isVerified) {
-          navigate('/child');
+          navigator('/child');
         }
       }
     };
@@ -43,7 +63,7 @@ function SFAChild() {
   }, [password]);
 
   const goBack = () => {
-    navigate(-1); // 뒤로가기 기능
+    navigator(-1); // 뒤로가기 기능
   };
 
   const handleKeyPress = (value) => {
@@ -65,13 +85,17 @@ function SFAChild() {
         const msg = response.data.msg;
 
         if (exception === undefined) {
+          if (password === "0000") {
+            handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+            return false; // 초기 비밀번호일 경우 페이지 이동을 막음
+          }
           return true;
         } else {
-          alert(msg);
+          handleMessage(msg, false);
           return false;
         }
       } else {
-        alert("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
         return false;
       }
     } catch (error) {
@@ -79,6 +103,19 @@ function SFAChild() {
       return false;
     }
   };
+
+  const handleMessage = (msg, isInitial = false) => {
+    setModalMessage(msg);
+    setIsModalOpen(true);
+    setIsInitialPassword(isInitial); // 초기 비밀번호 여부 설정
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    if (isInitialPassword) {
+      navigator('/NewSFA'); // 초기 비밀번호일 경우 비밀번호 설정 페이지로 이동
+    }
+  }
 
   return (
     <LayoutBase>
@@ -117,9 +154,10 @@ function SFAChild() {
           </NumpadRow>
         </NumpadWrap>
         <ForgotPassword>
-          <button onClick={() => setModalOpen(true)}>비밀번호를 잊으셨나요?</button>
+          <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {modalOpen && <ForgotSFAmodal onClose={() => setModalOpen(false)} />}
+        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
+        {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
       </LayoutSFA>
     </LayoutBase>
   );

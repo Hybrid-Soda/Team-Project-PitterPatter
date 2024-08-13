@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,7 +19,7 @@ import Modal from './Modal'; // 모달 컴포넌트를 import 합니다
 import { updateUser } from "../userApi";
 
 function NewSFA() {
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -27,7 +27,7 @@ function NewSFA() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const {accessToken } = useSelector((state) => state.token);
+  const { accessToken } = useSelector((state) => state.token);
 
   const handleKeyPress = (value) => {
     if (isFirstInput) {
@@ -51,9 +51,14 @@ function NewSFA() {
 
   useEffect(() => {
     if (isFirstInput && password.length === 4) {
-      setTimeout(() => {
-        setIsFirstInput(false);
-      }, 100);
+      if (password === "0000") {
+        setModalMessage("0000은 사용하실 수 없습니다.");
+        setModalOpen(true);
+      } else {
+        setTimeout(() => {
+          setIsFirstInput(false);
+        }, 100);
+      }
     } else if (!isFirstInput && confirmPassword.length === 4) {
       setTimeout(() => {
         if (password === confirmPassword) {
@@ -64,7 +69,7 @@ function NewSFA() {
         }
       }, 100);
     }
-  }, [password, confirmPassword, isFirstInput, navigate]);
+  }, [password, confirmPassword, isFirstInput, navigator]);
 
   const updateSFA = async () => {
     try {
@@ -90,14 +95,11 @@ function NewSFA() {
         // intercetor에서 토큰 재발급 수행
         setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
         setModalOpen(true);
-        navigator("/");
       } else if (error.msg && error.msg === "토큰 검증 실패") {
         // intercetor에서 토큰 재발급 수행
         setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
         setModalOpen(true);
-        navigator("/");
       } else {
-        console.log(error);
         setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
         setModalOpen(true);
       }
@@ -107,25 +109,32 @@ function NewSFA() {
   const closeModal = () => {
     setModalOpen(false);
     if (modalMessage === "새 2차 비밀번호가 설정되었습니다.") {
-      navigate("/mypage");
-    } else {
+      navigator("/mypage");
+    } else if (modalMessage === "로그인이 만료되었습니다. 다시 로그인 해주세요.") {
+      navigator("/login");
+    } else if (modalMessage === "0000은 사용하실 수 없습니다.") {
+      // 비밀번호 초기화
       setPassword("");
       setConfirmPassword("");
       setIsFirstInput(true);
+    } else {
+      // 다른 오류 메시지일 경우에도 비밀번호 입력 초기화
+      setConfirmPassword("");
+      setIsFirstInput(false);
     }
   };
 
   const goBack = () => {
-    navigate(-1); // 뒤로가기 기능
+    navigator(-1); // 뒤로가기 기능
   };
 
   return (
     <LayoutBase>
       <LayoutSFA>
-        <div style={{ height: "10vh", display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
+        <div style={{ height: "8vh", display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
           <button onClick={goBack}><IconX src={ArrowLeft} alt="ArrowLeft" /></button>
         </div>
-        <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+        <span style={{ fontSize: '1.3vw' }}>
           {isFirstInput ? '새 2차 비밀번호를 입력해주세요.' : '한번 더 입력해주세요.'}
         </span>
         <DotWrap>
@@ -133,7 +142,7 @@ function NewSFA() {
             <PasswordDot key={i} className={i < (isFirstInput ? password.length : confirmPassword.length) ? 'filled' : ''}></PasswordDot>
           ))}
         </DotWrap>
-        <NumpadWrap>
+        <NumpadWrap style={{ marginBottom: '2rem' }}>
           <NumpadRow>
             <Numpad onClick={() => handleKeyPress(1)}>1</Numpad>
             <Numpad onClick={() => handleKeyPress(2)}>2</Numpad>

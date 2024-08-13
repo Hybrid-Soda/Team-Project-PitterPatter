@@ -91,7 +91,6 @@ function SignUp() {
     if (email === "" || email === undefined) {
       setModalMessage("이메일을 입력해주세요.");
       setIsModalOpen(true);
-      emailInputRef.current.focus();
       return;
     }
 
@@ -128,14 +127,12 @@ function SignUp() {
     if (email === "" || email === undefined) {
       setModalMessage("이메일을 입력해주세요.");
       setIsModalOpen(true);
-      emailInputRef.current.focus();
       return;
     }
 
     if (password === "" || password === undefined) {
       setModalMessage("비밀번호를 입력해주세요.");
       setIsModalOpen(true);
-      passwordInputRef.current.focus();
       return;
     }
 
@@ -167,7 +164,6 @@ function SignUp() {
       if (response.status === 201) {
         setModalMessage('회원가입이 완료되었습니다.');
         setIsModalOpen(true);
-        navigator('/login');
       } else if (response.status === 200) {
         setModalMessage(msg);
         setIsModalOpen(true);
@@ -187,7 +183,14 @@ function SignUp() {
   }
 
   const closeModal = () => {
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
+    if (modalMessage === "회원가입이 완료되었습니다.") {
+      navigator('/login');
+    } else if (modalMessage === "이메일을 입력해주세요.") {
+      emailInputRef.current.focus();
+    } else if (modalMessage === "비밀번호를 입력해주세요.") {
+      passwordInputRef.current.focus();
+    }
   }
 
   const handlePasswordFocus = () => {
@@ -255,12 +258,12 @@ function SignUp() {
               이미 계정이 있으신가요? <a href="/login">로그인</a>
             </LoginText>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+          {/* <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
             <CenterText>또는</CenterText>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
             <SocialIcon src={kakao} alt="kakao" />
-          </div>
+          </div> */}
         </div>
 
         {isModalOpen && (
