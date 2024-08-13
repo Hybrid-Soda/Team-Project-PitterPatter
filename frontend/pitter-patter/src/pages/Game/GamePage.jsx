@@ -14,12 +14,11 @@ function GamePage() {
   const [modalOpen, setModalOpen] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false);
   const [attModalOpen, setAttModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTestComplete = () => {
     setTestCompleted(true);
     setIsLoading(true); // 로딩 시작
-    setTimeout(() => setIsLoading(false), 2000); // 2초 후 로딩 끝
   };
 
   const closeModal = () => {
@@ -88,11 +87,10 @@ function GamePage() {
     <MainWrap>
       <Header />
       {testCompleted ? (
-        isLoading ? (
-          <Loader /> // 로딩 중일 때 Loader 컴포넌트 표시
-        ) : (
-          <Unity onGameEnd={openAttModal} />
-        )
+        <div>
+          {isLoading && <Loader />}
+          <Unity onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} />
+        </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />
       )}
