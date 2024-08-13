@@ -282,7 +282,7 @@ public class UserServiceImpl implements UserService{
 
             // 6. 이메일 토큰으로 비밀번호 재설정 시, redis에서 이메일 토큰도 같이 삭제
             if (type.equals("email")) {
-                emailTokenRepository.deleteById(id);
+                emailTokenRepository.deleteById("pw" + id);
             }
         }
         // 7. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService{
             userRepository.updateTwoFa(existingUser.getUserId(), existingUser.getTwoFa());
 
             // 6. redis에서 이메일 토큰도 같이 삭제
-            emailTokenRepository.deleteById(email);
+            emailTokenRepository.deleteById("2fa" + email);
         }
         // 7. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {
