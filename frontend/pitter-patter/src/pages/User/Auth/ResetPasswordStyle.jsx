@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const Layoutbody = styled.div`
   width: 100vw;
@@ -47,5 +48,5 @@ export const SubmitButton = styled.button`
   border-radius: 1.5rem;
   font-weight: bold;
   background-color: ${props => props.isvalid ? 'var(--box-yellow-color)' : '#ccc'};
-  cursor: ${props => props.isvalid ? 'url(/src/assets/cursor/pointer.png), pointer' : 'not-allowed'};
+  cursor: ${props => props.isvalid ? `url(${PointerImg}), pointer` : 'not-allowed'};
 `;

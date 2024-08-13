@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import YellowWaveBackground from "/src/assets/img/Background/YellowWave.png";
+import PointerImg from "/src/assets/cursor/pointer.png"
 
 const slideUp = keyframes`
   from {
@@ -163,7 +164,7 @@ export const Tool = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 
   &:hover {
     transform: scale(1.1);

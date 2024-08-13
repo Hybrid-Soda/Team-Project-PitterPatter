@@ -14,12 +14,13 @@ import { Link } from 'react-router-dom';
 import X from "../../../assets/img/logo/X.png";
 import kakao from "../../../assets/img/logo/kakao.png";
 import Modal from '../../Components/modal';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 import { signUp, checkDuplicateEmail } from "/src/pages/User/userApi.js";
 
 const IconX = styled.img`
   width: 1.5vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 `;
 
 const InputText = styled.input`
@@ -39,7 +40,7 @@ const CenterText = styled.span`
 
 const SocialIcon = styled.img`
   width: 3vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 `;
 
 const Popover = styled.div`

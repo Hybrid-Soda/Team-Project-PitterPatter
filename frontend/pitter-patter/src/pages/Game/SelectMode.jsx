@@ -5,6 +5,7 @@ import { MainWrap, BoxWrap, ImageBox, GameImage, ItemName } from "./SelectModeSt
 import snapshot from "../../assets/img/Game/snapshot.png";
 import goGame from "../../assets/img/Game/goGame.png";
 import GameModeModal from "./ModeSelectModal"; // GameModeModal 컴포넌트를 import 합니다
+import BackgroundImg from "/src/assets/img/Background/YellowWave.png";
 
 function SelectMode() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -18,7 +19,7 @@ function SelectMode() {
   };
 
   return (
-    <MainWrap>
+    <MainWrap style={{backgroundImage: `url(${BackgroundImg})`}}>
       <Header />
       <BoxWrap bgColor="var(--logo-pink-color)" onClick={handleGameStartClick}>
         <ImageBox shadow="4px 4px 27.5px 0px #933557 inset">

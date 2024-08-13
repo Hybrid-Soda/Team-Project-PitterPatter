@@ -1,6 +1,7 @@
 // ChildPageStyle.js
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const Body = styled.div`
   width: 100vw;
@@ -55,7 +56,7 @@ export const ChildMenuItem = styled.div`
   align-items: center;
   padding-left: 8%;
   position: relative;
-  cursor: pointer;
+  cursor: url(${PointerImg}), pointer !important;
 
   ${({ $isActive }) => $isActive && `
     box-shadow: none;
@@ -76,7 +77,7 @@ export const ContextItem = styled.div`
 
 export const Backspace = styled(Link)`
   position: relative;
-  cursor: pointer;
+  cursor: url(${PointerImg}), pointer !important;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;

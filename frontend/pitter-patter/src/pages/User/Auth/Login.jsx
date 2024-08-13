@@ -16,11 +16,12 @@ import Modal from './LoginFailModal.jsx';
 import { login } from "/src/pages/User/userApi.js";
 import { setToken } from '../../../redux/tokenSlice.js';
 import { useDispatch } from 'react-redux';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 
 const IconX = styled.img`
   width: 1.5vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
   position: absolute;
 `;
 
@@ -39,7 +40,7 @@ const CenterText = styled.span`
 
 const SocialIcon = styled.img`
   width: 3vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 `;
 
 function Login() {

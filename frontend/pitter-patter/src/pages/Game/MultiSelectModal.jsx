@@ -41,7 +41,7 @@ const CloseButton = styled(Link)`
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
   /* margin-top: 1rem; */
 `;
 
@@ -84,7 +84,7 @@ const ConfirmButton = styled.button`
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
     height: 5vh;
 `;
 
@@ -94,7 +94,7 @@ const CreateRoomButton = styled.button`
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
     /* margin-top: 1rem; */
     font-size: 1rem;
 `;

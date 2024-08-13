@@ -15,7 +15,9 @@ import {
   InputItem,
   InputTitle,
 } from './UserInfoStyle';
-import SingingBanana from "../../../assets/img/User/SingingBanana.png";
+import SingingBanana from "/src/assets/img/User/SingingBanana.png";
+import PointerImg from "/src/assets/cursor/pointer.png";
+
 
 const InputBox = styled.input`
   width: 15vw;
@@ -186,7 +188,7 @@ function ChildInfo() {
           src={profileImage}
           alt="SingingBanana"
           onClick={handleImageClick}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: `url(${PointerImg}), pointer !important` }}
         />
         <input
           type="file"

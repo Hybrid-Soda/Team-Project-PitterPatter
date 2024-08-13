@@ -51,7 +51,7 @@ export const CompleteButton = styled.button`
   background-color: var(--logo-yellow-color);
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: background-color 0.3s;
 
   &:hover {

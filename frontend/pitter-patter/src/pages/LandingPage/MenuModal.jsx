@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 const Navbar = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ const NavItemWrap = styled.div`
   align-items: center;
   padding: 15px;
   width: 15vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
   transition: opacity .3s;
 
   &:hover {
@@ -59,7 +60,7 @@ const LayoutNav = styled.div`
 const CloseButtonImg = styled.img`
   width: 20px;
   height: 20px;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 `;
 
 const BackDrop = styled.div`
