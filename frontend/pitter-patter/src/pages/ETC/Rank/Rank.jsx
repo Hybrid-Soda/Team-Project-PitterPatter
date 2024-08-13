@@ -200,7 +200,7 @@ function Rank() {
             renderRankWraps(childIdx)
           ) : (
             <InnerBox>
-              <h2>자녀의 기록이 존재하지 않습니다.</h2>
+              <h2>게임 기록이 아직 없어요. 플레이해서 랭킹을 확인해보세요!</h2>
             </InnerBox>
           )}
         </OuterBox>

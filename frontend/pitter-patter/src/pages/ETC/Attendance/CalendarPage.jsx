@@ -39,7 +39,7 @@ function Attendance() {
 
     } catch (error) {
       console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      // alert(error.response.data.msg); // 에러 메시지 알림
     }
   };
   useEffect(() => {

@@ -29,6 +29,8 @@ import Loader from '../Components/loader';
 import LeftButton from "/src/assets/icons/ChevronLeft.png";
 import RightButton from "/src/assets/icons/ChevronRight.png";
 
+import BackgroundImg from "/src/assets/img/Background/YellowWave.png";
+
 function SnapshotShop() {
   const Navigator = useNavigate();
 
@@ -56,6 +58,7 @@ function SnapshotShop() {
   useEffect(() => {
     getFrames(childId);
     getPoints(childId);
+    getPointRecords(childId);
   }, [childId]);
 
   const getFrames = async (childId) => {
@@ -190,6 +193,7 @@ function SnapshotShop() {
       });
       setPointRecords(prevRecords => [...prevRecords, ...response.data]);
       setPage(page);
+      console.log('로그')
     } catch (error) {
       console.log("Error fetching point records:", error.response.data.msg);
       alert(error.response.data.msg);
@@ -216,7 +220,7 @@ function SnapshotShop() {
   }
 
   return (
-    <Wallpaper>
+    <Wallpaper style={{backgroundImage: `url(${BackgroundImg})`}}>
       <GuideText>
         저장될 사진의 프레임을 골라보세요!
       </GuideText>

@@ -30,16 +30,15 @@ export const GraphHeader = styled.div`
 
   span {
     color: #757575;
-    font-size: 0.78em;
+    font-size: 1rem;
   }
 
   a {
     color: #757575;
-    font-size: 0.78em;
+    font-size: 1rem;
     margin-left: 5px;
     font-weight: 700;
     text-decoration: underline;
-    cursor: pointer;
   }
 `;
 
