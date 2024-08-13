@@ -15,6 +15,7 @@ function GamePage() {
   const [testCompleted, setTestCompleted] = useState(false);
   const [attModalOpen, setAttModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [score, setScore] = useState(0);
 
   const handleTestComplete = () => {
     setTestCompleted(true);
@@ -83,13 +84,18 @@ function GamePage() {
     getWallpaper(childId); // childId를 넣으면 그 아이가 착용하고 있는 벽의 이미지 주소가 return됨
   }, [childId]);
 
+  // 점수가 변할때마다 console.log
+  useEffect(() => {
+    console.log("점수 변화:", score);
+  }, [score]);
+
   return (
     <MainWrap>
       <Header />
       {testCompleted ? (
         <div>
           {isLoading && <Loader />}
-          <Unity onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} />
+          <Unity onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} />
         </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />
