@@ -6,9 +6,11 @@ import { Wallpaper, BoxWrap, ImageBox, GameImage, ItemName } from "./ShopStyle";
 import { Link } from "react-router-dom";
 import Header from "../LandingPage/Header";
 
+import BackgroundImg from "/src/assets/img/Background/YellowWave.png";
+
 function Shop() {
   return (
-    <Wallpaper>
+    <Wallpaper style={{backgroundImage: `url(${BackgroundImg})`}}>
       <Header />
       <Link to="/shop/snapshot">
         <BoxWrap bgColor="#ffe65c">

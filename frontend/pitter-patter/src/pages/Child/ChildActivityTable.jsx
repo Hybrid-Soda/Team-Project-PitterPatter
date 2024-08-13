@@ -17,7 +17,6 @@ function ChildActivityTable() {
   const startDate = '2024-07-24';
   const endDate = '2024-08-05';
   const token = useSelector((state) => state.token.accessToken);
-  const nickname = useSelector((state) => state.child.nickname);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,8 +47,8 @@ function ChildActivityTable() {
   return (
     <ContentBody>
       <GraphHeader>
-        <span>키나 몸무게를 최근에 새로 측정하셨나요? 지금 추가해서 그래프를 업데이트 해보세요! </span>
-        <a>추가하러 가기</a>
+        {/* <span>키나 몸무게를 최근에 새로 측정하셨나요? 지금 추가해서 그래프를 업데이트 해보세요! </span>
+        <a>추가하러 가기</a> */}
       </GraphHeader>
       <LayoutActivityPage>
         <LayoutGraphList>
@@ -76,8 +75,14 @@ function ChildActivityTable() {
         </LayoutGraphList>
       </LayoutActivityPage>
       <GraphFooter>
-        <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)}분 입니다.</p>
-        <p>운동장 # 바퀴를 뛴 만큼의 운동을 하셨습니다.</p>
+        {getTotalPlaytime(data) === 0 ? (
+          <>
+            <p>아직 게임을 하지 않았습니다.</p>
+            <button><a href="/game/select-mode">게임하러 가기</a></button>
+          </>
+        ) : (
+          <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)}분 입니다.</p>
+        )}
       </GraphFooter>
     </ContentBody>
   );

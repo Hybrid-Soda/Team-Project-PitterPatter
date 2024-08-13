@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { childPhysicalInfoListGet, childPhysicalInfoRegist, childPhysicalInfoUpdate } from './../Child/childApi.js';  // API 함수 임포트
 import { ContentBody, PhysicalInfoInput, PhysicalInfoHistory, PhysicalInfoHistoryInnerDiv, ImgDiv, InputDiv, InputInnerDiv, AddBtnDiv } from './ChildPhysicalInfoStyle';
+import Modal from '../Components/modal.jsx'; // 모달 임포트
 
 // 데이터 가져오기 메소드
 const fetchData = async (childId, token, setPhysicalInfoData) => {
@@ -21,6 +22,9 @@ function ChildPhysicalInfo() {
     const [editHeight, setEditHeight] = useState('');
     const [editWeight, setEditWeight] = useState('');
 
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+    const [modalMessage, setModalMessage] = useState(''); // 모달 메시지 관리
+
     const childId = useSelector((state) => state.child.id);
     const token = useSelector((state) => state.token.accessToken);
     const profileImage = useSelector((state) => state.child.profileImage);
@@ -37,17 +41,20 @@ function ChildPhysicalInfo() {
 
     const handleAdd = async () => {
         if (!height || !weight) {
-            alert("키와 몸무게를 입력해주세요.");
+            setModalMessage("키와 몸무게를 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
         if (height <= 20 || height >= 255) {
-            alert("키는 20 이상 255 이하의 값을 입력해주세요.");
+            setModalMessage("키는 20 이상 255 이하의 값을 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
         if (weight < 0 || weight >= 255) {
-            alert("몸무게는 0 이상 255 이하의 값을 입력해주세요.");
+            setModalMessage("몸무게는 0 이상 255 이하의 값을 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
@@ -74,17 +81,20 @@ function ChildPhysicalInfo() {
 
     const handleSave = async (index) => {
         if (!editHeight || !editWeight) {
-            alert("키와 몸무게를 입력해주세요.");
+            setModalMessage("키와 몸무게를 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
         if (editHeight <= 20 || editHeight >= 255) {
-            alert("키는 20 이상 255 이하의 값을 입력해주세요.");
+            setModalMessage("키는 20 이상 255 이하의 값을 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
         if (editWeight < 0 || editWeight >= 255) {
-            alert("몸무게는 0 이상 255 이하의 값을 입력해주세요.");
+            setModalMessage("몸무게는 0 이상 255 이하의 값을 입력해주세요.");
+            setIsModalOpen(true);
             return;
         }
 
@@ -103,6 +113,11 @@ function ChildPhysicalInfo() {
         } catch (error) {
             console.error('Error updating physical info:', error);
         }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setModalMessage('');
     };
 
     return (
@@ -172,6 +187,11 @@ function ChildPhysicalInfo() {
                 ))}
             </PhysicalInfoHistoryInnerDiv>
         </PhysicalInfoHistory>
+        {isModalOpen && (
+            <Modal title="알림" onClose={closeModal} transparent={true}>
+                {modalMessage}
+            </Modal>
+        )}
       </ContentBody>
     );
 }

@@ -28,8 +28,21 @@ function SFA() {
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState(''); 
+  const [isInitialPassword, setIsInitialPassword] = useState(false); // 초기 비밀번호 상태 추가
 
   const {accessToken } = useSelector((state) => state.token);
+
+  useEffect(() => {
+    // 페이지가 로드될 때 0000 비밀번호 자동 검증
+    const checkInitialPassword = async () => {
+      const response = await verify2fa(accessToken, "0000");
+      if (response.status === 200 && response.data.exception === undefined) {
+        handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+      }
+    };
+
+    checkInitialPassword();
+  }, []);
 
   useEffect(() => {
     const verifyPassword = async () => {
@@ -62,19 +75,23 @@ function SFA() {
   const isVerifiedSFA = async () => {
     try {
       const response = await verify2fa(accessToken, password);
-
+  
       if (response.status === 200) {
         const exception = response.data.exception;
         const msg = response.data.msg;
-
+  
         if (exception === undefined) {
+          if (password === "0000") {
+            handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+            return false; // 비밀번호가 0000일 때는 페이지 이동을 위해 false 반환
+          }
           return true;
         } else {
-          handleMessage(msg);
+          handleMessage(msg, false); // 일반 오류 메시지의 경우 false로 설정
           return false;
         }
       } else {
-        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
         return false;
       }
     } catch (error) {
@@ -82,15 +99,19 @@ function SFA() {
       return false;
     }
   };
-
-  const handleMessage = (msg) => {
+  
+  const handleMessage = (msg, isInitialPassword) => {
     setModalMessage(msg);
     setIsModalOpen(true);
+    setIsInitialPassword(isInitialPassword); // 초기 비밀번호 여부 설정
   };
-
-  const closeModal = () => {
+  
+  const handleModalConfirm = () => {
     setIsModalOpen(false);
-  }
+    if (isInitialPassword) {
+      navigator('/NewSFA'); // 초기 비밀번호일 때만 페이지 이동
+    }
+  };
 
   return (
     <LayoutBase>
@@ -132,7 +153,7 @@ function SFA() {
           <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
         {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
-        {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
+        {isModalOpen && <Modal message={modalMessage} onClose={handleModalConfirm} />}
       </LayoutSFA>
     </LayoutBase>
   );

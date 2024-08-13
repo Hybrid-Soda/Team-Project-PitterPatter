@@ -1,10 +1,6 @@
-// src/apiService.js
 import axios from "axios";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { setToken, clearToken } from "./redux/tokenSlice";
 import store from "./redux/store";
-import Modal from "./pages/Components/modal";
 
 const host = "https://pitter-patter.picel.net";
 const baseURL = `${host}/api`;
@@ -37,20 +33,16 @@ export const gameApi = axios.create({
 
 export const handleReissueCatch = (error) => {
   if (error.response && error.response.status === 401) {
-    // intercetor에서 토큰 재발급 수행
+    // interceptor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
     window.location.href = "/";
   } else if (error.msg && error.msg === "토큰 검증 실패") {
-    // intercetor에서 토큰 재발급 수행
+    // interceptor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
     window.location.href = "/";
   } else {
     // alert("문제가 발생했습니다. 다시 시도해주세요.");
   }
-};
-
-const closeModal = () => {
-  setModalOpen(false);
 };
 
 const setupInterceptors = (axiosInstance) => {
@@ -72,8 +64,6 @@ const setupInterceptors = (axiosInstance) => {
 
       // 토큰 재발급 수행
       if (status === 401) {
-        // redux에서 값 가져오기
-
         try {
           const { data } = await axios({
             method: "patch",
@@ -85,8 +75,8 @@ const setupInterceptors = (axiosInstance) => {
             throw new Error("토큰 검증 실패");
           }
 
-          // console.log(data);
-          store.dispatch(setToken(data.data)); // 새로운 토큰을 store에 저장
+          // 새로운 토큰을 store에 저장
+          store.dispatch(setToken(data.data));
           const newAccessToken = data.data.accessToken;
 
           originalRequest.headers = {
@@ -97,10 +87,10 @@ const setupInterceptors = (axiosInstance) => {
           return await axios(originalRequest);
         } catch (error) {
           // 로그아웃 시키기
-          dispatch(clearToken());
+          store.dispatch(clearToken()); // 여기서 store.dispatch를 사용해야 합니다.
           // 모달
           window.location.href = "/login";
-          new Error(error);
+          throw new Error(error); // 새로운 Error 객체를 던짐
         }
       }
       return Promise.reject(error);

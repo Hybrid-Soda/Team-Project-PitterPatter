@@ -28,8 +28,25 @@ function SFAChild() {
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [modalMessage, setModalMessage] = useState(''); 
+  const [isInitialPassword, setIsInitialPassword] = useState(false); // 초기 비밀번호 여부를 판단하기 위한 상태 변수 추가
 
   const {accessToken } = useSelector((state) => state.token);
+
+  // 페이지 로드 시 "0000" 비밀번호로 검증
+  useEffect(() => {
+    const checkInitialPassword = async () => {
+      try {
+        const response = await verify2fa(accessToken, "0000");
+        if (response.status === 200 && response.data.exception === undefined) {
+          handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+        }
+      } catch (error) {
+        // 오류 처리 (필요에 따라 추가)
+      }
+    };
+
+    checkInitialPassword();
+  }, []);
 
   useEffect(() => {
     const verifyPassword = async () => {
@@ -68,13 +85,17 @@ function SFAChild() {
         const msg = response.data.msg;
 
         if (exception === undefined) {
+          if (password === "0000") {
+            handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+            return false; // 초기 비밀번호일 경우 페이지 이동을 막음
+          }
           return true;
         } else {
-          handleMessage(msg);
+          handleMessage(msg, false);
           return false;
         }
       } else {
-        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.");
+        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
         return false;
       }
     } catch (error) {
@@ -83,13 +104,17 @@ function SFAChild() {
     }
   };
 
-  const handleMessage = (msg) => {
+  const handleMessage = (msg, isInitial = false) => {
     setModalMessage(msg);
     setIsModalOpen(true);
+    setIsInitialPassword(isInitial); // 초기 비밀번호 여부 설정
   }
 
   const closeModal = () => {
     setIsModalOpen(false);
+    if (isInitialPassword) {
+      navigator('/NewSFA'); // 초기 비밀번호일 경우 비밀번호 설정 페이지로 이동
+    }
   }
 
   return (
