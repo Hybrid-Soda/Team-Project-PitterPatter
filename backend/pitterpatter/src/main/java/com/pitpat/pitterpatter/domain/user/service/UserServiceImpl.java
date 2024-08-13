@@ -236,8 +236,8 @@ public class UserServiceImpl implements UserService{
         }
 
         // 6. 유저 정보를 DB에 업데이트
-        userRepository.updateTeamName(existingUser.getUserId(), updatedTeamName);
-        userRepository.updateTwoFa(existingUser.getUserId(), this.encode(updatedTwoFa));
+        userRepository.updateTeamName(existingUser.getUserId(), existingUser.getTeamName());
+        userRepository.updateTwoFa(existingUser.getUserId(), existingUser.getTwoFa());
 
         // 7. 플러시하여 변경 내용을 강제로 DB에 반영
         entityManager.flush();
