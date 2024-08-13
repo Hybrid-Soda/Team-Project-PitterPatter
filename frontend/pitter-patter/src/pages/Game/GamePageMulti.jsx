@@ -149,11 +149,10 @@ function GamePageMulti() {
     <MainWrap>
       <Header />
       {testCompleted ? (
-        isLoading ? (
-          <Loader /> // 로딩 중일 때 Loader 컴포넌트 표시
-        ) : (
-          <Unity onGameEnd={openAttModal} score={score} setScore={setScore} />
-        )
+        <div>
+          {isLoading && <Loader />}
+          <Unity onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} />
+        </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />
       )}
@@ -163,8 +162,8 @@ function GamePageMulti() {
           <Bar height={rivalScore} />
         </BarWrap>
         <NameWrap>
-          <Name me>나</Name>
-          <Name>상대방</Name>
+          <Name me>나 {score}</Name>
+          <Name>상대방 {rivalScore}</Name>
         </NameWrap>
       </GraphWrap>
       { isStarted ? <></> :
