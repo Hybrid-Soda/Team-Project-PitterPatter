@@ -23,9 +23,9 @@ function Attendance() {
 
   // 출석일 리스트 가져오기 
   const [dayList, setDayList] = useState([]);
-  // const childId = useSelector((state) => state.child.id);
-  const childId = 24;
-  const token = useSelector((state) => state.token.refreshToken);
+  const childId = useSelector((state) => state.child.id);
+  // const childId = 24;
+  const token = useSelector((state) => state.token.accessToken);
   const getDayList = async () => {
     try {
       const response = await childApi.get(`${childId}/play-record/attendance`, {
@@ -45,6 +45,9 @@ function Attendance() {
   useEffect(() => {
     getDayList();
   }, []); // 빈 배열을 의존성 배열로 설정하여 컴포넌트가 마운트될 때 한 번만 호출
+  useEffect(() => {
+    
+  }, [dayList]); // 빈 배열을 의존성 배열로 설정하여 컴포넌트가 마운트될 때 한 번만 호출
 
   const tileClassName = ({ date, view }) => {
     if (view === 'month') {
