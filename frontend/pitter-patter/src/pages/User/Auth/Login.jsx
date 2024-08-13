@@ -59,9 +59,8 @@ function Login() {
 
     // 아이디 필수 입력
     if (email === "" || email === undefined) {
-      setModalMessage("아이디를 입력해주세요.");
+      setModalMessage("이메일을 입력해주세요.");
       setModalOpen(true);
-      emailInputRef.current.focus();
       return;
     }
     
@@ -69,14 +68,12 @@ function Login() {
     if (password === "" || password === undefined) {
       setModalMessage("비밀번호를 입력해주세요.");
       setModalOpen(true);
-      passwordInputRef.current.focus();
       return;
     }
 
     if (!isEmailValid()) {
       setModalMessage("올바른 이메일 주소 형식으로 다시 입력해 주세요.");
       setModalOpen(true);
-      emailInputRef.current.focus();
       return;
     }
 
@@ -95,11 +92,11 @@ function Login() {
 
         // jwt 토큰을 여기서 redux에 저장시켜야 함
         dispatch(setToken({
-          grantType,
-          accessToken,
-          refreshToken,
-        })
-      );
+            grantType,
+            accessToken,
+            refreshToken,
+          })
+        );
         navigator("/select-profile");
       } else {
         setIsLoading(false);
@@ -127,11 +124,12 @@ function Login() {
 
   const closeModal = () => {
     setModalOpen(false);
+    if (modalMessage === "이메일을 입력해주세요." || modalMessage === "올바른 이메일 주소 형식으로 다시 입력해 주세요.") {
+      emailInputRef.current.focus();
+    } else if (modalMessage === "비밀번호를 입력해주세요.") {
+      passwordInputRef.current.focus();
+    }
   };
-
-  const test = async () => {
-    alert("카카오 소셜 로그인 클릭");
-  }
 
   return (
     <LayoutBase>
@@ -148,7 +146,7 @@ function Login() {
           <InputText
             type="text"
             id="id"
-            placeholder="아이디"
+            placeholder="이메일"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             ref={emailInputRef}
@@ -171,12 +169,12 @@ function Login() {
             </SignUp>
           </div>
         </form>
-        <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+        {/* <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
           <CenterText>또는</CenterText>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-evenly', width: '100%' }}>
           <SocialIcon src={kakao} alt="kakao" onClick={test}/>
-        </div>
+        </div> */}
       </LayoutLogin>
       }
       {modalOpen && <Modal message={modalMessage} onClose={closeModal} />}

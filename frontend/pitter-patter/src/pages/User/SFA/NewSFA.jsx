@@ -19,7 +19,7 @@ import Modal from './Modal'; // 모달 컴포넌트를 import 합니다
 import { updateUser } from "../userApi";
 
 function NewSFA() {
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -64,7 +64,7 @@ function NewSFA() {
         }
       }, 100);
     }
-  }, [password, confirmPassword, isFirstInput, navigate]);
+  }, [password, confirmPassword, isFirstInput, navigator]);
 
   const updateSFA = async () => {
     try {
@@ -90,14 +90,11 @@ function NewSFA() {
         // intercetor에서 토큰 재발급 수행
         setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
         setModalOpen(true);
-        navigator("/");
       } else if (error.msg && error.msg === "토큰 검증 실패") {
         // intercetor에서 토큰 재발급 수행
         setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
         setModalOpen(true);
-        navigator("/");
       } else {
-        console.log(error);
         setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
         setModalOpen(true);
       }
@@ -107,16 +104,17 @@ function NewSFA() {
   const closeModal = () => {
     setModalOpen(false);
     if (modalMessage === "새 2차 비밀번호가 설정되었습니다.") {
-      navigate("/mypage");
-    } else {
-      setPassword("");
-      setConfirmPassword("");
-      setIsFirstInput(true);
+      navigator("/mypage");
+    } else if (modalMessage === "로그인이 만료되었습니다. 다시 로그인 해주세요.") {
+      navigator("/login");
     }
+    setPassword("");
+    setConfirmPassword("");
+    setIsFirstInput(true);
   };
 
   const goBack = () => {
-    navigate(-1); // 뒤로가기 기능
+    navigator(-1); // 뒤로가기 기능
   };
 
   return (

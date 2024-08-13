@@ -21,7 +21,7 @@ import {
 } from "/src/pages/User/userApi.js";
 
 function ResetSFA() {
-    const navigate = useNavigate();
+    const navigator = useNavigate();
     const [searchParams] = useSearchParams();
 
     const [newPassword, setNewPassword] = useState("");
@@ -43,7 +43,7 @@ function ResetSFA() {
             const isValid = await isVerifiedEmailToken();
       
             if (!isValid) {
-              navigate('/expired');
+                navigator('/expired');
             }
         };
       
@@ -54,8 +54,7 @@ function ResetSFA() {
         // 새 2차 비밀번호는 필수 입력 값임.
         if (newPassword === "" || newPassword === undefined) {
             setModalMessage("새 2차 비밀번호를 입력해주세요.");
-		    setIsModalOpen(true)
-            newPasswordInputRef.current.focus();
+		    setIsModalOpen(true);
             return;
         }
 
@@ -72,13 +71,9 @@ function ResetSFA() {
                 if (exception === undefined) {
                     setModalMessage(msg);
 		            setIsModalOpen(true)
-                    navigate("/");
                 } else {
                     setModalMessage(msg);
 		            setIsModalOpen(true)
-                    if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
-                        navigate("/expired");
-                    }
                 }
             } else {
                 setIsLoading(false);
@@ -119,6 +114,13 @@ function ResetSFA() {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        if (modalMessage === "2차 비밀번호 재설정이 성공적으로 완료되었습니다.") {
+            navigator("/login");
+        } else if (modalMessage === "유효하지 않은 토큰입니다." || modalMessage === "해당 사용자가 존재하지 않습니다.") {
+            navigator("/expired");
+        } else if (modalMessage === "새 2차 비밀번호를 입력해주세요.") {
+            newPasswordInputRef.current.focus();
+        }
     }
 
     return (

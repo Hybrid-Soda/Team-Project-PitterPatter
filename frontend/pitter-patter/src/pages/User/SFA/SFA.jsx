@@ -22,7 +22,7 @@ import { verify2fa } from "/src/pages/User/userApi.js";
 import { handleReissueCatch } from '../../../apiService';
 
 function SFA() {
-  const navigate = useNavigate();
+  const navigator = useNavigate();
 
   const [password, setPassword] = useState("");
   const [forgotModalOpen, setForgotModalOpen] = useState(false);
@@ -37,7 +37,7 @@ function SFA() {
         const isVerified = await isVerifiedSFA();
         setPassword('');
         if (isVerified) {
-          navigate('/mypage');
+          navigator('/mypage');
         }
       }
     };
@@ -46,7 +46,7 @@ function SFA() {
   }, [password]);
 
   const goBack = () => {
-    navigate(-1); // 뒤로가기 기능
+    navigator(-1); // 뒤로가기 기능
   };
 
   const handleKeyPress = (value) => {

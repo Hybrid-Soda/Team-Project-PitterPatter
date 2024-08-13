@@ -81,11 +81,9 @@ function UserInfo({ onMessage }) {
             }, 100);
           } else {
             onMessage(msg);
-            navigator("/");
           }
         } else {
           onMessage("사용자 정보를 가져올 수 없습니다.");
-          navigator("/")
         }
       } catch (error) {
         handleReissueCatch(error);
@@ -140,10 +138,6 @@ function UserInfo({ onMessage }) {
           <InputTitle>아이디</InputTitle>
           <InputBox type="text" value={email} disabled />
         </InputItem>
-        {/* <InputItem>
-          <InputTitle>가입일</InputTitle>
-          <InputBox type="date" placeholder="created-at" />
-        </InputItem> */}
         <InputItem>
           <InputTitle>가족 팀 이름</InputTitle>
           <InputBox 

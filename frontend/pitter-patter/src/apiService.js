@@ -45,7 +45,7 @@ export const handleReissueCatch = (error) => {
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
     window.location.href = "/";
   } else {
-    alert("문제가 발생했습니다. 다시 시도해주세요.");
+    // alert("문제가 발생했습니다. 다시 시도해주세요.");
   }
 };
 
@@ -85,7 +85,7 @@ const setupInterceptors = (axiosInstance) => {
             throw new Error("토큰 검증 실패");
           }
 
-          console.log(data);
+          // console.log(data);
           store.dispatch(setToken(data.data)); // 새로운 토큰을 store에 저장
           const newAccessToken = data.data.accessToken;
 

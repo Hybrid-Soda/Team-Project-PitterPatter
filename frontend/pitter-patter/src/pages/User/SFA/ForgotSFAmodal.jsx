@@ -15,7 +15,7 @@ import Loader from "../../Components/loader.jsx";
 import { sendReset2faEmail } from "/src/pages/User/userApi.js";
 
 function ForgotSFAModal({ onClose, onMessage }) {
-    const navigate = useNavigate();
+    const navigator = useNavigate();
     
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState(false);
