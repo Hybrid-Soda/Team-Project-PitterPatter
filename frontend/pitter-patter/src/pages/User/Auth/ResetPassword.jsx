@@ -72,7 +72,6 @@ function ResetPassword() {
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    dispatch(clearToken()); // 로그아웃
                     setModalMessage(msg);
 		            setIsModalOpen(true);
                 } else {
@@ -119,6 +118,7 @@ function ResetPassword() {
     const closeModal = () => {
         setIsModalOpen(false);
         if (modalMessage === "비밀번호 재설정이 성공적으로 완료되었습니다.") {
+            dispatch(clearToken()); // 로그아웃
             navigator("/login");
         } else if (modalMessage === "해당 사용자가 존재하지 않습니다." || modalMessage === "유효하지 않은 토큰입니다.") {
             navigator("/expired");

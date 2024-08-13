@@ -65,7 +65,6 @@ function MyPage() {
                 <Link to="/delete-user">회원 탈퇴</Link>
               </MenuItem>
               </MenuItemWrap>
-              {/* {deleteModalOpen && <DeleteUser onClose={() => setDeleteModalOpen(false)} />} */}
           </MenuWrap>
           <MainWrap>
             {activeComponent === 'userInfo' && <UserInfo onMessage={handleMessage} />}
