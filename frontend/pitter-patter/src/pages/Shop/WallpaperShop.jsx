@@ -18,6 +18,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { assetsApi } from '../../apiService';
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setItem } from "../../redux/itemSlice";
 
 import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal'; 
@@ -130,6 +132,8 @@ function WallpaperShop() {
     Navigator(-1);
   };
 
+  const dispatch = useDispatch();
+
   const save = async () => {
     if (onWallpaper && !onWallpaper.on) { 
       try {
@@ -138,6 +142,9 @@ function WallpaperShop() {
             Authorization: `${jwtToken}`,
           },
         });
+
+        dispatch(setItem({ backgroundItem: onWallpaper.id }))
+
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);

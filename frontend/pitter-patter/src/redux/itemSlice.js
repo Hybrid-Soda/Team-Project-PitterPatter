@@ -36,8 +36,12 @@ export const itemSlice = createSlice({
       state.error = null;
     },
     setItem: (state, action) => {
-      state.frameItem = action.payload[0] ? action.payload[0].photo : 1;
-      state.backgroundItem = action.payload[1] ? action.payload[1].id : 1;
+      if (action.payload.frameItem !== undefined) {
+        state.frameItem = action.payload.frameItem;
+      }
+      if (action.payload.backgroundItem !== undefined) {
+        state.backgroundItem = action.payload.backgroundItem;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -48,9 +52,7 @@ export const itemSlice = createSlice({
       .addCase(getItem.fulfilled, (state, action) => {
         state.status = "succeeded";
         console.log(action.payload);
-        state.frameItem = action.payload[0]
-          ? action.payload[0].photo
-          : "https://ssafy-common.b-cdn.net/background_1.png";
+        state.frameItem = action.payload[0] ? action.payload[0].id : 1;
         state.backgroundItem = action.payload[1] ? action.payload[1].id : 1;
       })
       .addCase(getItem.rejected, (state, action) => {
