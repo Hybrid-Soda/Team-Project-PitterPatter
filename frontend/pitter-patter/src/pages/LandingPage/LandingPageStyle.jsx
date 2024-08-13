@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import LandingBackground from "/src/assets/img/Background/Landing.png";
+import pointerImg from "/src/assets/cursor/pointer.png";
 
 export const MainWrap = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ export const LayoutHeader = styled.div`
 
 export const LogoImg = styled.img`
   height: 80%;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${pointerImg}), pointer !important;
 `;
 
 export const LayoutHeaderButton = styled.div`
@@ -51,7 +52,7 @@ export const HeaderButton = styled.img`
   height: 3vw;
   /* margin: 0 15%; */
   border-radius: 50%;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${pointerImg}), pointer !important;
 `;
 
 export const MainColumn = styled.div`
@@ -90,7 +91,7 @@ export const Button = styled.button`
   border-radius: 2vw;
   padding: 1vw 4vw;
   margin-bottom: 2vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
   box-shadow: 0 5px 0 0vw var(--logo-yellow-color);
   font-size: 1.2vw;
   font-weight: bold;
@@ -111,5 +112,5 @@ export const TextButton = styled.div`
   font-size: 1em;
   text-decoration: underline;
   color: var(--font-color);
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${pointerImg}), pointer !important;
 `;

@@ -49,7 +49,7 @@ export const BackArrow = styled.a`
   padding: 2vw 1vh;
   display: flex;
   justify-content: flex-start;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
 `;
 
 export const ArrowPic = styled.img`
@@ -74,7 +74,7 @@ export const MenuItem = styled.button`
   box-shadow: none;
   background: none;
   border: none;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
 
   &.selected {
     color: #629d1b;

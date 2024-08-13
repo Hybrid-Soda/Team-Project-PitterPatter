@@ -32,7 +32,7 @@ const CloseButton = styled.button`
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 5px;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
 `;
 
 const ModalImg = styled.img`

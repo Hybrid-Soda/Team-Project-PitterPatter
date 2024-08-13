@@ -196,7 +196,7 @@ function SnapshotShop() {
       console.log('로그')
     } catch (error) {
       console.log("Error fetching point records:", error.response.data.msg);
-      alert(error.response.data.msg);
+      // alert(error.response.data.msg);
     }
   };
 
