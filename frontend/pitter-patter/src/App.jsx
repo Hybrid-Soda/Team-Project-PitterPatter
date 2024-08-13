@@ -1,7 +1,7 @@
 import React from 'react';
-import { useEffect } from 'react';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import LandingPage from './pages/LandingPage/LandingPage';
 import GamePage from './pages/Game/GamePage';
 import GamePageMulti from './pages/Game/GamePageMulti';
@@ -30,49 +30,50 @@ import SFAChild from './pages/User/SFA/SFAChild';
 import ChildMyPage from './pages/User/MyPage/ChildMyPage';
 import Expired from "./pages/Expired";
 import ForgotPassword from './pages/User/Auth/ForgotPassword';
+import ProtectedRoute from './ProtectedRoute'; // 추가된 컴포넌트 임포트
 
 function App() {
   return (
     <BrowserRouter>
       <div>
         <Routes>
-        <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />} />
 
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/game/multi" element={<GamePageMulti />} />
-        <Route path="/game/select-mode" element={<SelectMode />} />
-        <Route path="/game/snapshot" element={<Snapshot />} />
-        <Route path="/game/snapshot/result" element={<SnapshotResult />} />
+          <Route path="/game" element={<ProtectedRoute element={GamePage} />} />
+          <Route path="/game/multi" element={<ProtectedRoute element={GamePageMulti} />} />
+          <Route path="/game/select-mode" element={<ProtectedRoute element={SelectMode} />} />
+          <Route path="/game/snapshot" element={<ProtectedRoute element={Snapshot} />} />
+          <Route path="/game/snapshot/result" element={<ProtectedRoute element={SnapshotResult} />} />
 
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/shop/snapshot" element={<SnapshotShop />} />
-        <Route path="/shop/wallpaper" element={<WallpaperShop />} />
+          <Route path="/shop" element={<ProtectedRoute element={Shop} />} />
+          <Route path="/shop/snapshot" element={<ProtectedRoute element={SnapshotShop} />} />
+          <Route path="/shop/wallpaper" element={<ProtectedRoute element={WallpaperShop} />} />
 
-        <Route path="/attendance" element={<Attendance />} />
-        <Route path="/calendar" element={<CalendarPage />} />
-        <Route path="/rank" element={<Rank />} />
+          <Route path="/attendance" element={<ProtectedRoute element={Attendance} />} />
+          <Route path="/calendar" element={<ProtectedRoute element={CalendarPage} />} />
+          <Route path="/rank" element={<ProtectedRoute element={Rank} />} />
 
-        <Route path="/child/*" element={<ChildPage />} />
-        <Route path='/child/mypage' element={<ChildMyPage />}></Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path='/reset-sfa' element={<ResetSFA />} />
-        <Route path="/select-profile" element={<SelectProfile />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/mypage/change-password" element={<ChangePassword />} />
-        <Route path="/mypage/delete-user" element={<DeleteUser />} />
-        <Route path="/sfa" element={<SFA />} />
-        <Route path="/sfa-child" element={<SFAChild />}></Route>
-        <Route path='/newsfa' element={<NewSFA />} />
-        <Route path='/expired' element={<Expired />} />
-        <Route path='/forgot-password' element={<ForgotPassword />} />
-        
-        <Route path="*" element={<Error />} />
+          <Route path="/child/*" element={<ProtectedRoute element={ChildPage} />} />
+          <Route path='/child/mypage' element={<ProtectedRoute element={ChildMyPage} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path='/reset-sfa' element={<ResetSFA />} />
+          <Route path="/select-profile" element={<ProtectedRoute element={SelectProfile} />} />
+          <Route path="/mypage" element={<ProtectedRoute element={MyPage} />} />
+          <Route path="/mypage/change-password" element={<ProtectedRoute element={ChangePassword} />} />
+          <Route path="/mypage/delete-user" element={<ProtectedRoute element={DeleteUser} />} />
+          <Route path="/sfa" element={<ProtectedRoute element={SFA} />} />
+          <Route path="/sfa-child" element={<ProtectedRoute element={SFAChild} />} />
+          <Route path='/newsfa' element={<ProtectedRoute element={NewSFA} />} />
+          <Route path='/expired' element={<Expired />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+
+          <Route path="*" element={<Error />} />
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
