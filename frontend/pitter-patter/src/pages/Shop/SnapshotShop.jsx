@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assetsApi } from '../../apiService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setItem } from '../../redux/itemSlice';
 
 import { 
   Blank, 
@@ -33,6 +34,7 @@ import BackgroundImg from "/src/assets/img/Background/YellowWave.png";
 
 function SnapshotShop() {
   const Navigator = useNavigate();
+  const dispatch = useDispatch();
 
   const [frames, setFrames] = useState([]);
   const [points, setPoints] = useState(0);
@@ -143,6 +145,9 @@ function SnapshotShop() {
             Authorization: `${jwtToken}`,
           },
         });
+
+        dispatch(setItem({frameItem: onFrame.id}))
+
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);

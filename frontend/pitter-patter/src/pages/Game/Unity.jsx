@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [landmarks, setLandmarks] = useState("");
-  const backgroundNum = useSelector((state) => state.item.backgroundNum);
+  const backgroundNum = useSelector((state) => state.item.backgroundItem);
 
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
     loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
