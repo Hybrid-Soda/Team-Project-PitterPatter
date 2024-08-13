@@ -14,6 +14,8 @@ import Modal from '../../Components/modal';
 import Loader from "../../Components/loader.jsx";
 import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
+import { clearToken } from '../../../redux/tokenSlice.js';
+import { useDispatch } from 'react-redux';
 
 import {
     resetPasswordByEmailToken,
@@ -21,7 +23,8 @@ import {
  } from "/src/pages/User/userApi.js";
 
 function ResetPassword() {
-    const navigate = useNavigate();
+    const navigator = useNavigate();
+    const dispatch = useDispatch();
     const [searchParams] = useSearchParams();
 
     const [newPassword, setNewPassword] = useState("");
@@ -43,7 +46,7 @@ function ResetPassword() {
             const isValid = await isVerifiedEmailToken();
       
             if (!isValid) {
-              navigate('/expired');
+              navigator('/expired');
             }
         };
       
@@ -55,7 +58,6 @@ function ResetPassword() {
         if (newPassword === "" || newPassword === undefined) {
             setModalMessage("새 비밀번호를 입력해주세요.");
             setIsModalOpen(true);
-            newPasswordInputRef.current.focus();
             return;
         }
 
@@ -70,16 +72,12 @@ function ResetPassword() {
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    // 비밀번호 변경 시 로그아웃 되도록 추가
+                    dispatch(clearToken()); // 로그아웃
                     setModalMessage(msg);
 		            setIsModalOpen(true);
-                    navigate("/login");
                 } else {
                     setModalMessage(msg);
 		            setIsModalOpen(true);
-                    if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
-                        navigate("/expired");
-                    }
                 }
             } else {
                 setIsLoading(false);
@@ -120,6 +118,13 @@ function ResetPassword() {
 
     const closeModal = () => {
         setIsModalOpen(false);
+        if (modalMessage === "비밀번호 재설정이 성공적으로 완료되었습니다.") {
+            navigator("/login");
+        } else if (modalMessage === "해당 사용자가 존재하지 않습니다." || modalMessage === "유효하지 않은 토큰입니다.") {
+            navigator("/expired");
+        } else if (modalMessage === "새 비밀번호를 입력해주세요.") {
+            newPasswordInputRef.current.focus();
+        }
     }
 
     return (

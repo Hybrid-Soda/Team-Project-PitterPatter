@@ -18,7 +18,7 @@ import {
 } from "/src/pages/User/userApi.js";
 
 function ForgotPassword() {
-    const navigate = useNavigate();
+    const navigator = useNavigate();
     
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState(false);
@@ -72,7 +72,7 @@ function ForgotPassword() {
     const closeModal = () => {
         setIsModalOpen(false);
         if (modalMessage === "비밀번호 재설정 메일이 발송되었습니다.") {
-            navigate("/login");
+            navigator("/login");
         }
     }
 

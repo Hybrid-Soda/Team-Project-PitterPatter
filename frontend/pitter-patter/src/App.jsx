@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, RouterProvider } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import LandingPage from './pages/LandingPage/LandingPage';
@@ -22,7 +22,6 @@ import SelectProfile from './pages/User/SelectProfile';
 import MyPage from './pages/User/MyPage/MyPage';
 import SFA from './pages/User/SFA/SFA';
 import ChangePassword from './pages/User/MyPage/ChangePassword';
-import DeleteUser from './pages/User/MyPage/DeleteUser';
 import ResetPassword from './pages/User/Auth/ResetPassword';
 import ResetSFA from './pages/User/Auth/ResetSFA';
 import NewSFA from './pages/User/SFA/NewSFA';
@@ -31,6 +30,7 @@ import ChildMyPage from './pages/User/MyPage/ChildMyPage';
 import Expired from "./pages/Expired";
 import ForgotPassword from './pages/User/Auth/ForgotPassword';
 import ProtectedRoute from './ProtectedRoute'; // 추가된 컴포넌트 임포트
+import DeleteUser from './pages/User/MyPage/DeleteUser';
 
 function App() {
   return (
@@ -62,7 +62,7 @@ function App() {
           <Route path="/select-profile" element={<ProtectedRoute element={SelectProfile} />} />
           <Route path="/mypage" element={<ProtectedRoute element={MyPage} />} />
           <Route path="/mypage/change-password" element={<ProtectedRoute element={ChangePassword} />} />
-          <Route path="/mypage/delete-user" element={<ProtectedRoute element={DeleteUser} />} />
+          <Route path="/delete-user" element={<DeleteUser />} />
           <Route path="/sfa" element={<ProtectedRoute element={SFA} />} />
           <Route path="/sfa-child" element={<ProtectedRoute element={SFAChild} />} />
           <Route path='/newsfa' element={<ProtectedRoute element={NewSFA} />} />
