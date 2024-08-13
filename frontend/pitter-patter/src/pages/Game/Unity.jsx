@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
 
-const UnityComponent = ({ onGameEnd }) => {
+const UnityComponent = ({ onGameEnd, isLoading, setIsLoading }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [landmarks, setLandmarks] = useState("")
   const [score, setScore] = useState()
@@ -16,7 +16,8 @@ const UnityComponent = ({ onGameEnd }) => {
       codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm",
   });
 
-  const handleGameEnd = useCallback((score, isGameEnd) => {
+  const handleGameEnd = useCallback((score, isGameEnd, isLoading) => {
+    setIsLoading(isLoading);
     setIsGameEnd(isGameEnd);
     setScore(score);
   }, []);
@@ -51,6 +52,14 @@ const UnityComponent = ({ onGameEnd }) => {
     }
   }, [sendMessage, landmarks, backgroundNum]);
 
+  // 컴포넌트가 마운트될 때 로딩 상태 true, 언마운트될 때 로딩 상태 false
+  useEffect(() => {
+    setIsLoading(true); // 로딩 시작
+    return () => {
+      setIsLoading(false); // 로딩 종료
+    };
+  }, [setIsLoading]);
+
   // 컴포넌트 Unmount 시 유니티 종료
   useEffect(() => {
     return () => {
@@ -67,24 +76,9 @@ const UnityComponent = ({ onGameEnd }) => {
     setLandmarks(newLandmarks);
   };
 
-  const unityContainerStyle = {
-    width: "100%",
-    height: "80%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  };
-
   return (
-    <div style={unityContainerStyle}>
-      <Unity 
-        unityProvider={unityProvider} 
-        style={{ width: '75%', height: '95%' }} 
-      />
-
-      {/* <p>{`You've scored ${score} points.`}</p>
-      <p>{`isGameEnd = ${isGameEnd}`}</p> */}
+    <div>
+      <Unity unityProvider={unityProvider} style={{ width: '90vw', maxWidth: '1200px', height: 'auto' }}/>
       <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );
