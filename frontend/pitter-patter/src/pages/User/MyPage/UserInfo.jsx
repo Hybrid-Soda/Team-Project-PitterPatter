@@ -122,12 +122,10 @@ function UserInfo({ onMessage }) {
           }, 100)
           onMessage("회원정보가 성공적으로 변경되었습니다.");
         } else {
-          console.log(msg);
           onMessage(msg);
         }
       }
     } catch (error) {
-      console.log(error);
       handleReissueCatch(error);
     }
   }
