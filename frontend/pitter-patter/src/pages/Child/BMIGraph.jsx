@@ -15,15 +15,15 @@ import {
 function BMIGraph() {
   const [data, setData] = useState([]);
 
-  const child = useSelector((state) => state.child);
-  const token = `Bearer ${useSelector((state) => state.token.refreshToken)}`;
+  const childId = useSelector((state) => state.child.id);
+  const token = `Bearer ${useSelector((state) => state.token.accessToken)}`;
 
-  const childId = child.id; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
-  const endDate = '2024-08-05';
+  const endDate = '2024-08-16';
   const age = 10; // 테스트용 나이
-  const gender = 'male'; // 테스트용 성별
-  const childName = "배준짱"; // 테스트용 이름
+  const gender = useSelector((state) => state.child.gender)
+  // const childName = "배준짱"; // 테스트용 이름
+  const nickname = useSelector((state) => state.child.nickname);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,8 +106,8 @@ function BMIGraph() {
         </LayoutGraphList>
       </LayoutActivityPage>
       <GraphFooter>
-        <p>현재 BMI는 {data.length !== 0 ? data[data.length - 1].bmi : '###'} 입니다. </p>
-        <p>{childName} 님의 나이에서 해당 BMI는 {data.length !== 0 ? <span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span> : '###'} 입니다. </p>
+        <p>{data.length !== 0 ? `현재 BMI는 ${data[data.length - 1].bmi}입니다.` : '키와 몸무게를 먼저 등록해주세요.'} </p>
+        <p>{data.length !== 0 ? `${nickname} 님의 나이에서 해당 BMI는 ${<span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span>}입니다.` : ''} </p>
       </GraphFooter>
     </ContentBody>
   );

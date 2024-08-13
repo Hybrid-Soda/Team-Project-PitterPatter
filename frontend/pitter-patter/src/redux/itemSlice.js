@@ -18,7 +18,6 @@ export const getItem = createAsyncThunk(
             return response.data;
         } catch (error) {
             console.log('API Error:', error.response.data); // 에러 데이터 출력
-            console.log(token);
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }
@@ -27,12 +26,23 @@ export const getItem = createAsyncThunk(
 export const itemSlice = createSlice({
     name: 'item',
     initialState: {
-        frameItem: 1,
+        frameItem: "https://ssafy-common.b-cdn.net/background_1.png",
         backgroundItem: 1,
         status: 'idle',
         error: null,
     },
-    reducers: {},
+    reducers: {
+        clearItem: (state) => {
+            state.frameItem = "https://ssafy-common.b-cdn.net/background_1.png";
+            state.backgroundItem = 1;
+            state.status = 'idle';
+            state.error = null;
+        },
+        setItem: (state, action) => {
+            state.frameItem = action.payload[0] ? action.payload[0].photo : "https://ssafy-common.b-cdn.net/background_1.png";
+            state.backgroundItem = action.payload[1] ? action.payload[1].id : 1;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getItem.pending, (state) => {
@@ -41,8 +51,8 @@ export const itemSlice = createSlice({
             .addCase(getItem.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 console.log(action.payload);
-                state.frameItem = action.payload[0] ? action.payload[0].id : 1;
-                state.backgroundItem = action.payload[1]? action.payload[1].id : 1;
+                state.frameItem = action.payload[0] ? action.payload[0].photo : "https://ssafy-common.b-cdn.net/background_1.png";
+                state.backgroundItem = action.payload[1] ? action.payload[1].id : 1;
             })
             .addCase(getItem.rejected, (state, action) => {
                 state.status = 'failed';
@@ -50,5 +60,8 @@ export const itemSlice = createSlice({
             });
     },
 });
+
+// 액션 생성자(export 하기)
+export const { clearItem, setItem } = itemSlice.actions;
 
 export default itemSlice.reducer;

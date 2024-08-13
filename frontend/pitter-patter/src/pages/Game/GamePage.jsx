@@ -7,7 +7,7 @@ import Unity from "./Unity";
 import { getWallpaper } from "./gameApi.js";
 import AttModal from "./AttModal";
 import { useSelector } from "react-redux";
-import { assetsApi, childApi } from "../../apiService.js";
+import { assetsApi, gameApi } from "../../apiService.js";
 import Loader from "../Components/loader.jsx";
 
 function GamePage() {
@@ -31,7 +31,7 @@ function GamePage() {
 
   const openAttModal = async () => {
     try {
-      const firstResponse = await childApi.post(`/${childId}`, {
+      const firstResponse = await gameApi.post(`/${childId}`, {
         score: 0,
         playtime: 0,
         burnedCalorie: 0,
@@ -44,7 +44,7 @@ function GamePage() {
       console.log('첫 번째 요청 성공:', firstResponse.data);
 
       if (firstResponse.data.result === true) {
-        const secondResponse = await assetsApi.post('/point', {
+        const secondResponse = await assetsApi.patch('/point', {
           amount: 12,
           source: '게임 플레이 보상',
           childId: childId,
@@ -54,9 +54,10 @@ function GamePage() {
           },
         });
 
-        console.log('두 번째 포인트 지급 성공:', secondResponse.data);
+        console.log('두 번째 포인트 지급 성공:', secondResponse.data);      
+        setAttModalOpen(true);
       } else {
-        const secondResponse = await assetsApi.post('/point', {
+        const secondResponse = await assetsApi.patch('/point', {
           amount: 2,
           source: '게임 플레이 보상',
           childId: childId,
@@ -69,7 +70,6 @@ function GamePage() {
         console.log('두 번째 포인트 지급 성공:', secondResponse.data);
       }
 
-      setAttModalOpen(true);
     } catch (error) {
       console.error('요청 실패:', error);
     }

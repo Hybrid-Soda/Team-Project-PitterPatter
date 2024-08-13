@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearChild } from '../../redux/childSlice';
+import { clearToken } from '../../redux/tokenSlice';
 import Modal from '../Components/modal';
 
 const ModalOverlay = styled.div`
@@ -62,8 +63,13 @@ function ProfileModal({ isOpen, onClose }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const childId = useSelector((state) => state.child.id);
+  const token = useSelector((state) => state.token.accessToken);
 
   const handleNavigation = (path) => {
+    if (token === null) {
+      navigate('/login');
+      return
+    }
     navigate(path);
   };
 
@@ -74,6 +80,7 @@ function ProfileModal({ isOpen, onClose }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogout = () => {
+    dispatch(clearToken());
     dispatch(clearChild());
     setIsModalOpen(true);
   };
