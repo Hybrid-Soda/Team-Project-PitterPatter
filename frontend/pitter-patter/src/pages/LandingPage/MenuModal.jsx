@@ -31,6 +31,7 @@ const NavItemWrap = styled.div`
   padding: 15px;
   width: 15vw;
   cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  transition: opacity .3s;
 
   &:hover {
     opacity: .5;

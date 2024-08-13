@@ -13,7 +13,7 @@ const timeout = 5000;
 export const hostApi = axios.create({
   baseURL: host,
   timeout: timeout,
-})
+});
 
 export const userApi = axios.create({
   baseURL: `${baseURL}/user`,
@@ -39,11 +39,11 @@ export const handleReissueCatch = (error) => {
   if (error.response && error.response.status === 401) {
     // intercetor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    window.location.href="/";
+    window.location.href = "/";
   } else if (error.msg && error.msg === "토큰 검증 실패") {
     // intercetor에서 토큰 재발급 수행
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    window.location.href="/";
+    window.location.href = "/";
   } else {
     alert("문제가 발생했습니다. 다시 시도해주세요.");
   }
@@ -53,7 +53,7 @@ const closeModal = () => {
   setModalOpen(false);
 };
 
-const setupInterceptors = (axiosInstance) => { 
+const setupInterceptors = (axiosInstance) => {
   // 응답 인터셉터 설정
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -65,119 +65,33 @@ const setupInterceptors = (axiosInstance) => {
         config,
         response: { status },
       } = error;
-  
+
       const originalRequest = config;
       const state = store.getState(); // store에서 상태를 가져옵니다.
       const { refreshToken, accessToken } = state.token;
 
-      const createModal = (message) => {
-        // 모달 컨테이너 생성
-        const modalContainer = document.createElement('div');
-        modalContainer.style.position = 'fixed';
-        modalContainer.style.top = 0;
-        modalContainer.style.left = 0;
-        modalContainer.style.right = 0;
-        modalContainer.style.bottom = 0;
-        modalContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        modalContainer.style.display = 'flex';
-        modalContainer.style.justifyContent = 'center';
-        modalContainer.style.alignItems = 'center';
-        modalContainer.style.zIndex = 9999;
-      
-        // 모달 내용 생성
-        const modalContent = document.createElement('div');
-        modalContent.style.backgroundColor = 'white';
-        modalContent.style.padding = '2rem';
-        modalContent.style.borderRadius = '2rem';
-        modalContent.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        modalContent.style.maxWidth = '500px';
-        modalContent.style.width = '100%';
-        modalContent.style.textAlign = 'center';
-      
-        // 메시지 추가
-        const modalMessage = document.createElement('p');
-        modalMessage.innerText = message;
-        modalMessage.style.fontSize = '1.5rem';
-        modalContent.appendChild(modalMessage);
-      
-        // 닫기 버튼 추가
-        const closeButton = document.createElement('button');
-        closeButton.innerText = '확인';
-        closeButton.style.marginTop = '1rem';
-        closeButton.style.padding = '0.5rem 1rem';
-        closeButton.style.borderRadius = '10rem';
-        closeButton.style.border = 'none';
-        closeButton.style.backgroundColor = 'var(--box-yellow-color)';
-        closeButton.style.boxShadow = '0 5px 0 0 var(--logo-yellow-color)';
-        closeButton.style.color = 'black';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.fontSize = '1rem';
-
-        // hover 이벤트 추가
-        closeButton.addEventListener('mouseover', () => {
-          closeButton.style.boxShadow = '0 4px 0 0 var(--logo-yellow-color)';
-          closeButton.style.transform = 'translateY(1px)';
-        });
-
-        closeButton.addEventListener('mouseout', () => {
-          closeButton.style.boxShadow = '';
-          closeButton.style.transform = '';
-        });
-
-        // active 이벤트 추가
-        closeButton.addEventListener('mousedown', () => {
-          closeButton.style.boxShadow = '0 0 0 0 var(--logo-yellow-color)';
-          closeButton.style.transform = 'translateY(2px)';
-        });
-
-        closeButton.addEventListener('mouseup', () => {
-          closeButton.style.boxShadow = '0 4px 0 0 var(--logo-yellow-color)';
-          closeButton.style.transform = 'translateY(1px)';
-        });
-      
-        closeButton.onclick = () => {
-          document.body.removeChild(modalContainer);
-          window.location.href = '/login';
-        };
-      
-        modalContent.appendChild(closeButton);
-        modalContainer.appendChild(modalContent);
-      
-        // 모달을 body에 추가
-        document.body.appendChild(modalContainer);
-      };
-
-      if (refreshToken === null) {
-      // alert("로그인이 필요한 서비스입니다.")
-      createModal("로그인이 필요한 서비스입니다.");
-      setInterval(() => {
-      window.location.href = "/login";
-      }, 3000);
-        return;
-      }
-      
       // 토큰 재발급 수행
       if (status === 401) {
         // redux에서 값 가져오기
-  
+
         try {
           const { data } = await axios({
-            method: 'patch',
+            method: "patch",
             url: `https://pitter-patter.picel.net/api/user/reissue`,
-            headers: { "Authorization": `Bearer ${refreshToken}` },
+            headers: { Authorization: `Bearer ${refreshToken}` },
           });
 
           if (data.exception !== undefined) {
             throw new Error("토큰 검증 실패");
           }
-          
+
           console.log(data);
           store.dispatch(setToken(data.data)); // 새로운 토큰을 store에 저장
           const newAccessToken = data.data.accessToken;
 
           originalRequest.headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${newAccessToken}`
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${newAccessToken}`,
           };
 
           return await axios(originalRequest);
@@ -185,7 +99,7 @@ const setupInterceptors = (axiosInstance) => {
           // 로그아웃 시키기
           dispatch(clearToken());
           // 모달
-          window.location.href="/login";
+          window.location.href = "/login";
           new Error(error);
         }
       }
@@ -197,17 +111,17 @@ const setupInterceptors = (axiosInstance) => {
 const handleError = (error) => {
   // 오류 처리
   if (error.response) {
-   // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
-   console.error('Error Response Status:', error.response.status);
-   console.error('Error Response Data:', error.response.data);
-   console.error('Error Response Headers:', error.response.headers);
- } else if (error.request) {
-   // 요청은 성공적으로 전송되었지만 응답을 받지 못함
-   console.error('Error Request:', error.request);
- } else {
-   // 요청 설정에서 발생한 오류
-   console.error('Error Message:', error.message);
- }
+    // 서버가 응답을 반환했지만 상태 코드가 2xx 범위가 아님
+    console.error("Error Response Status:", error.response.status);
+    console.error("Error Response Data:", error.response.data);
+    console.error("Error Response Headers:", error.response.headers);
+  } else if (error.request) {
+    // 요청은 성공적으로 전송되었지만 응답을 받지 못함
+    console.error("Error Request:", error.request);
+  } else {
+    // 요청 설정에서 발생한 오류
+    console.error("Error Message:", error.message);
+  }
 };
 
 // 각 Axios 인스턴스에 인터셉터 적용
