@@ -11,6 +11,7 @@ export const MainWrap = styled.div`
   align-items: center;
   margin: 0;
   box-sizing: border-box;
+  overflow: hidden;
 `;
 
 export const Loader = styled.div`
