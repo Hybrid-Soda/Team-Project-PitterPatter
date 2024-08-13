@@ -2,10 +2,9 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
 
-const UnityComponent = ({ onGameEnd, isLoading, setIsLoading }) => {
+const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [landmarks, setLandmarks] = useState("")
-  const [score, setScore] = useState()
   const backgroundNum = 3
 
   // Provide Unity
