@@ -1,4 +1,4 @@
-import { MainWrap, MyGame, GraphWrap, BarWrap, Bar, NameWrap, Name } from "./GamePageMultiStyle";
+import { MainWrap, GraphWrap, BarWrap, Bar, NameWrap, Name } from "./GamePageMultiStyle";
 import Header from "../LandingPage/Header";
 import MultiSelectModal from "./MultiSelectModal";
 import React, { useState, useEffect } from "react";
@@ -162,8 +162,8 @@ function GamePageMulti() {
           <Bar height={rivalScore} />
         </BarWrap>
         <NameWrap>
-          <Name me>나 {score}</Name>
-          <Name>상대방 {rivalScore}</Name>
+          <Name me>나<br /><br />{score}</Name>
+          <Name>상대<br /><br />{rivalScore}</Name>
         </NameWrap>
       </GraphWrap>
       { isStarted ? <></> :

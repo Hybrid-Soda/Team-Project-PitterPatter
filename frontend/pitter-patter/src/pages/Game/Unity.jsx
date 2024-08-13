@@ -76,8 +76,11 @@ const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore })
   };
 
   return (
-    <div>
-      <Unity unityProvider={unityProvider} style={{ width: '90vw', height: 'auto' }}/>
+    <div style={{
+      display: isLoading ? "none" : "block",
+    }}>
+      <Unity unityProvider={unityProvider} style={{
+        height: '80vh', width: 'auto', aspectRatio: '16/9', margin: '0 auto' }}/>
       <MotionCapture onLandmarksUpdate={UpdateLandmark} />
     </div>
   );
