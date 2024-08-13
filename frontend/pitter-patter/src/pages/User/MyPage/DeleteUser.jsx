@@ -1,13 +1,20 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import userdelete from "../../../assets/img/User/userdelete.png";
-
+import { useDispatch } from 'react-redux';
+import { clearChild } from '../../../redux/childSlice';
+import { clearToken } from '../../../redux/tokenSlice';
 import { 
     LayoutBase, 
-    // LayoutModal, 
+    // LayoutModal,
     LayoutTitle, 
 } from '../SFA/ForgotSFAmodalStyle';
+import Modal from '../../Components/modal';
+
+import { deleteUser} from "/src/pages/User/userApi.js";
+import { handleReissueCatch } from '../../../apiService';
 
 const DeleteUserImage = styled.img`
     width: 10vw;
@@ -36,6 +43,63 @@ const SubmitButton = styled.button`
 `
 
 function DeleteUser({ onClose }) {
+    const navigator = useNavigate();
+    const dispatch = useDispatch();
+
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [modalMessage, setModalMessage] = useState(''); 
+    const {accessToken } = useSelector((state) => state.token);
+
+    useEffect(() => {
+        const handleDeleteUser = async () => {
+            const isDeleted = await doDeleteUser();
+            // const isDeleted = true;
+            if (isDeleted) {
+                dispatch(clearChild());
+                dispatch(clearToken());
+            }
+        };
+
+        handleDeleteUser();
+    }, []);
+
+    const doDeleteUser = async () => {
+        try {
+          const response = await deleteUser(accessToken);
+    
+          if (response.status === 200) {
+            const exception = response.data.exception;
+            const msg = response.data.exception;
+    
+            if (exception === undefined) {
+              return true;
+            } else {
+              handleMessage(msg);
+              return false;
+            }
+          } else {
+            handleMessage("회원탈퇴에 실패했습니다.");
+            return false;
+          }
+        } catch (error) {
+          handleReissueCatch(error);
+          handleMessage("회원탈퇴에 실패했습니다.");
+          return false;
+        }
+    };
+
+    const handleMessage = (msg) => {
+        setModalMessage(msg);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        if (modalMessage === "해당 사용자가 존재하지 않습니다." || modalMessage === "회원탈퇴에 실패했습니다.") {
+          navigator("/mypage");
+        }
+    };
+
     return(
         <LayoutBase style={{ top:'0', left: '0', zIndex: 10 }} onClick={onClose}>
             <LayoutModal onClick={(e) => e.stopPropagation()}>
@@ -43,6 +107,11 @@ function DeleteUser({ onClose }) {
                 <LayoutTitle style={{ marginBottom: '1rem' }}>탈퇴가 완료되었습니다.</LayoutTitle>
                 <Link to='/' style={{ height: '10%' }}><SubmitButton>메인으로</SubmitButton></Link>
             </LayoutModal>
+            {isModalOpen && (
+                <Modal title="알림" onClose={closeModal}>
+                    {modalMessage}
+                </Modal>
+            )}
         </LayoutBase>
     );
 }

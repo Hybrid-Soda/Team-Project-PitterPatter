@@ -3,23 +3,23 @@ import { MainWrap } from "./GamePageStyle";
 import Header from "../LandingPage/Header";
 import IsReady from "../Game/IsReady";
 import WebcamTestPage from "../Game/WebcamTestPage";
-import Unity from "./Unity";
+import UnityComponent from "./Unity"; // 수정된 컴포넌트 임포트
 import { getWallpaper } from "./gameApi.js";
 import AttModal from "./AttModal";
 import { useSelector } from "react-redux";
-import { assetsApi, childApi } from "../../apiService.js";
+import { assetsApi, gameApi } from "../../apiService.js";
 import Loader from "../Components/loader.jsx";
 
 function GamePage() {
   const [modalOpen, setModalOpen] = useState(true);
   const [testCompleted, setTestCompleted] = useState(false);
   const [attModalOpen, setAttModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(false);
+  const [score, setScore] = useState(0); // score 상태
 
   const handleTestComplete = () => {
     setTestCompleted(true);
-    setIsLoading(true); // 로딩 시작
-    setTimeout(() => setIsLoading(false), 2000); // 2초 후 로딩 끝
+    setIsLoading(true);
   };
 
   const closeModal = () => {
@@ -31,10 +31,10 @@ function GamePage() {
 
   const openAttModal = async () => {
     try {
-      const firstResponse = await childApi.post(`/${childId}`, {
-        score: 0,
-        playtime: 0,
-        burnedCalorie: 0,
+      const firstResponse = await gameApi.post(`/${childId}`, {
+        score: score, // UnityComponent에서 업데이트된 score 값을 사용
+        playtime: 60,
+        burnedCalorie: 4,
       }, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -43,8 +43,8 @@ function GamePage() {
 
       console.log('첫 번째 요청 성공:', firstResponse.data);
 
-      if (firstResponse.data.result === true) {
-        const secondResponse = await assetsApi.post('/point', {
+      if (firstResponse.data === true) {
+        const secondResponse = await assetsApi.patch('/point', {
           amount: 12,
           source: '게임 플레이 보상',
           childId: childId,
@@ -54,9 +54,10 @@ function GamePage() {
           },
         });
 
-        console.log('두 번째 포인트 지급 성공:', secondResponse.data);
+        console.log('두 번째 포인트 지급 성공:', secondResponse.data);      
+        setAttModalOpen(true);
       } else {
-        const secondResponse = await assetsApi.post('/point', {
+        const secondResponse = await assetsApi.patch('/point', {
           amount: 2,
           source: '게임 플레이 보상',
           childId: childId,
@@ -69,7 +70,6 @@ function GamePage() {
         console.log('두 번째 포인트 지급 성공:', secondResponse.data);
       }
 
-      setAttModalOpen(true);
     } catch (error) {
       console.error('요청 실패:', error);
     }
@@ -80,19 +80,22 @@ function GamePage() {
   };
 
   useEffect(() => {
-    setModalOpen(true); // 페이지 접근 시 모달 창 열기
-    getWallpaper(childId); // childId를 넣으면 그 아이가 착용하고 있는 벽의 이미지 주소가 return됨
+    setModalOpen(true);
+    getWallpaper(childId);
   }, [childId]);
+
+  useEffect(() => {
+    console.log("점수 변화:", score);
+  }, [score]);
 
   return (
     <MainWrap>
       <Header />
       {testCompleted ? (
-        isLoading ? (
-          <Loader /> // 로딩 중일 때 Loader 컴포넌트 표시
-        ) : (
-          <Unity onGameEnd={openAttModal} />
-        )
+        <div>
+          {isLoading && <Loader />}
+          <UnityComponent onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} />
+        </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />
       )}

@@ -13,6 +13,8 @@ import com.pitpat.pitterpatter.global.util.user.TeamNameGenerator;
 import io.jsonwebtoken.Claims;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,9 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final JavaMailSender mailSender;
     private final EmailTokenRepository emailTokenRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Value("${custom.random-2fa}")
     private String random2Fa;
@@ -230,8 +235,15 @@ public class UserServiceImpl implements UserService{
             }
         }
 
-        // 6. 업데이트된 유저 정보를 DB에 저장 후 UserDto 형태로 변환하여 return
-        return UserDto.toDto(userRepository.save(existingUser));
+        // 6. 유저 정보를 DB에 업데이트
+        userRepository.updateTeamName(existingUser.getUserId(), existingUser.getTeamName());
+        userRepository.updateTwoFa(existingUser.getUserId(), existingUser.getTwoFa());
+
+        // 7. 플러시하여 변경 내용을 강제로 DB에 반영
+        entityManager.flush();
+        entityManager.clear();
+
+        return this.getUserById(userId);
     }
 
     // jwt 토큰의 userId값을 이용하거나 email로 비밀번호 재설정
@@ -266,11 +278,11 @@ public class UserServiceImpl implements UserService{
             existingUser.setPassword(this.encode(password));
 
             // 5. DB에 저장
-            userRepository.save(existingUser);
+            userRepository.updatePassword(existingUser.getUserId(), existingUser.getPassword());
 
             // 6. 이메일 토큰으로 비밀번호 재설정 시, redis에서 이메일 토큰도 같이 삭제
             if (type.equals("email")) {
-                emailTokenRepository.deleteById(id);
+                emailTokenRepository.deleteById("pw" + id);
             }
         }
         // 7. 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
@@ -295,10 +307,10 @@ public class UserServiceImpl implements UserService{
             existingUser.setTwoFa(this.encode(twoFa));
 
             // 5. DB에 저장
-            userRepository.save(existingUser);
+            userRepository.updateTwoFa(existingUser.getUserId(), existingUser.getTwoFa());
 
             // 6. redis에서 이메일 토큰도 같이 삭제
-            emailTokenRepository.deleteById(email);
+            emailTokenRepository.deleteById("2fa" + email);
         }
         // 7. 2차 비밀번호가 유효하지 않을 경우 IllegalArgumentException 발생
         else {

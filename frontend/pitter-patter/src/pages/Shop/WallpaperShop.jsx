@@ -23,6 +23,9 @@ import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal'; 
 import Loader from "../Components/loader";
 
+import LeftButton from "/src/assets/icons/ChevronLeft.png";
+import RightButton from "/src/assets/icons/ChevronRight.png";
+
 function WallpaperShop() {
   const Navigator = useNavigate();
   const [wallpapers, setWallpapers] = useState([]);
@@ -200,7 +203,7 @@ function WallpaperShop() {
         <GuideText>게임 내에서 사용할 배경을 골라보세요!</GuideText>
         <RowWrap>
           <TransparentButton style={{ left: "0" }} onClick={handleLeft}>
-            <ButtonIcon src="/src/assets/icons/ChevronLeft.png" />
+            <ButtonIcon src={LeftButton} />
           </TransparentButton>
           <CarouselWrap ref={carouselRef}>
             {wallpapers.map((wallpaper, index) => (
@@ -227,7 +230,7 @@ function WallpaperShop() {
             ))}
           </CarouselWrap>
           <TransparentButton style={{ right: "0" }} onClick={handleRight}>
-            <ButtonIcon src="/src/assets/icons/ChevronRight.png" />
+            <ButtonIcon src={RightButton} />
           </TransparentButton>
         </RowWrap>
       </ToolBar>

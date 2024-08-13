@@ -35,8 +35,7 @@ function Snapshot() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVideoStream, setModalVideoStream] = useState(null);
 
-  const frameNum = useSelector((state) => state.item.frameItem);
-  const FrameImage = `/src/assets/img/Shop/frame/frame${frameNum}.png`;
+  const FrameImage = "https://ssafy-common.b-cdn.net/frame_" + useSelector((state) => state.item.frameItem) + ".png";
 
   function getImage(index) {
     const targetRef = BlankRefs.current[index];

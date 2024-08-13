@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { bmiCriteria } from './bmiCriteria.js';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -15,15 +15,15 @@ import {
 function BMIGraph() {
   const [data, setData] = useState([]);
 
-  const child = useSelector((state) => state.child);
-  const token = `Bearer ${useSelector((state) => state.token.refreshToken)}`;
+  const childId = useSelector((state) => state.child.id);
+  const token = useSelector((state) => state.token.accessToken);
 
-  const childId = child.id; // 테스트용 childId 변수 선언
   const startDate = '2024-07-24';
-  const endDate = '2024-08-05';
+  const endDate = '2024-08-16';
   const age = 10; // 테스트용 나이
-  const gender = 'male'; // 테스트용 성별
-  const childName = "배준짱"; // 테스트용 이름
+  const gender = useSelector((state) => state.child.gender)
+  // const childName = "배준짱"; // 테스트용 이름
+  const nickname = useSelector((state) => state.child.nickname);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,6 +54,7 @@ function BMIGraph() {
 
   const getBmiLevel = (age, gender, bmi) => {
     const criteria = bmiCriteria[age][gender];
+    console.log(criteria)
     if (bmi < criteria.underweight) return "저체중";
     if (bmi >= criteria.normal && bmi <= criteria.overweight) return "정상";
     if (bmi >= criteria.overweight && bmi <= criteria.obese)  return "과체중";
@@ -79,7 +80,7 @@ function BMIGraph() {
     <ContentBody>
       <GraphHeader>
         <span>키나 몸무게를 최근에 새로 측정하셨나요? 지금 추가해서 그래프를 업데이트 해보세요! </span>
-        <a>추가하러 가기</a>
+        <a href='/child/physical-info'>추가하러 가기</a>
       </GraphHeader>
       <LayoutActivityPage>
         <LayoutGraphList>
@@ -106,8 +107,20 @@ function BMIGraph() {
         </LayoutGraphList>
       </LayoutActivityPage>
       <GraphFooter>
-        <p>현재 BMI는 {data.length !== 0 ? data[data.length - 1].bmi : '###'} 입니다. </p>
-        <p>{childName} 님의 나이에서 해당 BMI는 {data.length !== 0 ? <span style={{color: getColor(data[data.length - 1].bmiLevel)}}>{data[data.length - 1].bmiLevel}</span> : '###'} 입니다. </p>
+        <p>{data.length !== 0 ? `현재 BMI는 ${data[data.length - 1].bmi}입니다.` : '키와 몸무게를 먼저 등록해주세요.'} </p>
+        <p>
+          {data.length !== 0 ? (  
+            <>
+              {nickname} 님의 나이에서 해당 BMI는{' '}
+              <span style={{ color: getColor(data[data.length - 1].bmiLevel) }}>
+                {data[data.length - 1].bmiLevel}
+              </span>
+              입니다.
+            </>
+          ) : (
+            ''
+          )}
+        </p>
       </GraphFooter>
     </ContentBody>
   );

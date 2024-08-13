@@ -94,6 +94,7 @@ export const Button = styled.button`
   box-shadow: 0 5px 0 0vw var(--logo-yellow-color);
   font-size: 1.2vw;
   font-weight: bold;
+  transition: all 0.1s;
 
   &:hover {
     box-shadow: 0 4px 0 0 var(--logo-yellow-color);

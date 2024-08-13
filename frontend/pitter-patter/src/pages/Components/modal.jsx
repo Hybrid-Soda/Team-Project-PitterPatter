@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const ModalOverlay = styled.div`
@@ -7,7 +6,7 @@ const ModalOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.transparent ? 'transparent' : 'rgba(0, 0, 0, 0.5)'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,9 +69,9 @@ const ModalFooter = styled.div`
   justify-content: flex-end;
 `;
 
-const Modal = ({ title, children, onClose }) => {
+const Modal = ({ title, children, onClose, transparent }) => {
   return (
-    <ModalOverlay>
+    <ModalOverlay transparent={transparent}>
       <ModalContent>
         <ModalHeader>
           <ModalTitle>{title}</ModalTitle>

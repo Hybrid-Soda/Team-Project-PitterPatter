@@ -63,8 +63,9 @@ function generatePathData(positions) {
 function AttendanceEvent() {
   const [dayList, setDayList] = useState([]);
   const [stones, setStones] = useState(stonePositions);
-  const token = useSelector((state) => state.token.refreshToken);
-  const childId = 24;
+  const token = useSelector((state) => state.token.accessToken);
+  // const childId = 24;
+  const childId = useSelector((state) => state.child.id);
 
   const getDayList = async () => {
     try {
@@ -78,7 +79,7 @@ function AttendanceEvent() {
       console.log(response);
     } catch (error) {
       console.log("Error fetching frames:", error.response.data.msg);
-      alert(error.response.data.msg); // 에러 메시지 알림
+      // alert(error.response.data.msg); // 에러 메시지 알림
     }
   };
 

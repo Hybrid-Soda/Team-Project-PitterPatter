@@ -10,6 +10,7 @@ import {
     WarningMessage,
     SubmitButton
   } from './ResetPasswordStyle';
+import Modal from '../../Components/modal';
 import Loader from "../../Components/loader.jsx";
 import { useSearchParams } from 'react-router-dom';
 import Header from "../../LandingPage/Header"
@@ -20,11 +21,13 @@ import {
 } from "/src/pages/User/userApi.js";
 
 function ResetSFA() {
-    const navigate = useNavigate();
+    const navigator = useNavigate();
     const [searchParams] = useSearchParams();
 
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    const [modalMessage, setModalMessage] = useState(''); 
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
     const newPasswordInputRef = useRef(null);
     const confirmPasswordInputRef = useRef(null);
@@ -40,7 +43,7 @@ function ResetSFA() {
             const isValid = await isVerifiedEmailToken();
       
             if (!isValid) {
-              navigate('/expired');
+                navigator('/expired');
             }
         };
       
@@ -50,8 +53,8 @@ function ResetSFA() {
     const handleResetSFA = async () => {
         // 새 2차 비밀번호는 필수 입력 값임.
         if (newPassword === "" || newPassword === undefined) {
-            alert("새 2차 비밀번호를 입력해주세요.");
-            newPasswordInputRef.current.focus();
+            setModalMessage("새 2차 비밀번호를 입력해주세요.");
+		    setIsModalOpen(true);
             return;
         }
 
@@ -66,21 +69,21 @@ function ResetSFA() {
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    alert(msg);
-                    navigate("/");
+                    setModalMessage(msg);
+		            setIsModalOpen(true)
                 } else {
-                    alert(msg);
-                    if (exception === "NoSuchElementException" || msg === "유효하지 않은 토큰입니다.") {
-                        navigate("/expired");
-                    }
+                    setModalMessage(msg);
+		            setIsModalOpen(true)
                 }
             } else {
                 setIsLoading(false);
-                alert("2차 비밀번호 변경에 실패했습니다.");
+                setModalMessage("2차 비밀번호 변경에 실패했습니다.");
+		        setIsModalOpen(true)
             }
         } catch (error) {
             setIsLoading(false);
-            alert("문제가 발생했습니다. 다시 시도해주세요.");
+            setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
+		    setIsModalOpen(true)
         }
     }
 
@@ -108,6 +111,17 @@ function ResetSFA() {
             return false;
         }
     };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        if (modalMessage === "2차 비밀번호 재설정이 성공적으로 완료되었습니다.") {
+            navigator("/login");
+        } else if (modalMessage === "유효하지 않은 토큰입니다." || modalMessage === "해당 사용자가 존재하지 않습니다.") {
+            navigator("/expired");
+        } else if (modalMessage === "새 2차 비밀번호를 입력해주세요.") {
+            newPasswordInputRef.current.focus();
+        }
+    }
 
     return (
     <Layoutbody>
@@ -138,6 +152,11 @@ function ResetSFA() {
                     변경하기
                 </SubmitButton>
             </WrapContext>
+            {isModalOpen && (
+                <Modal title="알림" onClose={closeModal}>
+                    {modalMessage}
+                </Modal>
+            )}
         </LayoutContext>
         }
     </Layoutbody>
