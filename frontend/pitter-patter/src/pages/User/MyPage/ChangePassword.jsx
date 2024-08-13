@@ -22,7 +22,7 @@ const InputWrap = styled.div`
   align-items: flex-end;
   gap: 1vw;
   /* background-color: red; */
-  margin-top: 50%;
+  margin-top: 35%;
 `;
 
 const InputItem = styled.div`
@@ -56,9 +56,9 @@ const WarningMessage = styled.div`
 const ButtonWrap = styled.div`
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     position: relative;
-    margin-top: 20%;
+    margin-top: 10%;
     gap: 1vw;
 `
 
