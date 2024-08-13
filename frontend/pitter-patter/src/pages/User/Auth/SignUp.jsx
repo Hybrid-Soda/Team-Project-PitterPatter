@@ -167,7 +167,6 @@ function SignUp() {
       if (response.status === 201) {
         setModalMessage('회원가입이 완료되었습니다.');
         setIsModalOpen(true);
-        navigator('/login');
       } else if (response.status === 200) {
         setModalMessage(msg);
         setIsModalOpen(true);
@@ -187,7 +186,10 @@ function SignUp() {
   }
 
   const closeModal = () => {
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
+    if (modalMessage === "회원가입이 완료되었습니다.") {
+      navigator('/login');
+    }
   }
 
   const handlePasswordFocus = () => {
