@@ -38,8 +38,8 @@ export const itemSlice = createSlice({
     setItem: (state, action) => {
       if (Array.isArray(action.payload)) {
         // payload가 배열인 경우
-        state.frameItem = action.payload[0].id;
-        state.backgroundItem = action.payload[1].id;
+        state.frameItem = action.payload[1].id;
+        state.backgroundItem = action.payload[0].id;
       } else {
         // payload가 객체인 경우
         if (action.payload.frameItem !== undefined) {

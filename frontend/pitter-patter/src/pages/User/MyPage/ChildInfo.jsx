@@ -123,6 +123,7 @@ function ChildInfo() {
         });
         const imageUrl = response.data.url; // 서버에서 반환된 이미지 URL
         setProfileImage(imageUrl);
+        console.log(profileImage);
       } catch (error) {
         console.error('There was an error uploading the image!', error);
       } finally {
