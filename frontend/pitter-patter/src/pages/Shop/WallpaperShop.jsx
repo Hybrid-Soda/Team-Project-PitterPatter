@@ -146,7 +146,8 @@ function WallpaperShop() {
           },
         });
 
-        dispatch(setItem({ backgroundItem: onWallpaper.id }));
+        let num = onWallpaper.photo.split('_')[1].split('.')[0];
+        dispatch(setItem({ backgroundItem: num }));
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);

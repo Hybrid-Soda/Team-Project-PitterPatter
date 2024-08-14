@@ -16,6 +16,9 @@ function GamePage() {
   const [attModalOpen, setAttModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [score, setScore] = useState(0); // score 상태
+  
+  // set backgroundNum from redux store
+  const backgroundNum = parseInt(useSelector((state) => state.item.backgroundItem));
 
   const handleTestComplete = () => {
     setTestCompleted(true);
@@ -94,7 +97,7 @@ function GamePage() {
       {testCompleted ? (
         <div>
           {isLoading && <Loader />}
-          <UnityComponent onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} />
+          <UnityComponent onGameEnd={openAttModal} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} backgroundNum={backgroundNum} />
         </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />

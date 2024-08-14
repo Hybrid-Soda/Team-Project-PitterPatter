@@ -1,12 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 import MotionCapture from "./MotionCapture";
-import { useSelector } from "react-redux";
 
-const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore }) => {
+const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore, backgroundNum }) => {
   const [isGameEnd, setIsGameEnd] = useState(false);
   const [landmarks, setLandmarks] = useState("");
-  const backgroundNum = useSelector((state) => state.item.backgroundItem);
 
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
     loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
