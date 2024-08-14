@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Win from "/src/assets/img/Game/win.png";
 import Lose from "/src/assets/img/Game/lose.png";
 import Draw from "/src/assets/img/Game/draw.png";
+import Wait from "/src/assets/img/Game/wait.png";
 
 const ModalOverlay = styled.div`
   display: flex;
@@ -53,17 +54,24 @@ const ModalImg = styled.img`
   margin-bottom: 1rem;
 `;
 
-function MultiResultModal({ onClose, myScore, rivalScore }) {
+function MultiResultModal({ onClose, myScore, rivalScore, isGameEnd }) {
 
   return (
     <ModalOverlay>
-      <ModalContent>
-        <ModalImg src={myScore > rivalScore ? Win : myScore < rivalScore ? Lose : Draw} alt="Result" />
-        <h2>{myScore > rivalScore ? '승리!' : myScore < rivalScore ? '패배...' : '무승부!'}</h2>
-        <div style={{ display: 'flex', width: '100%', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
-          <CloseButton onClick={onClose}>돌아가기</CloseButton>
-        </div>
-      </ModalContent>
+      { isGameEnd ?
+        <ModalContent>
+          <ModalImg src={myScore > rivalScore ? Win : myScore < rivalScore ? Lose : Draw} alt="Result" />
+          <h2>{myScore > rivalScore ? '승리!' : myScore < rivalScore ? '패배...' : '무승부!'}</h2>
+          <div style={{ display: 'flex', width: '100%', justifyContent: 'center', gap: '1rem', marginTop: '1rem' }}>
+            <CloseButton onClick={onClose}>돌아가기</CloseButton>
+          </div>
+        </ModalContent>
+        :
+        <ModalContent>
+          <h2>상대방의 게임 종료를 기다리는중...</h2>
+          <ModalImg src={Wait} alt="Wait" />
+        </ModalContent>
+      }
     </ModalOverlay>
   );
 }

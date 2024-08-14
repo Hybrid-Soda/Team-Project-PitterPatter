@@ -2,7 +2,7 @@ import { MainWrap, GraphWrap, BarWrap, Bar, NameWrap, Name } from "./GamePageMul
 import Header from "../LandingPage/Header";
 import MultiSelectModal from "./MultiSelectModal";
 import { useState, useEffect } from "react";
-import { fetchRoomId, initializeSocket, sendMessage } from "./multiApi";
+import { fetchRoomId, initializeSocket, notifyFinished, sendMessage } from "./multiApi";
 import { useNavigate } from "react-router-dom";
 import Unity from "./Unity";
 import { useSelector } from "react-redux";
@@ -26,6 +26,8 @@ function GamePageMulti() {
   const [rivalScore, setRivalScore] = useState(0);
   const [resultModalOpen, setResultModalOpen] = useState(false);
   const [dodgeAlertModalOpen, setDodgeAlertModalOpen] = useState(false);
+  const [isRivalFinished, setIsRivalFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   
   const childId = useSelector((state) => state.child.id);
 
@@ -51,6 +53,10 @@ function GamePageMulti() {
         () => {
           console.log("Game started");
           setIsStarted(true);
+        },
+        () => {
+          console.log("Game finished");
+          setIsRivalFinished(true);
         }
       );
       setSocket(newSocket);
@@ -89,7 +95,9 @@ function GamePageMulti() {
   }, [score]);
 
   const onGameEnd = () => {
+    setIsFinished(true);
     setResultModalOpen(true);
+    notifyFinished(socket);
   };
 
   useEffect(() => {
@@ -121,7 +129,7 @@ function GamePageMulti() {
         <MultiSelectModal onJoinRoom={handleJoinRoom} onCreateRoom={handleCreateRoom} isWaiting={isWaiting} roomId={roomId} />
       }
       {modalOpen && <IsReady onClose={closeModal} />}
-      {resultModalOpen && <MultiResultModal onClose={() => navigate("/game/select-mode")} myScore={score} rivalScore={rivalScore} />}
+      {resultModalOpen && <MultiResultModal onClose={() => navigate("/game/select-mode")} myScore={score} rivalScore={rivalScore} isGameEnd={isRivalFinished && isFinished ? true : undefined} />}
       {dodgeAlertModalOpen && <DodgeAlertModal onClose={() => navigate("/game/select-mode")} />}
     </MainWrap>
   );

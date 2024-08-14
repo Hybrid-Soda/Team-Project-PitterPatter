@@ -15,7 +15,13 @@ export const fetchRoomId = async () => {
   }
 };
 
-export const initializeSocket = (roomId, onMessageReceived, onUserDisconnected, onStart) => {
+export const initializeSocket = (
+  roomId,
+  onMessageReceived,
+  onUserDisconnected,
+  onStart,
+  onFinished
+) => {
   const socket = io(host);
 
   socket.emit("init", roomId);
@@ -38,9 +44,19 @@ export const initializeSocket = (roomId, onMessageReceived, onUserDisconnected, 
     }
   });
 
+  socket.on("finished", () => {
+    if (onFinished) {
+      onFinished();
+    }
+  });
+
   return socket;
 };
 
 export const sendMessage = (socket, message) => {
   socket.emit("message", message);
+};
+
+export const notifyFinished = (socket) => {
+  socket.emit("finished");
 };
