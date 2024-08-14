@@ -28,14 +28,16 @@ import { useRef } from "react";
 function SnapshotResult() {
   const location = useLocation();
   const { imageList } = location.state;
-  const FrameImage = "https://ssafy-common.b-cdn.net/background_" + useSelector((state) => state.item.frameItem) + ".png";
+  const FrameImage = "https://ssafy-common.b-cdn.net/frame_" + useSelector((state) => state.item.frameItem) + ".png";
   const navigate = useNavigate();
   const frameRef = useRef(null);  // Frame 컴포넌트를 참조하기 위한 ref
 
   const downloadFrameImage = () => {
     const frameElement = frameRef.current; // Frame 컴포넌트의 실제 DOM 요소를 참조
     html2canvas(frameElement, {
-      backgroundColor: 'rgba(0, 0, 0, 0)'
+      useCORS: true, // CORS 문제 해결을 위한 옵션 추가
+      backgroundColor: null, // 배경색을 null로 설정하여 원본 그대로 캡처
+      // backgroundColor: 'rgba(0, 0, 0, 0)'
     }).then((canvas) => {
       canvas.toBlob((blob) => {
         const link = document.createElement("a");
