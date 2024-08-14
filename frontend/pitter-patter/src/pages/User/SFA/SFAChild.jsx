@@ -38,7 +38,7 @@ function SFAChild() {
       try {
         const response = await verify2fa(accessToken, "0000");
         if (response.status === 200 && response.data.exception === undefined) {
-          handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+          openModal("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
         }
       } catch (error) {
         // 오류 처리 (필요에 따라 추가)
@@ -86,16 +86,16 @@ function SFAChild() {
 
         if (exception === undefined) {
           if (password === "0000") {
-            handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+            openModal("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
             return false; // 초기 비밀번호일 경우 페이지 이동을 막음
           }
           return true;
         } else {
-          handleMessage(msg, false);
+          openModal(msg, false);
           return false;
         }
       } else {
-        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
+        openModal("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
         return false;
       }
     } catch (error) {
@@ -104,7 +104,7 @@ function SFAChild() {
     }
   };
 
-  const handleMessage = (msg, isInitial = false) => {
+  const openModal = (msg, isInitial = false) => {
     setModalMessage(msg);
     setIsModalOpen(true);
     setIsInitialPassword(isInitial); // 초기 비밀번호 여부 설정
@@ -156,7 +156,7 @@ function SFAChild() {
         <ForgotPassword>
           <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
+        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={openModal} />}
         {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
       </LayoutSFA>
     </LayoutBase>

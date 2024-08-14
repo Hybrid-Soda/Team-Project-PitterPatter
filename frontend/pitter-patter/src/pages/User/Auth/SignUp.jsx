@@ -110,30 +110,25 @@ function SignUp() {
         if (exception === undefined) {
           setIsDuplicated(false);
         }
-        setModalMessage(msg);
-        setIsModalOpen(true);
+        openModal(msg);
       } else {
         setIsDuplicated(true);
-        setModalMessage('이메일 중복 확인에 실패했습니다.');
-        setIsModalOpen(true);
+        openModal("이메일 중복 확인에 실패했습니다.");
       }
     } catch (error) {
       setIsDuplicated(true);
-      setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
-      setIsModalOpen(true);
+      openModal("문제가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
   const handleSignUp = async () => {
     if (email === "" || email === undefined) {
-      setModalMessage("이메일을 입력해주세요.");
-      setIsModalOpen(true);
+      openModal("이메일을 입력해주세요.");
       return;
     }
 
     if (password === "" || password === undefined) {
-      setModalMessage("비밀번호를 입력해주세요.");
-      setIsModalOpen(true);
+      openModal("비밀번호를 입력해주세요.");
       return;
     }
 
@@ -143,14 +138,12 @@ function SignUp() {
     }
 
     if (isDuplicated) {
-      setModalMessage('이메일 중복 확인을 해주세요.');
-      setIsModalOpen(true);
+      openModal("이메일 중복 확인을 해주세요.");
       return;
     }
 
     if (isPasswordValid() !== "") {
-      setModalMessage('비밀번호 확인이 일치하지 않습니다.');
-      setIsModalOpen(true);
+      openModal("비밀번호 확인이 일치하지 않습니다.");
       return;
     }
 
@@ -163,18 +156,14 @@ function SignUp() {
       const response = await signUp(data);
       const msg = response.data.msg;
       if (response.status === 201) {
-        setModalMessage('회원가입이 완료되었습니다.');
-        setIsModalOpen(true);
+        openModal("회원가입이 완료되었습니다.");
       } else if (response.status === 200) {
-        setModalMessage(msg);
-        setIsModalOpen(true);
+        openModal(msg);
       } else {
-        setModalMessage('회원가입에 실패했습니다.');
-        setIsModalOpen(true);
+        openModal("회원가입에 실패했습니다.");
       }
     } catch (error) {
-      setModalMessage('문제가 발생했습니다. 다시 시도해주세요.');
-      setIsModalOpen(true);
+      openModal("문제가 발생했습니다. 다시 시도해주세요.");
     }
   }
 
@@ -192,6 +181,11 @@ function SignUp() {
     } else if (modalMessage === "비밀번호를 입력해주세요.") {
       passwordInputRef.current.focus();
     }
+  }
+
+  const openModal = (msg) => {
+    setModalMessage(msg);
+    setIsModalOpen(true);
   }
 
   const handlePasswordFocus = () => {

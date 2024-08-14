@@ -52,19 +52,16 @@ function ForgotPassword() {
             if (response.status === 200) {
                 setIsLoading(false);
                 const msg = response.data.msg;
-                setModalMessage(msg);
-                setIsModalOpen(true);
+                openModal(msg);
             }
             setIsLoading(false);
         } catch (error) {
             setIsLoading(false);
             if (error.response && error.response.status === 400) {
-                setModalMessage("메일 발송에 실패했습니다.");
-                setIsModalOpen(true);
+                openModal("메일 발송에 실패했습니다.");
             }
             else {
-                setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
-                setIsModalOpen(true);
+                openModal("문제가 발생했습니다. 다시 시도해주세요.");
             }
         }
     }
@@ -74,6 +71,11 @@ function ForgotPassword() {
         if (modalMessage === "비밀번호 재설정 메일이 발송되었습니다.") {
             navigator("/login");
         }
+    }
+
+    const openModal = (msg) => {
+        setModalMessage(msg);
+        setIsModalOpen(true);
     }
 
     return (

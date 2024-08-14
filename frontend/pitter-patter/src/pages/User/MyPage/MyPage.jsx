@@ -25,7 +25,7 @@ function MyPage() {
     setActiveComponent(component);
   };
 
-  const handleMessage = (msg) => {
+  const openModal = (msg) => {
     setModalMessage(msg);
     setIsModalOpen(true);
   }
@@ -67,8 +67,8 @@ function MyPage() {
               </MenuItemWrap>
           </MenuWrap>
           <MainWrap>
-            {activeComponent === 'userInfo' && <UserInfo onMessage={handleMessage} />}
-            {(activeComponent === 'changePassword' || activeComponent === 'changePassword2') && <ChangePassword onMessage={handleMessage} />}
+            {activeComponent === 'userInfo' && <UserInfo onMessage={openModal} />}
+            {(activeComponent === 'changePassword' || activeComponent === 'changePassword2') && <ChangePassword onMessage={openModal} />}
           </MainWrap>
         </div>
         {isModalOpen && (

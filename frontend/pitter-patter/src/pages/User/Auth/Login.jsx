@@ -60,21 +60,18 @@ function Login() {
 
     // 아이디 필수 입력
     if (email === "" || email === undefined) {
-      setModalMessage("이메일을 입력해주세요.");
-      setModalOpen(true);
+      openModal("이메일을 입력해주세요.");
       return;
     }
     
     // 비밀번호 필수 입력
     if (password === "" || password === undefined) {
-      setModalMessage("비밀번호를 입력해주세요.");
-      setModalOpen(true);
+      openModal("비밀번호를 입력해주세요.");
       return;
     }
 
     if (!isEmailValid()) {
-      setModalMessage("올바른 이메일 주소 형식으로 다시 입력해 주세요.");
-      setModalOpen(true);
+      openModal("올바른 이메일 주소 형식으로 다시 입력해주세요.");
       return;
     }
 
@@ -101,19 +98,16 @@ function Login() {
         navigator("/select-profile");
       } else {
         setIsLoading(false);
-        setModalMessage('로그인에 실패했습니다. 다시 시도해주세요.');
-        setModalOpen(true);
+        openModal("로그인에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (error) {
       setIsLoading(false);
       const msg = error.response.data.msg;
       if (msg === "자격 증명에 실패하였습니다.") {
-        setModalMessage("아이디 혹은 비밀번호가 틀렸습니다.");
-        setModalOpen(true);
+        openModal("아이디 혹은 비밀번호가 틀렸습니다.");
       }
       else {
-        setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
-        setModalOpen(true);
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -131,6 +125,11 @@ function Login() {
       passwordInputRef.current.focus();
     }
   };
+
+  const openModal = (msg) => {
+    setModalMessage(msg);
+    setModalOpen(true);
+  }
 
   return (
     <LayoutBase>

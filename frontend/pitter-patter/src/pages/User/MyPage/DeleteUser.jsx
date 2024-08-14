@@ -74,21 +74,21 @@ function DeleteUser({ onClose }) {
             if (exception === undefined) {
               return true;
             } else {
-              handleMessage(msg);
-              return false;
+                openModal(msg);
+                return false;
             }
           } else {
-            handleMessage("회원탈퇴에 실패했습니다.");
+            openModal("회원탈퇴에 실패했습니다.");
             return false;
           }
         } catch (error) {
           handleReissueCatch(error);
-          handleMessage("회원탈퇴에 실패했습니다.");
+          openModal("회원탈퇴에 실패했습니다.");
           return false;
         }
     };
 
-    const handleMessage = (msg) => {
+    const openModal = (msg) => {
         setModalMessage(msg);
         setIsModalOpen(true);
     };
