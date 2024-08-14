@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assetsApi } from '../../apiService';
-import { useDispatch, useSelector } from 'react-redux';
-import { setItem } from '../../redux/itemSlice';
+import { useSelector } from 'react-redux';
 
 import { 
   Blank, 
@@ -34,7 +33,6 @@ import BackgroundImg from "/src/assets/img/Background/YellowWave.png";
 
 function SnapshotShop() {
   const Navigator = useNavigate();
-  const dispatch = useDispatch();
 
   const [frames, setFrames] = useState([]);
   const [points, setPoints] = useState(0);
@@ -52,6 +50,7 @@ function SnapshotShop() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [itemPrice, setItemPrice] = useState(null); // 아이템 가격을 저장할 상태 추가
 
   const token = useSelector((state) => state.token.accessToken);
   const jwtToken = `Bearer ${token}`;
@@ -128,6 +127,14 @@ function SnapshotShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
+      
+      // 에러 메시지가 "포인트가 부족합니다."인 경우, 현재 선택된 프레임의 가격을 itemPrice에 저장
+      if (error.response.data.msg === "포인트가 부족합니다.") {
+        const selectedItem = frames.find(frame => frame.id === itemId);
+        if (selectedItem) {
+          setItemPrice(selectedItem.price); // 선택된 프레임의 가격을 itemPrice 상태에 저장
+        }
+      }
       setErrorMessage(error.response.data.msg);
       setIsConfirmModalOpen(true);
     }
@@ -145,9 +152,6 @@ function SnapshotShop() {
             Authorization: `${jwtToken}`,
           },
         });
-
-        dispatch(setItem({frameItem: onFrame.id}))
-
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
@@ -284,7 +288,7 @@ function SnapshotShop() {
       {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />}
       {isConfirmModalOpen && (
         <ConfirmModal
-          title={errorMessage}
+          title={itemPrice ? `${errorMessage} (아이템 가격: ${itemPrice} 코인)` : errorMessage}
           onClose={handleConfirmModalClose}
         />
       )}
@@ -293,3 +297,4 @@ function SnapshotShop() {
 }
 
 export default SnapshotShop;
+  

@@ -18,11 +18,10 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { assetsApi } from '../../apiService';
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { setItem } from "../../redux/itemSlice";
 
 import Coin from "/src/assets/icons/Coin.png";
 import CoinModal from './CoinModal'; 
+import ConfirmModal from '../Components/modal';
 import Loader from "../Components/loader";
 
 import LeftButton from "/src/assets/icons/ChevronLeft.png";
@@ -36,7 +35,10 @@ function WallpaperShop() {
   const [points, setPoints] = useState(0);
   const [pointRecords, setPointRecords] = useState([]);
   const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+  const [isLoading, setIsLoading] = useState(true); 
+  const [itemPrice, setItemPrice] = useState(null); // 아이템 가격을 저장할 상태 추가
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // 모달 상태 관리
+  const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
   const itemsPerPage = 20;
   const token = useSelector((state) => state.token.accessToken);
   const jwtToken = `Bearer ${token}`;
@@ -68,10 +70,10 @@ function WallpaperShop() {
         },
       });
       setWallpapers(response.data.filter(item => item.itemType === 'BACKGROUND'));
-      setIsLoading(false); // 배경 이미지 로드 완료 후 로딩 상태 false로 설정
+      setIsLoading(false); 
     } catch (error) {
       console.log("Error fetching wallpapers:", error.response.data.msg);
-      setIsLoading(false); // 에러 발생 시에도 로딩 상태를 false로 설정
+      setIsLoading(false); 
     }
   };
 
@@ -132,8 +134,6 @@ function WallpaperShop() {
     Navigator(-1);
   };
 
-  const dispatch = useDispatch();
-
   const save = async () => {
     if (onWallpaper && !onWallpaper.on) { 
       try {
@@ -142,9 +142,6 @@ function WallpaperShop() {
             Authorization: `${jwtToken}`,
           },
         });
-
-        dispatch(setItem({ backgroundItem: onWallpaper.id }))
-
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
@@ -169,6 +166,20 @@ function WallpaperShop() {
       );
     } catch (error) {
       console.error("Error purchasing item:", error.response.data.msg);
+      
+      // 에러 메시지가 "포인트가 부족합니다."인 경우, 추가로 가격을 받아오는 요청
+      if (error.response.data.msg === "포인트가 부족합니다.") {
+        try {
+          const selectedItem = wallpapers.find(wallpaper => wallpaper.id === itemId);
+          if (selectedItem) {
+            setItemPrice(selectedItem.price); // 선택된 배경의 가격을 itemPrice 상태에 저장
+          }
+        } catch (priceError) {
+          console.error("Error fetching item price:", priceError);
+        }
+      }
+      setErrorMessage(error.response.data.msg); // 에러 메시지 설정
+      setIsConfirmModalOpen(true); // 모달 열기
     }
   };
 
@@ -242,6 +253,12 @@ function WallpaperShop() {
         </RowWrap>
       </ToolBar>
       {isModalOpen && <CoinModal onClose={closeModal} points={points} pointRecords={pointRecords} loadMoreRecords={loadMoreRecords} />} 
+      {isConfirmModalOpen && (
+        <ConfirmModal
+          title={itemPrice ? `${errorMessage} (아이템 가격: ${itemPrice} 코인)` : errorMessage}
+          onClose={() => setIsConfirmModalOpen(false)}
+        />
+      )}
     </Wallpaper>
   );
 }
