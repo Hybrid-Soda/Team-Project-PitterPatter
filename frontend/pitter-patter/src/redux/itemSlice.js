@@ -36,13 +36,21 @@ export const itemSlice = createSlice({
       state.error = null;
     },
     setItem: (state, action) => {
-      if (action.payload.frameItem !== undefined) {
-        state.frameItem = action.payload[1].id;
-      }
-      if (action.payload.backgroundItem !== undefined) {
-        state.backgroundItem = action.payload[0].id;
+      if (Array.isArray(action.payload)) {
+        // payload가 배열인 경우
+        state.frameItem = action.payload[0].id;
+        state.backgroundItem = action.payload[1].id;
+      } else {
+        // payload가 객체인 경우
+        if (action.payload.frameItem !== undefined) {
+          state.frameItem = action.payload.frameItem;
+        }
+        if (action.payload.backgroundItem !== undefined) {
+          state.backgroundItem = action.payload.backgroundItem;
+        }
       }
     },
+    
   },
   extraReducers: (builder) => {
     builder
