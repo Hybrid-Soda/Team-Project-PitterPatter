@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,7 +9,15 @@ public class MapManager : MonoBehaviour
     // 맵 매니저 초기화
     public void Init()
     {
-        SetMap((Define.Map)Managers.Network.mapNum - 1);
+        int mapCount = Enum.GetValues(typeof(Define.Map)).Length;
+
+        int mapNum = Managers.Network.mapNum;
+        if (mapNum < 1 || mapNum > mapCount)
+        {
+            mapNum = 1;
+        }
+        
+        SetMap((Define.Map)(mapNum - 1));
     }
 
     // 전달된 Define.Map 타입의 맵을 로드하고 설정
