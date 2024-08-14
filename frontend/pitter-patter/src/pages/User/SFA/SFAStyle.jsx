@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const LayoutBase = styled.div`
   min-height: 100vh;
@@ -74,7 +75,7 @@ export const Numpad = styled.div`
   justify-content: center;
   align-items: center;
   user-select: none;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 
   &:not(:nth-child(3n)) {
     border-right: 2px solid #d9d9d9;
@@ -101,7 +102,7 @@ export const ForgotPassword = styled.div`
   margin-bottom: 1.5vh;
   color: #616161;
   text-decoration: underline;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
   user-select: none;
 `;
 

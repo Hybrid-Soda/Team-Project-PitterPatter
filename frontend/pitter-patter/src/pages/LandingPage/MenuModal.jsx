@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 const Navbar = styled.div`
   display: flex;
@@ -30,12 +30,9 @@ const NavItemWrap = styled.div`
   align-items: center;
   padding: 15px;
   width: 15vw;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
   transition: opacity .3s;
-
-  &:hover {
-    opacity: .5;
-  }
+  opacity: ${({ isHovered, isNoneHovered }) => isNoneHovered || isHovered ? 1 : 0.5};
 `;
 
 const NavIcon = styled.img`
@@ -59,7 +56,7 @@ const LayoutNav = styled.div`
 const CloseButtonImg = styled.img`
   width: 20px;
   height: 20px;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 `;
 
 const BackDrop = styled.div`
@@ -68,7 +65,7 @@ const BackDrop = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
-`
+`;
 
 import Game from '/src/assets/img/NavBar/toGame.png';
 import Market from '/src/assets/img/NavBar/toMarket.png';
@@ -79,45 +76,44 @@ import Ranking from '/src/assets/img/NavBar/toRanking.png';
 import xIcon from "/src/assets/icons/X.png";
 
 function MenuModal({ isOpen, onClose }) {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   if (!isOpen) {
     return null;
   }
+
+  const handleMouseEnter = (index) => {
+    setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(null);
+  };
 
   return (
     <>
       <BackDrop onClick={onClose} />
       <Navbar>
         <LayoutNav>
-          <Link to='/game/select-mode'>
-            <NavItemWrap>
-              <NavIcon src={Game} alt="game" />
-              <NavText>게임 시작하기</NavText>
-            </NavItemWrap>
-          </Link>
-          <Link to='/shop'>
-            <NavItemWrap>
-              <NavIcon src={Market} alt="market" />
-              <NavText>상점 둘러보기</NavText>
-            </NavItemWrap>
-          </Link>
-          <Link to='/rank'>
-            <NavItemWrap>
-              <NavIcon src={Ranking} alt="ranking" />
-              <NavText>랭킹 확인하기</NavText>
-            </NavItemWrap>
-          </Link>
-          <Link to='/attendance'>
-            <NavItemWrap>
-              <NavIcon src={Attendance} alt="attendance" />
-              <NavText>출석 체크</NavText>
-            </NavItemWrap>
-          </Link>
-          <Link to='/sfa-child'>
-            <NavItemWrap>
-              <NavIcon src={Mypage} alt="mypage" />
-              <NavText>보호자 페이지</NavText>
-            </NavItemWrap>
-          </Link>
+          {[
+            { to: '/game/select-mode', src: Game, text: '게임 시작하기' },
+            { to: '/shop', src: Market, text: '상점 둘러보기' },
+            { to: '/rank', src: Ranking, text: '랭킹 확인하기' },
+            { to: '/attendance', src: Attendance, text: '출석 체크' },
+            { to: '/sfa-child', src: Mypage, text: '보호자 페이지' }
+          ].map((item, index) => (
+            <Link to={item.to} key={index}>
+              <NavItemWrap
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
+                isHovered={hoveredIndex === index}
+                isNoneHovered={hoveredIndex === null}
+              >
+                <NavIcon src={item.src} alt={item.text} />
+                <NavText>{item.text}</NavText>
+              </NavItemWrap>
+            </Link>
+          ))}
         </LayoutNav>
       </Navbar>
       <NavXContainer>

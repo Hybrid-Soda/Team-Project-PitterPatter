@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const Wallpaper = styled.div`
   width: 100vw;
@@ -58,7 +59,7 @@ export const Preview = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
   box-sizing: border-box;
   border: ${(props) => (props.selected ? "1vh solid var(--box-green-color)" : "none")};
 `;
@@ -107,7 +108,7 @@ export const ActionButton = styled.button`
 export const TransparentButton = styled.button`
   background-color: transparent;
   border: none;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  /* cursor: url(/src/assets/cursor/pointer.png), pointer !important; */
   width: 60px;
   z-index: 1;
   position: relative;
@@ -159,12 +160,7 @@ export const LayoutCoin = styled.div`
   justify-content: center;
   gap: .5rem;
   /* border-radius: 10rem; */
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
-  
-  * {
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
-  }
-
+  cursor: url(${PointerImg}), pointer !important;
 `
 
 export const CoinImg = styled.img`

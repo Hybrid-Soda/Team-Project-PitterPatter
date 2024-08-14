@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const LayoutBase = styled.div`
   min-height: 100vh;
@@ -62,7 +63,7 @@ export const ProfileImage = styled.div`
   
   &:hover {
     box-shadow: 0px 11px 39.6px 0px rgba(0, 0, 0, 0.25);
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    cursor: url(${PointerImg}), pointer !important;
     transition: ease-in-out 0.2s;
   }
 `;

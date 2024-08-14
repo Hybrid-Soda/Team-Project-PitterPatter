@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const LayoutBase = styled.div`
   min-height: 100vh;
@@ -68,7 +69,7 @@ export const MenuItem = styled.div`
   font-weight: 700;
   /* color: #616161; */
   color: ${(props) => props.color !== 'white'? props.color:"white"};
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 
   &:hover {
     color: white;
