@@ -82,16 +82,16 @@ function SFA() {
   
         if (exception === undefined) {
           if (password === "0000") {
-            handleMessage("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
+            openModal("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
             return false; // 비밀번호가 0000일 때는 페이지 이동을 위해 false 반환
           }
           return true;
         } else {
-          handleMessage(msg, false); // 일반 오류 메시지의 경우 false로 설정
+          openModal(msg, false); // 일반 오류 메시지의 경우 false로 설정
           return false;
         }
       } else {
-        handleMessage("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
+        openModal("예기치 못한 오류로 2차 비밀번호를 검증하는데 실패했습니다.", false);
         return false;
       }
     } catch (error) {
@@ -100,7 +100,7 @@ function SFA() {
     }
   };
   
-  const handleMessage = (msg, isInitialPassword) => {
+  const openModal = (msg, isInitialPassword = false) => {
     setModalMessage(msg);
     setIsModalOpen(true);
     setIsInitialPassword(isInitialPassword); // 초기 비밀번호 여부 설정
@@ -152,7 +152,7 @@ function SFA() {
         <ForgotPassword>
           <button onClick={() => setForgotModalOpen(true)}>비밀번호를 잊으셨나요?</button>
         </ForgotPassword>
-        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={handleMessage} />}
+        {forgotModalOpen && <ForgotSFAmodal onClose={() => setForgotModalOpen(false)} onMessage={openModal} />}
         {isModalOpen && <Modal message={modalMessage} onClose={handleModalConfirm} />}
       </LayoutSFA>
     </LayoutBase>

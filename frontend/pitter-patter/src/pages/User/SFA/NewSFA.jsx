@@ -52,8 +52,7 @@ function NewSFA() {
   useEffect(() => {
     if (isFirstInput && password.length === 4) {
       if (password === "0000") {
-        setModalMessage("0000은 사용하실 수 없습니다.");
-        setModalOpen(true);
+        openModal("0000은 사용하실 수 없습니다.");
       } else {
         setTimeout(() => {
           setIsFirstInput(false);
@@ -64,8 +63,7 @@ function NewSFA() {
         if (password === confirmPassword) {
           updateSFA();
         } else {
-          setModalMessage("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
-          setModalOpen(true);
+          openModal("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
         }
       }, 100);
     }
@@ -80,28 +78,22 @@ function NewSFA() {
         const msg = response.data.msg;
 
         if (exception === undefined) {
-          setModalMessage("새 2차 비밀번호가 설정되었습니다.");
-          setModalOpen(true);
+          openModal("새 2차 비밀번호가 설정되었습니다");
         } else {
-          setModalMessage(msg);
-          setModalOpen(true);
+          openModal(msg);
         }
       } else {
-        setModalMessage("2차 비밀번호를 설정하는데 실패했습니다.");
-        setModalOpen(true);
+        openModal("2차 비밀번호를 설정하는데 실패했습니다.");
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         // intercetor에서 토큰 재발급 수행
-        setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        setModalOpen(true);
+        openModal("로그인이 만료되었습니다. 다시 로그인 해주세요.");
       } else if (error.msg && error.msg === "토큰 검증 실패") {
         // intercetor에서 토큰 재발급 수행
-        setModalMessage("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        setModalOpen(true);
+        openModal("로그인이 만료되었습니다. 다시 로그인 해주세요.");
       } else {
-        setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
-        setModalOpen(true);
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -123,6 +115,11 @@ function NewSFA() {
       setIsFirstInput(false);
     }
   };
+
+  const openModal = (msg) => {
+    setModalMessage(msg);
+    setModalOpen(true);
+  }
 
   const goBack = () => {
     navigator(-1); // 뒤로가기 기능

@@ -53,8 +53,7 @@ function ResetSFA() {
     const handleResetSFA = async () => {
         // 새 2차 비밀번호는 필수 입력 값임.
         if (newPassword === "" || newPassword === undefined) {
-            setModalMessage("새 2차 비밀번호를 입력해주세요.");
-		    setIsModalOpen(true);
+            openModal("새 2차 비밀번호를 입력해주세요.");
             return;
         }
 
@@ -69,21 +68,17 @@ function ResetSFA() {
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    setModalMessage(msg);
-		            setIsModalOpen(true)
+                    openModal(msg);
                 } else {
-                    setModalMessage(msg);
-		            setIsModalOpen(true)
+                    openModal(msg);
                 }
             } else {
                 setIsLoading(false);
-                setModalMessage("2차 비밀번호 변경에 실패했습니다.");
-		        setIsModalOpen(true)
+                openModal("2차 비밀번호 변경에 실패했습니다.");
             }
         } catch (error) {
             setIsLoading(false);
-            setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
-		    setIsModalOpen(true)
+            openModal("문제가 발생했습니다. 다시 시도해주세요.");
         }
     }
 
@@ -121,6 +116,11 @@ function ResetSFA() {
         } else if (modalMessage === "새 2차 비밀번호를 입력해주세요.") {
             newPasswordInputRef.current.focus();
         }
+    }
+
+    const openModal = (msg) => {
+        setModalMessage(msg);
+        setIsModalOpen(true)
     }
 
     return (

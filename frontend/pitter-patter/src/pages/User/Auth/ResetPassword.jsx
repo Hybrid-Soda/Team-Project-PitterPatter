@@ -56,8 +56,7 @@ function ResetPassword() {
     const handleResetPassword = async () => {
         // 새 비밀번호 필수 입력
         if (newPassword === "" || newPassword === undefined) {
-            setModalMessage("새 비밀번호를 입력해주세요.");
-            setIsModalOpen(true);
+            openModal("새 비밀번호를 입력해주세요.");
             return;
         }
 
@@ -72,21 +71,17 @@ function ResetPassword() {
                 const msg = response.data.msg;
 
                 if (exception === undefined) {
-                    setModalMessage(msg);
-		            setIsModalOpen(true);
+                    openModal(msg);
                 } else {
-                    setModalMessage(msg);
-		            setIsModalOpen(true);
+                    openModal(msg);
                 }
             } else {
                 setIsLoading(false);
-                setModalMessage("비밀번호 변경에 실패했습니다.");
-                setIsModalOpen(true);
+                openModal("비밀번호 변경에 실패했습니다.");
             }
         } catch (error) {
             setIsLoading(false);
-            setModalMessage("문제가 발생했습니다. 다시 시도해주세요.");
-            setIsModalOpen(true);
+            openModal("문제가 발생했습니다. 다시 시도해주세요.");
         }
     };
 
@@ -125,6 +120,11 @@ function ResetPassword() {
         } else if (modalMessage === "새 비밀번호를 입력해주세요.") {
             newPasswordInputRef.current.focus();
         }
+    }
+
+    const openModal = (msg) => {
+        setModalMessage(msg);
+        setIsModalOpen(true);
     }
 
     return (
