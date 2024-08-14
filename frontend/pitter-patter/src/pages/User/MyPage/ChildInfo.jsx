@@ -6,6 +6,7 @@ import { hostApi } from '../../../apiService';
 import { useNavigate } from 'react-router-dom';
 import { setChild } from '../../../redux/childSlice';
 import { useDispatch } from 'react-redux';
+import Loader from '/src/pages/Components/smallLoader'; // 로딩 컴포넌트 임포트
 
 import {
   LayoutMyPage,
@@ -17,6 +18,7 @@ import {
 } from './UserInfoStyle';
 import SingingBanana from "/src/assets/img/User/SingingBanana.png";
 import PointerImg from "/src/assets/cursor/pointer.png";
+import PlusSquare from "/src/assets/icons/PlusSquare.png";
 
 
 const InputBox = styled.input`
@@ -84,6 +86,7 @@ function ChildInfo() {
 
   const [profileImage, setProfileImage] = useState(SingingBanana);
   const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(false); // 로딩 상태 추가
 
   const [nickname, setNickname] = useState('');
   const [birth, setBirth] = useState('');
@@ -107,6 +110,7 @@ function ChildInfo() {
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
+      setLoading(true); // 로딩 시작
       const formData = new FormData();
       formData.append('image', file);
 
@@ -121,9 +125,12 @@ function ChildInfo() {
         setProfileImage(imageUrl);
       } catch (error) {
         console.error('There was an error uploading the image!', error);
+      } finally {
+        setLoading(false); // 로딩 종료
       }
     }
   };
+
   const handleSubmit = async () => {
     const userProfileData = {
       nickname,
@@ -183,19 +190,23 @@ function ChildInfo() {
 
   return (
     <LayoutMyPage>
-      <Profile>
-        <MainImg
-          src={profileImage}
-          alt="SingingBanana"
-          onClick={handleImageClick}
-          style={{ cursor: `url(${PointerImg}), pointer !important` }}
-        />
+      <Profile style={{ cursor: `url(${PointerImg}), pointer !important` }}>
+        {loading ? (
+          <Loader /> 
+        ) : (
+          <MainImg
+            src={PlusSquare}
+            alt="profileImage"
+            onClick={handleImageClick}
+            // style={{ cursor: `url(${PointerImg}), pointer !important` }}
+          />
+        )}
         <input
           type="file"
           ref={fileInputRef}
-          style={{ display: 'none' }}
           accept="image/*"
           onChange={handleImageChange}
+          style={{ cursor: `url(${PointerImg}), pointer !important`, display: 'none' }}
         />
       </Profile>
       <InputWrap>

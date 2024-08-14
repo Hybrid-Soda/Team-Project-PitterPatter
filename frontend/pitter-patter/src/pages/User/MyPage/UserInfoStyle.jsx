@@ -40,7 +40,7 @@ export const InputTitle = styled.span`
 export const Profile = styled.div`
   width: 10vw;
   height: 10vw;
-  background: radial-gradient(lightpink, white 50%, white);
+  /* background: radial-gradient(lightpink, white 50%, white); */
   display: flex;
   justify-content: center;
   align-items: center;

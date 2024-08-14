@@ -42,7 +42,7 @@ function MyPage() {
       <LayoutMyPage>
         <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%'}}>
           <MenuWrap>
-            <button onClick={() => navigator('/select-profile')}>
+            <button onClick={() => navigator(-1)}>
               <MenuIcon src={ArrowLeft} alt="ArrowLeft" />
             </button>
             <MenuItemWrap>
