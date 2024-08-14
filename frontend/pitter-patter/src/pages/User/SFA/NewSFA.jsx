@@ -93,8 +93,8 @@ function NewSFA() {
   };
 
   const closeModal = () => {
-    setModalOpen(false);
-    if (modalMessage === "새 2차 비밀번호가 설정되었습니다.") {
+    console.log(modalMessage)
+    if (modalMessage === "새 2차 비밀번호가 설정되었습니다") {
       navigator("/mypage");
     } else if (modalMessage === "로그인이 만료되었습니다. 다시 로그인 해주세요.") {
       navigator("/login");
@@ -108,6 +108,7 @@ function NewSFA() {
       setConfirmPassword("");
       setIsFirstInput(false);
     }
+    setModalOpen(false);
   };
 
   const openModal = (msg) => {

@@ -14,8 +14,8 @@ import {
 function ChildActivityTable() {
   const [data, setData] = useState([]);
   const childId = useSelector((state) => state.child.id);
-  const startDate = '2024-07-24';
-  const endDate = '2024-08-05';
+  const startDate = '2024-07-01';
+  const endDate = '2024-08-16';
   const token = useSelector((state) => state.token.accessToken);
 
   useEffect(() => {
@@ -27,9 +27,9 @@ function ChildActivityTable() {
           playtime: item.playtime
         }));
         // 더미 데이터 추가
-        formattedData.push(
-          { createdAt: '2024-07-25', playtime: 120 },
-        );
+        // formattedData.push(
+        //   { createdAt: '2024-07-25', playtime: 120 },
+        // );
         // 날짜 순으로 정렬
         formattedData.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         setData(formattedData);

@@ -3,7 +3,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment';
 import {
-  CalendarWrapper
+  CalendarWrapper,
+  DayInfo,
 } from './CalendarStyle';
 import { useSelector } from 'react-redux';
 import { childApi } from '../../../apiService';
@@ -69,6 +70,7 @@ function Attendance() {
         tileClassName={tileClassName}
         onActiveStartDateChange={({ activeStartDate }) => getActiveMonth(activeStartDate)}
       />
+        <DayInfo>날짜는 매일 오전 9시에 변경됩니다.</DayInfo>
     </CalendarWrapper>
   );
 }
