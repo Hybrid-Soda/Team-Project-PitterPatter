@@ -17,10 +17,11 @@ read -r resume
 if [ -z "$resume" ] || [[ "$resume" =~ ^[Yy]$ ]]; then
   echo "Enter the step number to resume from:"
   echo "1. Change the domain and email from scripts"
-  echo "2. Install k3s, docker"
+  echo "2. Install k3s, docker, nodejs"
   echo "3. Deploy the MySQL database and Redis"
   echo "4. Deploy Certificate-related resources"
   echo "5. Build the backend image by Dockerfile and deploy reference to the image"
+  echo "6. Run the NodeJS Socket.IO server"
   read -r step
   if ! [[ "$step" =~ ^[1-5]+$ ]]; then
     echo "Please enter a valid step number"
@@ -52,6 +53,7 @@ if [ "$step" -le 1 ]; then
   sed -i "s/shell_script_will_replace_this_email/$email/g" $PWD/S11P12E204/exec/scripts/letsencrypt-clusterissuer.yaml
   sed -i "s/shell_script_will_replace_this_domain/$domain/g" $PWD/S11P12E204/exec/scripts/pitter-patter-cert.yaml
   sed -i "s/shell_script_will_replace_this_domain/$domain/g" $PWD/S11P12E204/exec/scripts/ingress-pitter-patter.yaml
+  sed -i "s/https:\/\/socket.picel.net/http:\/\/$domain:5000/g" $PWD/S11P12E204/frontend/pitter-patter/src/pages/Game/multiApi.js
 
   echo "Enter your new MySQL username:"
   read db_username
@@ -191,6 +193,18 @@ if [ "$step" -le 2 ]; then
     exit
   fi
 
+  # install nodejs 18
+  if ! command -v node &> /dev/null; then
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+    apt-get install -y nodejs
+  fi
+
+  node_status=$(node -v)
+  if [ -z "$node_status" ]; then
+    echo "node is not installed. Exiting..."
+    exit
+  fi
+
   echo "Step 2: Done"
 fi
 
@@ -276,6 +290,19 @@ if [ "$step" -le 5 ]; then
   kubectl apply -f ingress-pitter-patter.yaml
 
   echo "Step 5: Done"
+fi
+
+if [ "$step" -le 6 ]; then
+  echo "#############################################"
+  echo "#########           Step 6          #########"
+  echo "#############################################"
+
+  cd $PWD/S11P12E204/backend/socket
+  npm install
+  nohup node server.js &
+  disown -h
+
+  echo "Step 6: Done"
 fi
 
 echo "#############################################"
