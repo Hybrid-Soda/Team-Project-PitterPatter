@@ -30,6 +30,7 @@ function GamePageMulti() {
   const [isFinished, setIsFinished] = useState(false);
   
   const childId = useSelector((state) => state.child.id);
+  const backgroundNum = parseInt(useSelector((state) => state.item.backgroundItem));
 
   const navigate = useNavigate();
 
@@ -110,7 +111,7 @@ function GamePageMulti() {
       {testCompleted ? (
         <div>
           {isLoading && <Loader />}
-          <Unity onGameEnd={onGameEnd} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} />
+          <Unity onGameEnd={onGameEnd} isLoading={isLoading} setIsLoading={setIsLoading} score={score} setScore={setScore} backgroundNum={backgroundNum} />
         </div>
       ) : (
         <WebcamTestPage onTestComplete={handleTestComplete} />
