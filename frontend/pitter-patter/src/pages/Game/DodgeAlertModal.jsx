@@ -31,7 +31,7 @@ const ModalActions = styled.div`
   button {
     margin: 0 10px;
     padding: 10px 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     border: none;
     border-radius: 4px;
     background-color: #007bff;

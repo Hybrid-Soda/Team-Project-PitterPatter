@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setChild, setChildError } from '../../redux/childSlice'; // 적절한 경로에 맞게 import 필요
 import { childApi } from '../../apiService';
 import { clearChild } from '../../redux/childSlice';
-import { clearItem, setItem } from '../../redux/itemSlice';
+import { clearItem, getItem, setItem } from '../../redux/itemSlice';
 import Modal from '../Components/modal'; // Modal 임포트
 
 function SelectProfile() {
@@ -71,7 +71,18 @@ function SelectProfile() {
       });
 
       dispatch(setChild(response.data));
-      dispatch(setItem());
+
+      const resultAction = await dispatch(getItem());
+    
+      // getItem이 성공적으로 완료되었는지 확인
+      if (getItem.fulfilled.match(resultAction)) {
+        // 성공한 경우 setItem으로 결과를 저장
+        console.log(resultAction.payload)
+        dispatch(setItem(resultAction.payload));
+      } else {
+        console.error('Error fetching items:', resultAction.error.message);
+      }
+
       console.log('set')
     } catch (error) {
       console.error('Error fetching child data:', error.response?.data || error.message);

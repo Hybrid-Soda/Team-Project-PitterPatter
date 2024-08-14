@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PointerImg from "/src/assets/cursor/pointer.png";
 
 export const MainWrap = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const MainWrap = styled.div`
   align-items: center;
   height: 100vh;
   width: 100vw;
-  background-image: url(/src/assets/img/Background/YellowWave.png);
+  /* background-image: url(/src/assets/img/Background/YellowWave.png); */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -26,7 +27,7 @@ export const BoxWrap = styled.div`
 
   &:hover {
     transform: translateY(-1vw);
-    cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+    cursor: url(${PointerImg}), pointer !important;
   }
 
   &:active {

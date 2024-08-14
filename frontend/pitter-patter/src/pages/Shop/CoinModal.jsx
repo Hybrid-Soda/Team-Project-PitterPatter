@@ -35,7 +35,7 @@ const CloseButton = styled.button`
   background-size: cover;
   border: none;
   border-radius: 5px;
-  cursor: pointer;
+  /* cursor: pointer; */
 
   &:hover {
     background-color: #bbb;

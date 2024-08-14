@@ -22,6 +22,14 @@ spec:
     app: mysql
   clusterIP: None
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-tz-config
+  namespace: pitter-patter
+data:
+  timezone: "Asia/Seoul"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,6 +56,11 @@ spec:
           value: "shell_script_will_replace_this_db_username"
         - name: MYSQL_PASSWORD
           value: "shell_script_will_replace_this_db_password"
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: mysql-tz-config
+              key: timezone
         ports:
         - containerPort: 3306
         volumeMounts:

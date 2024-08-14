@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import YellowWaveBackground from "/src/assets/img/Background/YellowWave.png";
+import PointerImg from "/src/assets/cursor/pointer.png"
 
 const slideUp = keyframes`
   from {
@@ -163,7 +164,7 @@ export const Tool = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  cursor: url(/src/assets/cursor/pointer.png), pointer !important;
+  cursor: url(${PointerImg}), pointer !important;
 
   &:hover {
     transform: scale(1.1);
@@ -230,4 +231,23 @@ export const ViewFinder = styled.video`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`
+
+export const Countdown = styled.div`
+  position: absolute;
+  bottom: 3vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "NEXON Lv1 Gothic OTF";
+  font-size: 50px;
+  font-weight: bold;
+  color: #f9810a;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 10;
 `
