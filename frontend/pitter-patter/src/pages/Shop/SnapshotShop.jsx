@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assetsApi } from '../../apiService';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setItem } from '../../redux/itemSlice';
 
 import { 
   Blank, 
@@ -144,6 +146,7 @@ function SnapshotShop() {
     Navigator(-1);
   };
 
+  const dispatch = useDispatch();
   const save = async () => {
     if (onFrame && !onFrame.on) {
       try {
@@ -152,6 +155,8 @@ function SnapshotShop() {
             Authorization: `${jwtToken}`,
           },
         });
+        // console.log(onFrame.id);
+        dispatch(setItem({ frameItem: onFrame.id }));
         Navigator(-1);
       } catch (error) {
         console.error("Error saving wallpaper:", error.response.data.msg);
