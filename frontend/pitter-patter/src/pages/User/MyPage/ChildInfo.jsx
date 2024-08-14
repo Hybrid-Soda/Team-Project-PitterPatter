@@ -195,7 +195,7 @@ function ChildInfo() {
           <Loader /> 
         ) : (
           <MainImg
-            src={PlusSquare}
+            src={profileImage === SingingBanana ? PlusSquare : profileImage}
             alt="profileImage"
             onClick={handleImageClick}
             // style={{ cursor: `url(${PointerImg}), pointer !important` }}
