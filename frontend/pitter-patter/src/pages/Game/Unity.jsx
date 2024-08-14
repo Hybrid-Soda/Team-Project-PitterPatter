@@ -10,9 +10,9 @@ const UnityComponent = ({ onGameEnd, isLoading, setIsLoading, score, setScore })
 
   const { unityProvider, sendMessage, addEventListener, removeEventListener, unload } = useUnityContext({
     loaderUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.loader.js",
-    dataUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.data",
-    frameworkUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.framework.js",
-    codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm",
+    dataUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.data.unityweb",
+    frameworkUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.framework.js.unityweb",
+    codeUrl: "https://ssafy-common.b-cdn.net/Build/pitter-patter.wasm.unityweb",
   });
 
   const handleGameEnd = useCallback((score, isGameEnd, isLoading) => {

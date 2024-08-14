@@ -2559,7 +2559,7 @@ MonoBehaviour:
   roundSprites:
   - {fileID: 21300000, guid: dc7d017c937e23044a3f34cf1ed26e33, type: 3}
   - {fileID: 21300000, guid: bd1be9da27f31d340b93dd68426bd296, type: 3}
-  - {fileID: 21300000, guid: 6d83c636b3d8ff04b83cb278d359d7e0, type: 3}
+  - {fileID: 21300000, guid: 0ab96a201b969364294124b26ff84e9d, type: 3}
   scoreSprites:
   - {fileID: 21300000, guid: 7a451e08cbeaec2459e0cab507dd44f4, type: 3}
   - {fileID: 21300000, guid: f88439d49ca783d4fb61c1377f6c0d3b, type: 3}
