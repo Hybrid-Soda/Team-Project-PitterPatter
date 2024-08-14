@@ -36,7 +36,6 @@ export const handleReissueCatch = (error) => {
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
     store.dispatch(clearToken()); // 로그아웃
     window.location.href = "/login";
-    window.location.href = "/";
   }
 };
 
