@@ -14,7 +14,6 @@ import {
 import Modal from '../../Components/modal';
 
 import { deleteUser} from "/src/pages/User/userApi.js";
-import { handleReissueCatch } from '../../../apiService';
 
 const DeleteUserImage = styled.img`
     width: 10vw;
@@ -82,8 +81,9 @@ function DeleteUser({ onClose }) {
             return false;
           }
         } catch (error) {
-          handleReissueCatch(error);
-          openModal("회원탈퇴에 실패했습니다.");
+            if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+                openModal("문제가 발생했습니다. 다시 시도해주세요.");
+            }
           return false;
         }
     };
@@ -95,7 +95,7 @@ function DeleteUser({ onClose }) {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        if (modalMessage === "해당 사용자가 존재하지 않습니다." || modalMessage === "회원탈퇴에 실패했습니다.") {
+        if (modalMessage === "해당 사용자가 존재하지 않습니다." || modalMessage === "회원탈퇴에 실패했습니다." || modalMessage === "문제가 발생했습니다. 다시 시도해주세요.") {
           navigator("/mypage");
         }
     };

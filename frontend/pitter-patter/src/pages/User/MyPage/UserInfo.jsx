@@ -16,7 +16,6 @@ import {
   updateUser,
   getUser,
 } from "/src/pages/User/userApi.js";
-import { handleReissueCatch } from '../../../apiService';
 
 const InputBox = styled.input`
   width: 15vw;
@@ -86,7 +85,9 @@ function UserInfo({ onMessage }) {
           onMessage("사용자 정보를 가져올 수 없습니다.");
         }
       } catch (error) {
-        handleReissueCatch(error);
+        if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+          openModal("문제가 발생했습니다. 다시 시도해주세요.");
+        }
       }
     };
 
@@ -124,7 +125,9 @@ function UserInfo({ onMessage }) {
         }
       }
     } catch (error) {
-      handleReissueCatch(error);
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   }
 

@@ -86,13 +86,7 @@ function NewSFA() {
         openModal("2차 비밀번호를 설정하는데 실패했습니다.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        // intercetor에서 토큰 재발급 수행
-        openModal("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-      } else if (error.msg && error.msg === "토큰 검증 실패") {
-        // intercetor에서 토큰 재발급 수행
-        openModal("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-      } else {
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
         openModal("문제가 발생했습니다. 다시 시도해주세요.");
       }
     }

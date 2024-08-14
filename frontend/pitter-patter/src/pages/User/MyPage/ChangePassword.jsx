@@ -6,7 +6,6 @@ import {
   resetPasswordByUserId,
   verifyPassword
  } from "/src/pages/User/userApi.js";
- import { handleReissueCatch } from '../../../apiService';
 
 const LayoutMyPage = styled.div`
   display: flex;
@@ -138,7 +137,9 @@ function ChangePassword({ onMessage }) {
         onMessage("비밀번호 변경에 실패했습니다.");
       }
     } catch (error) {
-      handleReissueCatch(error);
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   };
 
@@ -155,7 +156,9 @@ function ChangePassword({ onMessage }) {
       }
       return false;
     } catch (error) {
-      handleReissueCatch(error);
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
+      }
     }
   }
 
