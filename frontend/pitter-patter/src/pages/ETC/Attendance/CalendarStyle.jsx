@@ -69,3 +69,11 @@ export const CalendarWrapper = styled.div`
     }
   }
 `;
+
+export const DayInfo = styled.div`
+  color: #a5a5a5;
+  font-size: .8rem;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1.5rem;
+`;
