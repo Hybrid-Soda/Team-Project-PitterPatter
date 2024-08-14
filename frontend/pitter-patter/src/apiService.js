@@ -32,16 +32,11 @@ export const gameApi = axios.create({
 });
 
 export const handleReissueCatch = (error) => {
-  if (error.response && error.response.status === 401) {
-    // interceptor에서 토큰 재발급 수행
+  if ((error.response && error.response.status === 401) || (error.msg && error.msg === "토큰 검증 실패")) {
     alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+    store.dispatch(clearToken()); // 로그아웃
+    window.location.href = "/login";
     window.location.href = "/";
-  } else if (error.msg && error.msg === "토큰 검증 실패") {
-    // interceptor에서 토큰 재발급 수행
-    alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-    window.location.href = "/";
-  } else {
-    // alert("문제가 발생했습니다. 다시 시도해주세요.");
   }
 };
 
@@ -86,10 +81,7 @@ const setupInterceptors = (axiosInstance) => {
 
           return await axios(originalRequest);
         } catch (error) {
-          // 로그아웃 시키기
-          store.dispatch(clearToken()); // 여기서 store.dispatch를 사용해야 합니다.
-          // 모달
-          window.location.href = "/login";
+          handleReissueCatch(error);
           throw new Error(error); // 새로운 Error 객체를 던짐
         }
       }

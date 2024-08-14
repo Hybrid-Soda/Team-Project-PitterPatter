@@ -19,7 +19,6 @@ import Modal from './Modal';
 import ForgotSFAmodal from './ForgotSFAmodal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
-import { handleReissueCatch } from '../../../apiService';
 
 function SFA() {
   const navigator = useNavigate();
@@ -95,7 +94,9 @@ function SFA() {
         return false;
       }
     } catch (error) {
-      handleReissueCatch(error);
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
+      }
       return false;
     }
   };

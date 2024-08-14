@@ -19,7 +19,6 @@ import ForgotSFAmodal from './ForgotSFAmodal';
 import Modal from './Modal';
 
 import { verify2fa } from "/src/pages/User/userApi.js";
-import { handleReissueCatch } from '../../../apiService';
 
 function SFAChild() {
   const navigator = useNavigate();
@@ -41,7 +40,9 @@ function SFAChild() {
           openModal("초기 비밀번호입니다. 새로운 비밀번호를 설정해주세요.", true);
         }
       } catch (error) {
-        // 오류 처리 (필요에 따라 추가)
+        if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+          openModal("문제가 발생했습니다. 다시 시도해주세요.");
+        }
       }
     };
 
@@ -99,7 +100,9 @@ function SFAChild() {
         return false;
       }
     } catch (error) {
-      handleReissueCatch(error);
+      if (!(error.response && error.response.status === 401) && !(error.msg && error.msg === "토큰 검증 실패")) {
+        openModal("문제가 발생했습니다. 다시 시도해주세요.");
+      }
       return false;
     }
   };
