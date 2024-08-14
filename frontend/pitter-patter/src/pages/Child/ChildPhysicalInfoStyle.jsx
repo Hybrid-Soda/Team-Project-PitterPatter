@@ -85,9 +85,12 @@ export const ImgDiv = styled.div`
 
     img {
         width: 100px;
+        height: 100px;
         border-radius: 50%;
-        background-color: #757575;
-    }
+        object-fit: contain;
+        /* background-color: #757575; */
+        /* box-shadow: 0px 0px 20px 4px rgba(0, 0, 0, 0.15); */
+        border: .1rem solid rgba(0, 0, 0, 0.15);
 `;
 
 export const InputDiv = styled.div`
