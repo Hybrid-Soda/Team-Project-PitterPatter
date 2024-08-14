@@ -93,6 +93,17 @@ io.on("connection", (socket) => {
       }
     }
   });
+
+  socket.on("finished", () => {
+    const roomId = userToRoom[socket.id];
+    const users = roomToUsers[roomId];
+    for (let i = 0; i < users.length; i++) {
+      if (users[i] === socket.id) {
+        continue;
+      }
+      io.to(users[i]).emit("finished");
+    }
+  });
 });
 
 server.listen(PORT, () => {
