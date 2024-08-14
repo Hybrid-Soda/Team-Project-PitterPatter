@@ -55,6 +55,7 @@ const Popover = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 14vw;
+  word-break : keep-all;
 `;
 
 function SignUp() {
@@ -232,7 +233,7 @@ function SignUp() {
             />
             {isPopoverOpen && (
               <Popover>
-                비밀번호는 8자 이상이어야 하며, <br />영문 대소문자, 숫자, 특수문자를 <br />포함해야 합니다.
+                비밀번호는 8자 이상이어야 하며, 영문 대소문자, 숫자, 특수문자를 포함해야 합니다.
               </Popover>
             )}
           </div>

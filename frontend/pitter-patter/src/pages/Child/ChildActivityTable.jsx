@@ -81,7 +81,7 @@ function ChildActivityTable() {
             <button><a href="/game/select-mode">게임하러 가기</a></button>
           </>
         ) : (
-          <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)}분 입니다.</p>
+          <p>해당 기간 총 플레이타임은 {getTotalPlaytime(data)/60}분 입니다.</p>
         )}
       </GraphFooter>
     </ContentBody>
