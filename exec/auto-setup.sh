@@ -16,7 +16,7 @@ echo "Do you want to resume from a specific step? (Y/n)"
 read -r resume
 if [ -z "$resume" ] || [[ "$resume" =~ ^[Yy]$ ]]; then
   echo "Enter the step number to resume from:"
-  echo "1. Change the domain and email from scripts"
+  echo "1. Change data(e.g. email, domain, db, kakao, email service, jwt, 2fa) in the scripts directory"
   echo "2. Install k3s, docker, nodejs"
   echo "3. Deploy the MySQL database and Redis"
   echo "4. Deploy Certificate-related resources"
