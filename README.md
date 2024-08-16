@@ -26,7 +26,7 @@
 
 ## 팀 소개
 
-| <img src="https://github.com/user-attachments/assets/4c809117-5d9e-4e2b-b09d-88abc2319290" width="50"><br>**손배준**<br>팀장/백엔드 | <img src="https://avatars.githubusercontent.com/u/156388511?v=4" width="50"><br>**윤예리**<br>디자인/프론트엔드 | <img src="https://avatars.githubusercontent.com/u/149301473?v=4" width="50"><br>**임경태**<br>게임엔진 |
+| <img src="https://avatars.githubusercontent.com/u/78029066?v=4" width="50"><br>**손배준**<br>팀장/백엔드 | <img src="https://avatars.githubusercontent.com/u/156388511?v=4" width="50"><br>**윤예리**<br>디자인/프론트엔드 | <img src="https://avatars.githubusercontent.com/u/149301473?v=4" width="50"><br>**임경태**<br>게임엔진 |
 | :---: | :---: | :---: |
 | **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@sonbaejun](https://github.com/sonbaejun) | **스킬**: `Figma`, `React`, `JavaScript`, `Redux`<br>**GitHub**: [@yereeeeeee](https://github.com/yereeeeeee) | **스킬**: `C#`, `Unity`, `Mediapipe`, `React`, `JavaScript`<br>**GitHub**: [@Hybrid-Soda](https://github.com/Hybrid-Soda) |
 | <img src="https://avatars.githubusercontent.com/u/91776984?v=4" width="50"><br>**서지헌**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/118294605?v=4" width="50"><br>**이승민**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/30901178?v=4" width="50"><br>**김상범**<br>인프라 |
