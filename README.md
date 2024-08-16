@@ -1,3 +1,5 @@
+<img src="https://github.com/user-attachments/assets/1f28a970-d2a6-4365-bac6-7ef320dc8643">
+
 # 피터패터 (Pitter-Patter)
 운동 부족 아이들을 위한 모션 캡처 기반 활동형 게임
 
@@ -38,12 +40,9 @@
 ## 아키텍처 구조도
 <img src="https://github.com/user-attachments/assets/eddd650b-8ca7-4319-93f9-68518b99f55b">
 
-## 기능 페이지
+## 주요 기능
 
 <table>
-  <tr>
-    <td align="center"><strong>메인화면</strong><br><img src="https://github.com/user-attachments/assets/1f28a970-d2a6-4365-bac6-7ef320dc8643" width="300px"></td>
-  </tr>
   <tr>
     <td align="center"><strong>게임 메인 페이지</strong><br><img src="https://github.com/user-attachments/assets/5f5fd298-905a-42ba-a798-10ac266c3675" width="300px"></td>
     <td align="center"><strong>게임 플레이 페이지</strong><br><img src="https://github.com/user-attachments/assets/fbd6658f-976e-4437-a4b8-0dab0787d482" width="300px"></td>
