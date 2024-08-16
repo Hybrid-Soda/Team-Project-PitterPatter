@@ -66,7 +66,7 @@
     <td style="text-align: center; word-wrap: break-word;">Backend<br>UCC 영상편집</td>
   </tr>
   <tr>
-    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ 자녀 API 구현<br>▪ 발표 진행</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ 자녀 API 구현<br>▪ 자녀 페이지 프론트 개발 <br>▪ 발표 진행</td>
     <td style="text-align: center; word-wrap: break-word;">▪ 인프라 설계/구축<br>▪ CI/CD 구축<br>▪ 개발 감독</td>
     <td style="text-align: center; word-wrap: break-word;">▪ Unity 게임 클라이언트 디자인, 구현, 테스트<br>▪ AI 모션인식 MediaPipe 연결<br>▪ Unity & React WebGL 연결 및 데이터 교신<br>▪ 프론트엔드 웹캠 & 게임 페이지 구현</td>
     <td style="text-align: center; word-wrap: break-word;">▪ UI/UX 기획 및 설계<br>▪ 프론트엔드 구조 설계 및 개발<br>▪ axios를 통한 서버 연결<br>▪ Redux 설계 및 구현<br>▪ 발표 자료 제작</td>
@@ -74,14 +74,6 @@
     <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ item, point record 관련 API 구현<br>▪ UCC 영상편집<br>▪ 전문가 인터뷰</td>
   </tr>
 </table>
-
-
-
-| <img src="https://avatars.githubusercontent.com/u/78029066?v=4" width="50"><br>**손배준**<br>팀장/백엔드 | <img src="https://avatars.githubusercontent.com/u/156388511?v=4" width="50"><br>**윤예리**<br>디자인/프론트엔드 | <img src="https://avatars.githubusercontent.com/u/149301473?v=4" width="50"><br>**임경태**<br>게임엔진 |
-| :---: | :---: | :---: |
-| **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@sonbaejun](https://github.com/sonbaejun) | **스킬**: `Figma`, `React`, `JavaScript`, `Redux`<br>**GitHub**: [@yereeeeeee](https://github.com/yereeeeeee) | **스킬**: `C#`, `Unity`, `Mediapipe`, `React`, `JavaScript`<br>**GitHub**: [@Hybrid-Soda](https://github.com/Hybrid-Soda) |
-| <img src="https://avatars.githubusercontent.com/u/91776984?v=4" width="50"><br>**서지헌**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/118294605?v=4" width="50"><br>**이승민**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/30901178?v=4" width="50"><br>**김상범**<br>인프라 |
-| **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@MyCoooi](https://github.com/MyCoooi) | **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@Nooby213](https://github.com/Nooby213) | **스킬**: `Docker`, `Kubernetes`, `Prometheus`, `Grafana`<br>**GitHub**: [@picel](https://github.com/picel) |
 
 ## ERD
 <img src="https://github.com/user-attachments/assets/865f456f-0556-43aa-8542-9dfa4e09d57e">
