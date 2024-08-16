@@ -26,7 +26,56 @@
 | ![Axios](https://img.shields.io/badge/-Axios-5A29E4?style=flat-square&logo=axios) | ![QueryDSL](https://img.shields.io/badge/-QueryDSL-000000?style=flat-square) |  | ![Grafana](https://img.shields.io/badge/-Grafana-F46800?style=flat-square&logo=grafana&logoColor=white) | ![Notion](https://img.shields.io/badge/-Notion-000000?style=flat-square&logo=notion) |
 | ![React Unity WebGL](https://img.shields.io/badge/-React%20Unity%20WebGL-000000?style=flat-square&logo=react) | ![MySQL](https://img.shields.io/badge/-MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) |  | ![Prometheus](https://img.shields.io/badge/-Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white) |  |
 
-## 팀 소개
+## 🍞 피터패터 팀원 소개 🍞
+
+<table style="table-layout: fixed; width: 100%;">
+  <tr>
+    <td style="text-align: center;">
+        <img src="https://ssafy.b-cdn.net/image/4dcf45a7-adc9-4315-86e0-754e4eb9d8431723789807104.jpeg" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+    <td style="text-align: center;">
+        <img src="https://avatars.githubusercontent.com/u/30901178?v=4" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+    <td style="text-align: center;">
+        <img src="https://avatars.githubusercontent.com/u/149301473?v=4" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+    <td style="text-align: center;">
+        <img src="https://ssafy.b-cdn.net/image/fbe71ce7-9684-4288-9070-b5867c79656f1723790085626.jpeg" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+    <td style="text-align: center;">
+        <img src="https://ssafy.b-cdn.net/image/64bc64b5-8b79-4bc9-aa44-fc07d85e59691723790117080.jpeg" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+    <td style="text-align: center;">
+        <img src="https://ssafy.b-cdn.net/image/64bc64b5-8b79-4bc9-aa44-fc07d85e59691723790117080.jpeg" width="150px" height="150px" style="object-fit: cover;">
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; word-wrap: break-word;">손배준</td>
+    <td style="text-align: center; word-wrap: break-word;">김상범</td>
+    <td style="text-align: center; word-wrap: break-word;">임경태</td>
+    <td style="text-align: center; word-wrap: break-word;">윤예리</td>
+    <td style="text-align: center; word-wrap: break-word;">서지헌</td>
+    <td style="text-align: center; word-wrap: break-word;">이승민</td>
+  </tr>
+  <tr>
+    <td style="text-align: center; word-wrap: break-word;">팀장<br>Backend<br>발표</td>
+    <td style="text-align: center; word-wrap: break-word;">Lead Developer<br>Infra Manager</td>
+    <td style="text-align: center; word-wrap: break-word;">Game Client<br>AI</td>
+    <td style="text-align: center; word-wrap: break-word;">Game Client</td>
+    <td style="text-align: center; word-wrap: break-word;">Backend<br>Frontend<br>서기</td>
+    <td style="text-align: center; word-wrap: break-word;">Backend<br>UCC 영상편집</td>
+  </tr>
+  <tr>
+    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ 자녀 API 구현<br>▪ 발표 진행</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ 인프라 설계/구축<br>▪ CI/CD 구축<br>▪ 개발 감독</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ Unity 게임 클라이언트 디자인, 구현, 테스트<br>▪ AI 모션인식 MediaPipe 연결<br>▪ Unity & React WebGL 연결 및 데이터 교신<br>▪ 프론트엔드 웹캠 & 게임 페이지 구현</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ UI/UX 기획 및 설계<br>▪ 프론트엔드 구조 설계 및 개발<br>▪ axios를 통한 서버 연결<br>▪ Redux 설계 및 구현<br>▪ 발표 자료 제작</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ 유저 및 인증·인가 관련 API 구현<br>▪ 유저 관련 페이지 프론트 개발<br>▪ 노션 작성</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ item, point record 관련 API 구현<br>▪ UCC 영상편집<br>▪ 전문가 인터뷰</td>
+  </tr>
+</table>
+
+
 
 | <img src="https://avatars.githubusercontent.com/u/78029066?v=4" width="50"><br>**손배준**<br>팀장/백엔드 | <img src="https://avatars.githubusercontent.com/u/156388511?v=4" width="50"><br>**윤예리**<br>디자인/프론트엔드 | <img src="https://avatars.githubusercontent.com/u/149301473?v=4" width="50"><br>**임경태**<br>게임엔진 |
 | :---: | :---: | :---: |
