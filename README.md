@@ -32,12 +32,16 @@
 | <img src="https://avatars.githubusercontent.com/u/91776984?v=4" width="50"><br>**서지헌**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/118294605?v=4" width="50"><br>**이승민**<br>백엔드 | <img src="https://avatars.githubusercontent.com/u/30901178?v=4" width="50"><br>**김상범**<br>인프라 |
 | **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@MyCoooi](https://github.com/MyCoooi) | **스킬**: `Java`, `Spring Boot`, `MySQL`, `JPA`<br>**GitHub**: [@Nooby213](https://github.com/Nooby213) | **스킬**: `Docker`, `Kubernetes`, `Prometheus`, `Grafana`<br>**GitHub**: [@picel](https://github.com/picel) |
 
-## 이미지
+## ERD
+<img src="https://github.com/user-attachments/assets/865f456f-0556-43aa-8542-9dfa4e09d57e">
+
+## 아키텍처 구조도
+<img src="https://github.com/user-attachments/assets/eddd650b-8ca7-4319-93f9-68518b99f55b">
+
+## 기능 페이지
 
 <table>
   <tr>
-    <td align="center"><strong>인프라</strong><br><img src="https://github.com/user-attachments/assets/eddd650b-8ca7-4319-93f9-68518b99f55b" width="300px"></td>
-    <td align="center"><strong>ERD</strong><br><img src="https://github.com/user-attachments/assets/865f456f-0556-43aa-8542-9dfa4e09d57e" width="300px"></td>
     <td align="center"><strong>메인화면</strong><br><img src="https://github.com/user-attachments/assets/1f28a970-d2a6-4365-bac6-7ef320dc8643" width="300px"></td>
   </tr>
   <tr>
