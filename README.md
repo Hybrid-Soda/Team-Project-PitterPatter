@@ -16,9 +16,10 @@
 7. [주요 기능](#주요-기능)
 
 ## 프로젝트 소개
-피터패터는 아이들의 운동 부족 문제를 해결하기 위한 모션 캡처 기반 활동형 게임입니다. 
+**피터패터(Pitter-Patter)**는 아동들의 운동 부족 문제를 해결하기 위한 모션 캡처 기반 활동형 게임입니다. 아이들은 다양한 게임 모드를 통해 자연스럽게 운동을 즐길 수 있으며, 부모님은 자녀의 운동량을 모니터링할 수 있습니다. 피터패터는 게임을 통해 아이들이 신체 활동을 재미있게 경험할 수 있도록 돕는 건강한 게임 플랫폼입니다.
 
-아이들은 게임을 통해 즐겁게 운동을 할 수 있으며, 부모님은 아이들의 운동량을 모니터링할 수 있습니다.
+## 개발 동기
+현대 사회에서 기술의 발전과 더불어 아이들의 활동량이 점차 감소하고 있습니다. 특히 디지털 기기에 대한 의존도가 높아지면서 아동들의 신체 활동 시간이 줄어들고 있으며, 이로 인해 건강 문제 또한 대두되고 있습니다. **피터패터**는 이러한 문제를 해결하고자 아이들이 신나고 즐겁게 참여할 수 있는 게임 형식을 도입해, 자연스럽게 운동량을 늘리고 건강한 생활습관을 형성하도록 돕고자 개발되었습니다. 우리의 목표는 아동들이 게임을 통해 즐겁게 활동하면서도 건강한 성장을 도모하는 것입니다.
 
 ## 프로젝트 문서
 [Notion](https://zenith-sloth-0ff.notion.site/SSAFY-E204-80bad1e361984fd4862f55122be3be16?pvs=4)
@@ -73,7 +74,7 @@
     <td style="text-align: center; word-wrap: break-word;">팀장<br>Backend<br>발표</td>
     <td style="text-align: center; word-wrap: break-word;">Lead Developer<br>Infra Manager</td>
     <td style="text-align: center; word-wrap: break-word;">Game Client<br>AI</td>
-    <td style="text-align: center; word-wrap: break-word;">Game Client</td>
+    <td style="text-align: center; word-wrap: break-word;">Frontend</td>
     <td style="text-align: center; word-wrap: break-word;">Backend<br>Frontend<br>서기</td>
     <td style="text-align: center; word-wrap: break-word;">Backend<br>UCC 영상편집</td>
   </tr>
