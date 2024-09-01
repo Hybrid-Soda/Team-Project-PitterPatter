@@ -56,7 +56,7 @@
         <img src="https://ssafy.b-cdn.net/image/fbe71ce7-9684-4288-9070-b5867c79656f1723790085626.jpeg" width="150px" height="150px" style="object-fit: cover;">
     </td>
     <td style="text-align: center;">
-        <img src="https://ssafy.b-cdn.net/image/64bc64b5-8b79-4bc9-aa44-fc07d85e59691723790117080.jpeg" width="150px" height="150px" style="object-fit: cover;">
+        <img src="/uploads/7e7d2ed7e2f16273261908fb6dc8d619/KakaoTalk_20240901_232001184.jpg" width="150px" height="150px" style="object-fit: cover;">
     </td>
     <td style="text-align: center;">
         <img src="https://ssafy.b-cdn.net/image/64bc64b5-8b79-4bc9-aa44-fc07d85e59691723790117080.jpeg" width="150px" height="150px" style="object-fit: cover;">
