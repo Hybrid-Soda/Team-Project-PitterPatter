@@ -83,7 +83,7 @@
     <td style="text-align: center; word-wrap: break-word;">▪ Unity 게임 클라이언트 디자인, 구현, 테스트<br>▪ AI 모션인식 MediaPipe 연결<br>▪ Unity & React WebGL 연결 및 데이터 교신<br>▪ 프론트엔드 웹캠 & 게임 페이지 구현</td>
     <td style="text-align: center; word-wrap: break-word;">▪ UI/UX 기획 및 설계<br>▪ 프론트엔드 구조 설계 및 개발<br>▪ axios를 통한 서버 연결<br>▪ Redux 설계 및 구현<br>▪ 발표 자료 제작</td>
     <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ 유저 및 인증·인가 관련 API 구현<br>▪ 유저 관련 페이지 프론트 개발<br>▪ 노션 작성</td>
-    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ item, point record 관련 API 구현<br>▪ UCC 영상편집<br>▪ 전문가 인터뷰</td>
+    <td style="text-align: center; word-wrap: break-word;">▪ API 및 DB 설계<br>▪ item, point record 관련 API 구현<br>▪ Axios 요청 <br>▪ 출석관련 컴포넌트 제작<br>▪ UCC 영상편집<br>▪ 전문가 인터뷰</td>
   </tr>
 </table>
 
@@ -95,24 +95,23 @@
 
 ## 주요 기능
 
-<h2>게임 모드 및 기타 기능</h2>
 <table style="width:100%; table-layout:fixed;">
   <tr>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>게임 메인 페이지</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/5f5fd298-905a-42ba-a798-10ac266c3675" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>랭킹</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/91e4b3ed-ca55-4262-b72e-0d5ae2bbd0d6" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>인생 네컷</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/86a625b4-2bbc-4ddc-aea0-57e9812bea86" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
@@ -120,19 +119,19 @@
   <tr>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>댄스타임</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="./assets/3번게임.gif" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>그림과 같은 포즈 취하기</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="./assets/1번게임.gif" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>움직이는 벽에 맞춰 따라 움직이기</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="./assets/2번게임.gif" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
@@ -140,19 +139,19 @@
   <tr>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>자녀 신체 정보 기록</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/6e4281ed-93da-477d-a195-f31ee29d5371" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>BMI 변화량</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/90200efc-ed68-46cb-a2f5-d62d22c4bdb4" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
     <td align="center" style="vertical-align:top; padding:20px;">
       <div style="font-size:1.25em;"><strong>게임 이용 시간</strong></div>
-      <div style="padding-top:10px;">
+      <div style="padding-top:20px;">
         <img src="https://github.com/user-attachments/assets/b5e1a814-832c-426f-8f00-7fb9881a3326" width="300px" style="border:1px solid #ddd;">
       </div>
     </td>
