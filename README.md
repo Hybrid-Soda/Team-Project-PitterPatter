@@ -3,6 +3,15 @@
 # 피터패터 (Pitter-Patter)
 운동 부족 아이들을 위한 모션 캡처 기반 활동형 게임
 
+## 목차
+1. [프로젝트 소개](#프로젝트-소개)
+2. [프로젝트 문서](#프로젝트-문서)
+3. [사용 기술](#사용-기술)
+4. [피터패터 팀원 소개](#피터패터-팀원-소개)
+5. [ERD](#erd)
+6. [아키텍처 구조도](#아키텍처-구조도)
+7. [주요 기능](#주요-기능)
+
 ## 프로젝트 소개
 피터패터는 아이들의 운동 부족 문제를 해결하기 위한 모션 캡처 기반 활동형 게임입니다. 
 
@@ -83,21 +92,66 @@
 
 ## 주요 기능
 
-<table>
+<h2>게임 모드 및 기타 기능</h2>
+<table style="width:100%; table-layout:fixed;">
   <tr>
-    <td align="center"><strong>게임 메인 페이지</strong><br><img src="https://github.com/user-attachments/assets/5f5fd298-905a-42ba-a798-10ac266c3675" width="300px"></td>
-    <td align="center"><strong>게임 플레이 페이지</strong><br><img src="https://github.com/user-attachments/assets/fbd6658f-976e-4437-a4b8-0dab0787d482" width="300px"></td>
-    <td align="center"><strong>인생 네컷</strong><br><img src="https://github.com/user-attachments/assets/86a625b4-2bbc-4ddc-aea0-57e9812bea86" width="300px"></td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>게임 메인 페이지</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/5f5fd298-905a-42ba-a798-10ac266c3675" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>랭킹</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/91e4b3ed-ca55-4262-b72e-0d5ae2bbd0d6" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>인생 네컷</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/86a625b4-2bbc-4ddc-aea0-57e9812bea86" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
   </tr>
   <tr>
-    <td align="center"><strong>랭킹</strong><br><img src="https://github.com/user-attachments/assets/91e4b3ed-ca55-4262-b72e-0d5ae2bbd0d6" width="300px"></td>
-    <td align="center"><strong>보호자 페이지 1</strong><br><img src="https://github.com/user-attachments/assets/6e4281ed-93da-477d-a195-f31ee29d5371" width="300px"></td>
-    <td align="center"><strong>보호자 페이지 2</strong><br><img src="https://github.com/user-attachments/assets/90200efc-ed68-46cb-a2f5-d62d22c4bdb4" width="300px"></td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>댄스타임</strong></div>
+      <div style="padding-top:10px;">
+        <img src="./assets/3번게임.gif" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>그림과 같은 포즈 취하기</strong></div>
+      <div style="padding-top:10px;">
+        <img src="./assets/1번게임.gif" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>움직이는 벽에 맞춰 따라 움직이기</strong></div>
+      <div style="padding-top:10px;">
+        <img src="./assets/2번게임.gif" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
   </tr>
   <tr>
-    <td align="center"><strong>보호자 페이지 3</strong><br><img src="https://github.com/user-attachments/assets/b5e1a814-832c-426f-8f00-7fb9881a3326" width="300px"></td>
-    <td></td>
-    <td></td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>자녀 신체 정보 기록</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/6e4281ed-93da-477d-a195-f31ee29d5371" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>BMI 변화량</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/90200efc-ed68-46cb-a2f5-d62d22c4bdb4" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
+    <td align="center" style="vertical-align:top; padding:20px;">
+      <div style="font-size:1.25em;"><strong>게임 이용 시간</strong></div>
+      <div style="padding-top:10px;">
+        <img src="https://github.com/user-attachments/assets/b5e1a814-832c-426f-8f00-7fb9881a3326" width="300px" style="border:1px solid #ddd;">
+      </div>
+    </td>
   </tr>
 </table>
-
